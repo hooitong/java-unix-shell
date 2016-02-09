@@ -13,7 +13,12 @@ public interface Command {
 	 */
 	public void evaluate(InputStream stdin, OutputStream stdout) 
 				throws AbstractApplicationException, ShellException;
-	
+
+    /**
+     * Parses the command line given for the command.
+     */
+    public void parse() throws ShellException;
+
 	/**
 	 * Terminates current execution of the command.
 	 */
