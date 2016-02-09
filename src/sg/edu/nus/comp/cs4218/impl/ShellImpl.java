@@ -1,10 +1,17 @@
 package sg.edu.nus.comp.cs4218.impl;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import sg.edu.nus.comp.cs4218.Application;
+import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
@@ -13,6 +20,9 @@ import sg.edu.nus.comp.cs4218.impl.app.CatApplication;
 import sg.edu.nus.comp.cs4218.impl.app.EchoApplication;
 import sg.edu.nus.comp.cs4218.impl.app.HeadApplication;
 import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
+import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
+import sg.edu.nus.comp.cs4218.impl.cmd.PipeCommand;
+import sg.edu.nus.comp.cs4218.impl.cmd.SequenceCommand;
 
 /**
  * A Shell is a command interpreter and forms the backbone of the entire
@@ -36,6 +46,7 @@ public class ShellImpl implements Shell {
 	public static final String EXP_STDOUT = "Error writing to stdout.";
 	public static final String EXP_NOT_SUPPORTED = " not supported yet";
 
+	/** TODO: calling applications, quoting, semicolon operator, globbing
 	/**
 	 * Searches for and processes the commands enclosed by back quotes for
 	 * command substitution.If no back quotes are found, the argsArray from the
@@ -97,7 +108,7 @@ public class ShellImpl implements Shell {
 	 * @param app
 	 *            String containing the keyword that specifies what application
 	 *            to run.
-	 * @param args
+	 * @param argsArray
 	 *            String array containing the arguments to pass to the
 	 *            applications for running.
 	 * @param inputStream
@@ -158,7 +169,7 @@ public class ShellImpl implements Shell {
 	 * Static method to creates an outputStream based on the file name or file
 	 * path.
 	 * 
-	 * @param onputStreamS
+	 * @param outputStreamS
 	 *            String of file name or file path.
 	 * 
 	 * @return OutputStream of file opened.
@@ -286,10 +297,93 @@ public class ShellImpl implements Shell {
 				if (("").equals(readLine)) {
 					continue;
 				}
-				//shell.parseAndEvaluate(readLine, System.out);
+				shell.parseAndEvaluate(readLine, System.out);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
 		}
+	}
+	
+	/**
+	 * Method to parse the given string command from the user.
+	 * @param cmdline 
+	 * 				The string to parse and execute
+	 * @param stdout
+	 * @throws AbstractApplicationException
+	 * @throws ShellException
+	 */
+	
+	@Override
+	public void parseAndEvaluate(String cmdline, OutputStream stdout)
+			throws AbstractApplicationException, ShellException {
+        Command parentCommand = parse(cmdline);
+        parentCommand.evaluate(null, stdout);
+	}
+
+
+    /**
+     * Attempt to pass using grammar syntax and return parent command.
+     * @param cmdline
+     *              The string to parse into a command
+     * @return parent command
+     * @throws ShellException
+     */
+    public static Command parse(String cmdline) throws ShellException {
+        int commandIndex = 0;
+        Command[] possibleCommands = new Command[3];
+        possibleCommands[0] = new SequenceCommand(cmdline);
+        possibleCommands[1] = new PipeCommand(cmdline);
+        possibleCommands[2] = new CallCommand(cmdline);
+
+        while(true) {
+            try {
+                possibleCommands[commandIndex].parse();
+                return possibleCommands[commandIndex];
+            } catch (ShellException e) {
+                if(++commandIndex == possibleCommands.length) throw e;
+            }
+        }
+    }
+
+	@Override
+	public String pipeTwoCommands(String[] args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String pipeMultipleCommands(String[] args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String pipeWithException(String[] args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String globNoPaths(String[] args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String globOneFile(String[] args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String globFilesDirectories(String[] args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String globMultiLevel(String[] args) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
