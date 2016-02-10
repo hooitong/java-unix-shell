@@ -19,7 +19,7 @@ import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.app.Sort;
 import sg.edu.nus.comp.cs4218.exception.SortException;
 
-public class SortJava implements Sort, Application{
+public class SortApplication implements Sort, Application{
 	
 	public static final int MAX_LENGTH = 2;
 	public static final int ONE = 1;
