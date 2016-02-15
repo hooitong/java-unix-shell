@@ -39,7 +39,7 @@ public class SequenceCommand implements Command {
      */
     public void parse() throws ShellException {
         String[] commands = cmdline.trim().split(SEQUENCE_SYMBOL, 2);
-        if(commands.length < 2) throw new ShellException(EXP_SYNTAX);
+        if(commands.length < 2 || commands[1].isEmpty()) throw new ShellException(EXP_SYNTAX);
         firstCommand = ShellImpl.parse(commands[0]);
         secondCommand = ShellImpl.parse(commands[1]);
     }

@@ -26,7 +26,7 @@ public class SequenceCommandTest {
      */
     @Test(expected=ShellException.class)
     public void testParseInvalidArgs() throws Exception {
-        String cmdline = "cat abc.txt | ";
+        String cmdline = "cat abc.txt ; ";
         SequenceCommand sc = new SequenceCommand(cmdline);
         sc.parse();
     }
@@ -39,7 +39,7 @@ public class SequenceCommandTest {
      */
     @Test
     public void testParseSingleValid() throws Exception {
-        String cmdline = "cat abc.txt | grep abc/*.txt";
+        String cmdline = "cat abc.txt ; grep abc/*.txt";
         SequenceCommand sc = new SequenceCommand(cmdline);
         sc.parse();
     }
@@ -53,7 +53,7 @@ public class SequenceCommandTest {
      */
     @Test
     public void testParseMultipleValid() throws Exception {
-        String cmdline = "grep test/apple/* | cat abc.txt | cat tk.test > a.out ";
+        String cmdline = "grep test/apple/* ; cat abc.txt ; cat tk.test > a.out ";
         SequenceCommand sc = new SequenceCommand(cmdline);
         sc.parse();
     }
