@@ -11,13 +11,12 @@ public class GlobFinder extends SimpleFileVisitor<Path>{
 
     public GlobFinder(String pattern) {
         filePaths = new ArrayList<>();
-        matcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
+        matcher = FileSystems.getDefault().getPathMatcher("glob:**/" + pattern);
     }
 
-    void globFind(Path file) {
-        Path name = file.getFileName();
-        if(name != null && matcher.matches(name)) {
-            filePaths.add(file.toString());
+    void globFind(Path path) {
+        if(path != null && matcher.matches(path)) {
+            filePaths.add(path.toString());
         }
     }
 
