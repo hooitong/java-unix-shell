@@ -38,7 +38,7 @@ public class SequenceCommand implements Command {
      * @throws ShellException
      */
     public void parse() throws ShellException {
-        String[] commands = cmdline.split(SEQUENCE_SYMBOL, 2);
+        String[] commands = cmdline.trim().split(SEQUENCE_SYMBOL, 2);
         if(commands.length < 2) throw new ShellException(EXP_SYNTAX);
         firstCommand = ShellImpl.parse(commands[0]);
         secondCommand = ShellImpl.parse(commands[1]);
@@ -50,6 +50,5 @@ public class SequenceCommand implements Command {
     @Override
     public void terminate() {
         // TODO Auto-generated method stub
-
     }
 }
