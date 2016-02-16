@@ -102,7 +102,7 @@ public class ShellImplTest {
      */
     @Test
     public void testParseSingleSequenceCommand() throws Exception {
-        String cmdline = "echo /apple/ti/*.txt | cat martini/*";
+        String cmdline = "echo /apple/ti/*.txt; cat martini/*";
         Command mockCommand = ShellImpl.parse(cmdline);
         assert(mockCommand instanceof SequenceCommand);
     }
@@ -116,7 +116,7 @@ public class ShellImplTest {
      */
     @Test
     public void testParseMultiSequenceCommand() throws Exception {
-        String cmdline = "tail *.txt | cat apple/* | echo *";
+        String cmdline = "tail *.txt ; cat apple/* ;echo *";
         Command mockCommand = ShellImpl.parse(cmdline);
         assert(mockCommand instanceof SequenceCommand);
     }
@@ -129,7 +129,7 @@ public class ShellImplTest {
      */
     @Test(expected=ShellException.class)
     public void testParseInvalidCommand() throws Exception {
-        String cmdline = "test | ";
+        String cmdline = "test; ";
         Command mockCommand = ShellImpl.parse(cmdline);
         fail("Should be throwing exception due to invalid syntax");
     }

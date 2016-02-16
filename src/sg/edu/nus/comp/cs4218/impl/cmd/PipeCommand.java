@@ -1,6 +1,7 @@
 package sg.edu.nus.comp.cs4218.impl.cmd;
 
 import sg.edu.nus.comp.cs4218.Command;
+import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 
@@ -29,7 +30,7 @@ public class PipeCommand implements Command {
         // TODO Auto-generated method stub
     }
 
-    public void parse() {
-
+    public void parse() throws ShellException{
+        throw new ShellException("Not Implemented");
     }
 }
