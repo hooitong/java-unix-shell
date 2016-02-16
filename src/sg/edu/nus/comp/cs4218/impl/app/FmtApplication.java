@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -78,7 +79,7 @@ public class FmtApplication implements Application {
 			else
 			{
 				Path currentDir = Paths.get(Environment.currentDirectory);
-				filePath = currentDir.resolve(args[1]);
+				filePath = currentDir.resolve(args[0]);
 				checkIfFileIsReadable(filePath);
 			}
 			
@@ -114,9 +115,29 @@ public class FmtApplication implements Application {
 				}
 			}
 			
-			//stdout.write(byteFileArray);
-
-				
+			String[] strArray = strToWrap.split(" ");
+			
+			String wrappedString = "";
+			int i = 0;
+			while(i < strArray.length)
+			{
+				String tempLine = "";
+				while(i < strArray.length && (tempLine.length()+strArray[i].length())<wrapValue)
+				{			
+					tempLine = tempLine.concat(" "+strArray[i]);
+					++i;
+				}
+				wrappedString = wrappedString.concat(tempLine+"\n");
+			}
+			try {
+				stdout.write(wrappedString.toString().getBytes(Charset.forName("UTF-8")));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			
+			
+	}
+			
 		}
 	}
 
@@ -134,7 +155,7 @@ public class FmtApplication implements Application {
 		if (Files.isDirectory(filePath)) {
 			throw new CatException("This is a directory");
 		}
-		if (Files.exists(filePath) && Files.isReadable(filePath)) {
+		if (Files.isReadable(filePath)) {
 			return true;
 		} else {
 			throw new CatException("Could not read file");
