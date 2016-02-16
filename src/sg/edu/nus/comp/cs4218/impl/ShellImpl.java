@@ -323,9 +323,9 @@ public class ShellImpl implements Shell {
     public static Command parse(String cmdline) throws ShellException {
         int commandIndex = 0;
         Command[] possibleCommands = new Command[3];
-        possibleCommands[0] = new SequenceCommand(cmdline);
-        possibleCommands[1] = new PipeCommand(cmdline);
-        possibleCommands[2] = new CallCommand(cmdline);
+        possibleCommands[0] = new CallCommand(cmdline);
+        possibleCommands[1] = new SequenceCommand(cmdline);
+        possibleCommands[2] = new PipeCommand(cmdline);
 
         while(true) {
             try {
