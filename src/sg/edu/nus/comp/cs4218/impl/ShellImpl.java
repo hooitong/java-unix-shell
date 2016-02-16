@@ -1,12 +1,6 @@
 package sg.edu.nus.comp.cs4218.impl;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,7 +40,6 @@ public class ShellImpl implements Shell {
 	public static final String EXP_STDOUT = "Error writing to stdout.";
 	public static final String EXP_NOT_SUPPORTED = " not supported yet";
 
-	/** TODO: calling applications, quoting, semicolon operator, globbing
 	/**
 	 * Searches for and processes the commands enclosed by back quotes for
 	 * command substitution.If no back quotes are found, the argsArray from the
@@ -320,7 +313,6 @@ public class ShellImpl implements Shell {
         parentCommand.evaluate(null, stdout);
 	}
 
-
     /**
      * Attempt to pass using grammar syntax and return parent command.
      * @param cmdline
@@ -331,9 +323,9 @@ public class ShellImpl implements Shell {
     public static Command parse(String cmdline) throws ShellException {
         int commandIndex = 0;
         Command[] possibleCommands = new Command[3];
-        possibleCommands[0] = new SequenceCommand(cmdline);
-        possibleCommands[1] = new PipeCommand(cmdline);
-        possibleCommands[2] = new CallCommand(cmdline);
+        possibleCommands[0] = new CallCommand(cmdline);
+        possibleCommands[1] = new SequenceCommand(cmdline);
+        possibleCommands[2] = new PipeCommand(cmdline);
 
         while(true) {
             try {
@@ -347,43 +339,16 @@ public class ShellImpl implements Shell {
 
 	@Override
 	public String pipeTwoCommands(String[] args) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String pipeMultipleCommands(String[] args) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String pipeWithException(String[] args) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String globNoPaths(String[] args) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String globOneFile(String[] args) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String globFilesDirectories(String[] args) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String globMultiLevel(String[] args) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

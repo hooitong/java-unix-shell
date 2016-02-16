@@ -1,8 +1,15 @@
 package sg.edu.nus.comp.cs4218.impl.cmd;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,6 +17,7 @@ import java.util.regex.Pattern;
 import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
+import sg.edu.nus.comp.cs4218.impl.GlobFinder;
 import sg.edu.nus.comp.cs4218.impl.ShellImpl;
 
 /**
@@ -74,6 +82,7 @@ public class CallCommand implements Command {
 		OutputStream outputStream;
 
 		argsArray = ShellImpl.processBQ(argsArray);
+        argsArray = evaluateGlob(argsArray);
 
 		if (("").equals(inputStreamS)) {// empty
 			inputStream = stdin;
@@ -331,6 +340,49 @@ public class CallCommand implements Command {
 		}
 		return newEndIdx;
 	}
+
+    /**
+     * Evaluate globbing for each of the arguments. Replaces wildcards with
+     * appropriate files from globbing.
+     */
+    public String[] evaluateGlob(String[] args) throws ShellException{
+        List<String> tempList = new ArrayList<>();
+        /* For each token, perform glob evaluation if any */
+        for(String arg : args) {
+            if(arg.contains("*")) {
+                /* Retrieve parent directory before wildcard */
+                int firstWildcard = arg.indexOf('*');
+
+                /* Find separator before this wildcard */
+                int beforeSeperator = arg.substring(0, firstWildcard).lastIndexOf('/');
+
+                Path parentPath;
+                /* If there is no separators, it means that path to search is relative path */
+                if(beforeSeperator != -1) parentPath = Paths.get("");
+                else parentPath = new File(arg.substring(0, beforeSeperator)).toPath();
+
+                String pattern = arg.substring(beforeSeperator + 1);
+                GlobFinder finder = new GlobFinder(pattern);
+
+                try {
+                    Files.walkFileTree(parentPath.toAbsolutePath(), finder);
+                } catch (IOException e) {
+                    throw new ShellException(e.getMessage());
+                }
+
+                List<String> results = finder.getResults();
+
+                if(!results.isEmpty()) {
+                    tempList.addAll(results);
+                }
+
+            } else {
+                /* Nothing to glob, no change to the arg */
+                tempList.add(arg);
+            }
+        }
+        return tempList.toArray(new String[tempList.size()]);
+    }
 
 	/**
 	 * Terminates current execution of the command (unused for now)

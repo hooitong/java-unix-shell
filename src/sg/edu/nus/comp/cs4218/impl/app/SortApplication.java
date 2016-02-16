@@ -20,6 +20,7 @@ import sg.edu.nus.comp.cs4218.app.Sort;
 import sg.edu.nus.comp.cs4218.exception.SortException;
 import sg.edu.nus.comp.cs4218.misc.MergeSort;
 
+
 public class SortApplication implements Sort {
 
 	private static final int MAX_LENGTH = 2;
