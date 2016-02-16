@@ -1,11 +1,14 @@
 package sg.edu.nus.comp.cs4218.impl.cmd;
 
-import org.junit.Before;
-import org.junit.Test;
-import sg.edu.nus.comp.cs4218.exception.ShellException;
-
 import java.io.ByteArrayOutputStream;
 import java.util.Vector;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import sg.edu.nus.comp.cs4218.exception.ShellException;
+
+import static org.junit.Assert.fail;
 
 public class CallCommandTest {
     /* Mandatory Basic Test */
@@ -67,7 +70,7 @@ public class CallCommandTest {
      */
     @Test
     public void testExtractInputRedir() throws Exception {
-
+        fail("To be written for EF2");
     }
 
     /**
@@ -77,7 +80,7 @@ public class CallCommandTest {
      */
     @Test
     public void testExtractOutputRedir() throws Exception {
-
+        fail("To be written for EF2");
     }
 
     /**
@@ -86,6 +89,6 @@ public class CallCommandTest {
      */
     @Test
     public void testTerminate() throws Exception {
-
+        fail("Not yet implemented");
     }
 }

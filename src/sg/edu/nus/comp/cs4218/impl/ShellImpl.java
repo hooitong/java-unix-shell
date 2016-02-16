@@ -1,12 +1,6 @@
 package sg.edu.nus.comp.cs4218.impl;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -345,19 +339,16 @@ public class ShellImpl implements Shell {
 
 	@Override
 	public String pipeTwoCommands(String[] args) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String pipeMultipleCommands(String[] args) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String pipeWithException(String[] args) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

@@ -1,6 +1,7 @@
 package sg.edu.nus.comp.cs4218.impl.cmd;
 
 import org.junit.Test;
+
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 
 public class SequenceCommandTest {
