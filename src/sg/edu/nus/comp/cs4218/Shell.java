@@ -26,24 +26,4 @@ public interface Shell {
 	 * Evaluate pipe call with one part generating an exception
 	 */
 	public String pipeWithException(String[] args);
-
-	/**
-	 * Evaluate globbing with no files or directories
-	 */
-	public String globNoPaths(String[] args);
-
-	/**
-	 * Evaluate globbing with one file
-	 */
-	public String globOneFile(String[] args);
-
-	/**
-	 * Evaluate globbing with files and directories one level down
-	 */
-	public String globFilesDirectories(String[] args);
-
-	/**
-	 * Evaluate globbing with files and directories multiple levels down
-	 */
-	public String globMultiLevel(String[] args);
 }

@@ -19,7 +19,7 @@ public interface Sort extends Application {
 	/**
 	 * Returns an ordered list of lines containing only numbers
 	 */
-	public List<String> sortNumbers(String[] toSort);
+	public List<String> sortNumbers(String[] toSort, boolean numFlag);
 
 	/**
 	 * Returns an ordered list of lines containing only special characters
@@ -57,7 +57,7 @@ public interface Sort extends Application {
 	 * Returns an ordered list of lines containing numbers and special
 	 * characters
 	 */
-	public List<String> sortNumbersSpecialChars(String[] toSort);
+	public List<String> sortNumbersSpecialChars(String[] toSort, boolean numFlag);
 
 	/**
 	 * Returns an ordered list of lines containing simple and capital letters
@@ -75,17 +75,17 @@ public interface Sort extends Application {
 	 * Returns an ordered list of lines containing simple letters, numbers and
 	 * special characters
 	 */
-	public List<String> sortSimpleNumbersSpecialChars(String[] toSort);
+	public List<String> sortSimpleNumbersSpecialChars(String[] toSort, boolean numFlag);
 
 	/**
 	 * Returns an ordered list of lines containing capital letters, numbers and
 	 * special characters
 	 */
-	public List<String> sortCapitalNumbersSpecialChars(String[] toSort);
+	public List<String> sortCapitalNumbersSpecialChars(String[] toSort, boolean numFlag);
 
 	/**
 	 * Returns an ordered list of lines containing simple and capital letters,
 	 * numbers and special characters
 	 */
-	public List<String> sortAll(String[] toSort);
+	public List<String> sortAll(String[] toSort, boolean numFlag);
 }

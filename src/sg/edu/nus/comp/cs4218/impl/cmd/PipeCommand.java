@@ -1,6 +1,7 @@
 package sg.edu.nus.comp.cs4218.impl.cmd;
 
 import sg.edu.nus.comp.cs4218.Command;
+import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 
@@ -9,8 +10,10 @@ import java.io.OutputStream;
 
 public class PipeCommand implements Command {
 
-    public PipeCommand(String cmdline) {
-
+    public PipeCommand(CallCommand incoming, CallCommand outgoing) {
+    	if(incoming == null || outgoing == null){
+    		return;
+    	}
     }
 
     /**
@@ -29,7 +32,7 @@ public class PipeCommand implements Command {
         // TODO Auto-generated method stub
     }
 
-    public void parse() {
-
+    public void parse() throws ShellException{
+        throw new ShellException("Not Implemented");
     }
 }
