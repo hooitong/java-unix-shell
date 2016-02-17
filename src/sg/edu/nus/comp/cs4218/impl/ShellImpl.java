@@ -351,4 +351,24 @@ public class ShellImpl implements Shell {
 	public String pipeWithException(String[] args) {
 		return null;
 	}
+
+    @Override
+    public String globNoPaths(String[] args) {
+        return null;
+    }
+
+    @Override
+    public String globOneFile(String[] args) {
+        return null;
+    }
+
+    @Override
+    public String globFilesDirectories(String[] args) {
+        return null;
+    }
+
+    @Override
+    public String globMultiLevel(String[] args) {
+        return null;
+    }
 }
