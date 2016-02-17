@@ -5,11 +5,20 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import org.junit.Before;
 import org.junit.Test;
 
+import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.exception.CatException;
+import sg.edu.nus.comp.cs4218.impl.GlobFinder;
 
 public class FmtApplicationTest {
+	
+	@Before
+	public void setUp() {
+		//mockRootDirectory = Environment.currentDirectory + "mock-filesystem/";
+	}
 	
 	@Test
 	public final void testRun() throws IOException {
@@ -18,7 +27,7 @@ public class FmtApplicationTest {
 		String testString = "Hey man";
 		ByteArrayInputStream bis = new ByteArrayInputStream(testString.getBytes());
 		
-		String[] arguements = {"-w 90"};
+		String[] arguements = {"sample.txt"};
 		try {
 			fmt.run(arguements, bis, bos);
 		} catch (CatException e) {
@@ -27,6 +36,7 @@ public class FmtApplicationTest {
 		}
 		String ss = new String(bos.toByteArray());
 		String[] splitSS = ss.split("\n");
-		assertEquals("dd",splitSS[0]);
+		String[] split2 = splitSS[0].split(" ");
+		assertEquals("terminated.",split2[split2.length-1]);
 	}
 }

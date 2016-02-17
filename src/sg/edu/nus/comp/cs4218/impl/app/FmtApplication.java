@@ -115,6 +115,9 @@ public class FmtApplication implements Application {
 				}
 			}
 			
+			//http://stackoverflow.com/questions/593671/remove-end-of-line-characters-from-java-string
+			
+			strToWrap = strToWrap.replaceAll("(\\r|\\n)", "");
 			String[] strArray = strToWrap.split(" ");
 			
 			String wrappedString = "";
