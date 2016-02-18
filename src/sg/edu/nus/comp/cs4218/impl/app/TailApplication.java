@@ -60,52 +60,64 @@ public class TailApplication implements Application {
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout)
 			throws TailException {
-
-		if (args == null || args.length == 0 || args.length == 2) {
-			int numLinesToRead = 0;
-
-			if (args == null || args.length == 0) {
+		
+		int numLinesToRead;
+		int filePosition = -1;
+		switch(args.length)
+		{
+		case 0:
+			numLinesToRead = 15;
+		case 1:
+			if(args[0].startsWith("-n"))
+			{
+				numLinesToRead = checkNumberOfLinesInput(args[0]);
+			}
+			else
+			{
+				filePosition = 0;
 				numLinesToRead = 15;
-			} else {
-				if (args.length == 3 && args[0].equals("--n")) {
-					numLinesToRead = checkNumberOfLinesInput(args[1]);
-				} else {
-					throw new TailException(
-							"Incorrect flag used for reading from stdin");
-				}
 			}
-			readFromStdinAndWriteToStdout(stdout, numLinesToRead, stdin);
-		} else {
-			int numLines;
-
-			if (args.length == 3 || args.length == 1) {
-				if (args.length == 3 && args[0].equals("-n")) {
-					numLines = checkNumberOfLinesInput(args[1]);
-				} else if (args.length == 1) {
-					numLines = 15;
-				} else {
-					throw new TailException("Incorrect flag used");
-				}
-			} else {
-				throw new TailException("Invalid Tail Command");
+			break;
+		case 2:
+			if(args[0].startsWith(("-n")))
+			{
+				numLinesToRead = checkNumberOfLinesInput(args[0]);
+				filePosition = 1;
 			}
-
+			else
+			{
+				throw new TailException("Incorrect flag used to denote number of lines to print");
+			}
+			break;
+		default:
+			throw new TailException("Incorrect number of arguments");
+		}
+		
+		if(filePosition>-1)
+		{
 			Path currentDir = Paths.get(Environment.currentDirectory);
-			int filePosition = 0;
-			if (args.length == 3) {
-				filePosition = 3;
-			}
 			Path filePath = currentDir.resolve(args[filePosition]);
 			boolean isFileReadable = false;
 			isFileReadable = checkIfFileIsReadable(filePath);
-
-			if (isFileReadable) {
-				try {
-					readFromFileAndWriteToStdout(stdout, numLines, filePath);
-				} catch (Exception e) {
+			if (isFileReadable) 
+			{
+				try 
+				{
+					readFromFileAndWriteToStdout(stdout, numLinesToRead, filePath);
+				} 
+				catch (Exception e) 
+				{
 					throw new TailException("Exception Caught");
 				}
 			}
+			else
+			{
+				throw new TailException("File not readable");
+			}
+		}
+		else
+		{
+			readFromStdinAndWriteToStdout(stdout, numLinesToRead, stdin);
 		}
 	}
 
@@ -123,7 +135,7 @@ public class TailApplication implements Application {
 		int numLines;
 
 		try {
-			numLines = Integer.parseInt(numLinesString);
+			numLines = Integer.parseInt(numLinesString.substring(3, numLinesString.length()));
 		} catch (NumberFormatException nfe) {
 			throw new TailException("Invalid command, not a number.");
 		}
@@ -166,8 +178,7 @@ public class TailApplication implements Application {
 			} else {
 				while ((input = buffReader.readLine()) != null) {
 					if (intCount == numLinesRequired) {
-						inputArray.poll();
-						intCount--;
+						break;
 					}
 					intCount++;
 					inputArray.add(input);
@@ -231,8 +242,7 @@ public class TailApplication implements Application {
 				int intCount = 0;
 				while ((input = buffReader.readLine()) != null) {
 					if (intCount == numLinesRequired) {
-						inputArray.poll();
-						intCount--;
+						break;
 					}
 					inputArray.add(input);
 					intCount++;
