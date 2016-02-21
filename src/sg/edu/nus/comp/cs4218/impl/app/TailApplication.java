@@ -2,6 +2,7 @@ package sg.edu.nus.comp.cs4218.impl.app;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -9,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Stack;
 
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Environment;
@@ -33,7 +34,9 @@ import sg.edu.nus.comp.cs4218.exception.TailException;
 public class TailApplication implements Application {
 
 	private static final String CHARSET_UTF_8 = "UTF-8";
-
+	private static final String NEW_LINE = System.lineSeparator();
+	private static final String NUMLINES_FLAG = "-n";
+	
 	/**
 	 * Runs the tail application with the specified arguments.
 	 * 
@@ -59,8 +62,8 @@ public class TailApplication implements Application {
 	 */
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout)
-			throws TailException {
-		
+			throws TailException 
+	{
 		int numLinesToRead;
 		int filePosition = -1;
 		switch(args.length)
@@ -68,7 +71,7 @@ public class TailApplication implements Application {
 		case 0:
 			numLinesToRead = 15;
 		case 1:
-			if(args[0].startsWith("-n"))
+			if(args[0].startsWith(NUMLINES_FLAG))
 			{
 				numLinesToRead = checkNumberOfLinesInput(args[0]);
 			}
@@ -79,7 +82,7 @@ public class TailApplication implements Application {
 			}
 			break;
 		case 2:
-			if(args[0].startsWith(("-n")))
+			if(args[0].startsWith((NUMLINES_FLAG)))
 			{
 				numLinesToRead = checkNumberOfLinesInput(args[0]);
 				filePosition = 1;
@@ -93,6 +96,7 @@ public class TailApplication implements Application {
 			throw new TailException("Incorrect number of arguments");
 		}
 		
+		Stack<String> inputString = null;
 		if(filePosition>-1)
 		{
 			Path currentDir = Paths.get(Environment.currentDirectory);
@@ -101,14 +105,7 @@ public class TailApplication implements Application {
 			isFileReadable = checkIfFileIsReadable(filePath);
 			if (isFileReadable) 
 			{
-				try 
-				{
-					readFromFileAndWriteToStdout(stdout, numLinesToRead, filePath);
-				} 
-				catch (Exception e) 
-				{
-					throw new TailException("Exception Caught");
-				}
+				inputString = readFromFile(filePath);
 			}
 			else
 			{
@@ -117,8 +114,11 @@ public class TailApplication implements Application {
 		}
 		else
 		{
-			readFromStdinAndWriteToStdout(stdout, numLinesToRead, stdin);
+			inputString = readFromStdin(stdin);
 		}
+		
+		LinkedList<String> wrappedString = extractTail(inputString,numLinesToRead);
+		writeToStdout(stdout,wrappedString);
 	}
 
 	/**
@@ -131,140 +131,59 @@ public class TailApplication implements Application {
 	 * @throws TailException
 	 *             If the numLinesString in not an Integer or a negative number.
 	 */
-	int checkNumberOfLinesInput(String numLinesString) throws TailException {
+	int checkNumberOfLinesInput(String numLinesString) throws TailException 
+	{
 		int numLines;
 
-		try {
+		try 
+		{
 			numLines = Integer.parseInt(numLinesString.substring(3, numLinesString.length()));
-		} catch (NumberFormatException nfe) {
+		} 
+		catch (NumberFormatException nfe) 
+		{
 			throw new TailException("Invalid command, not a number.");
 		}
-
 		
-
 		return numLines;
 	}
 
 	/**
-	 * Read from stdin and output last number of lines specified to stdout
+	 * Wraps text to specified width without breaking words
 	 * 
-	 * @param stdout
-	 *            An Output Stream. The output is written to this stream
-	 * @param numLinesRequired
-	 *            The number of lines required to output as received in the tail
-	 *            command or 10 if not specified in the command
-	 * @param stdin
-	 *            An input Stream. Reading from stdin and not a file
+	 * @param stringToWrap
+	 *            String to wrap
+	 * @param wrapWidth
+	 *            The value of the wrap width
+	 * @return wrappedString 
+	 * 		      Wrapped string
 	 * @throws TailException
-	 *             If stdin or stdout is null. Other exceptions caught when
-	 *             reading and writing from input and output streams.
+	 *             If the wrap width is too short (i.e. shorter than the longest word in the string
 	 */
-	void readFromStdinAndWriteToStdout(OutputStream stdout,
-			int numLinesRequired, InputStream stdin) throws TailException {
-
-		if (stdin == null || stdout == null) {
-			throw new TailException("Null Pointer Exception");
+	LinkedList<String> extractTail(Stack<String> textToExtractFrom,int numLines) throws TailException
+	{
+		LinkedList<String> extractedText = new LinkedList<String>();
+		if(textToExtractFrom.isEmpty())
+		{
+			return extractedText;
 		}
-
-		BufferedReader buffReader = new BufferedReader(new InputStreamReader(
-				stdin));
-		Queue<String> inputArray = new LinkedList<String>();
-		String input = "";
-		int intCount = 0;
-
-		try {
-			if (numLinesRequired == 0) {
-				stdout.write("".getBytes(CHARSET_UTF_8));
-			} else {
-				while ((input = buffReader.readLine()) != null) {
-					if (intCount == numLinesRequired) {
-						break;
-					}
-					intCount++;
-					inputArray.add(input);
-				}
+		int count = 0;
+		while(count < numLines)
+		{
+			if(!textToExtractFrom.isEmpty())
+			{
+				extractedText.add(textToExtractFrom.pop());
+				++count;
 			}
-		} catch (Exception e) {
-			throw new TailException("Exception caught");
-		}
-
-		while (!inputArray.isEmpty()) {
-			try {
-				if (inputArray.peek().equals("")) {
-					inputArray.poll();
-					stdout.write(System.lineSeparator().getBytes(CHARSET_UTF_8));
-				} else if (inputArray.size() == 1) {
-					stdout.write(inputArray.poll().getBytes(CHARSET_UTF_8));
-				} else {
-					stdout.write(inputArray.poll().getBytes(CHARSET_UTF_8));
-					stdout.write(System.lineSeparator().getBytes(CHARSET_UTF_8));
-				}
-
-			} catch (Exception e) {
-				throw new TailException("Exception caught");
+			else
+			{
+				break;
 			}
 		}
+		
+		return extractedText;
 	}
-
-	/**
-	 * Read from file and output last number of lines specified to stdout
-	 * 
-	 * @param stdout
-	 *            An Output Stream. The output is written to this stream
-	 * @param numLinesRequired
-	 *            The number of lines required to output as received in the tail
-	 *            command or 10 if not specified in the command
-	 * @param filePath
-	 *            A Path. Read file from the file path given
-	 * @throws TailException
-	 *             If stdout is null. Other exceptions caught when
-	 *             reading and writing from input and output streams.
-	 */
-	void readFromFileAndWriteToStdout(OutputStream stdout,
-			int numLinesRequired, Path filePath) throws TailException {
-
-		String encoding = CHARSET_UTF_8;
-
-		if (stdout == null) {
-			throw new TailException("Stdout is null");
-		}
-		try {
-			if (numLinesRequired == 0) {
-				stdout.write("".getBytes(encoding));
-			} else {
-				FileInputStream fileInStream = new FileInputStream(
-						filePath.toString());
-				BufferedReader buffReader = new BufferedReader(
-						new InputStreamReader(fileInStream));
-
-				Queue<String> inputArray = new LinkedList<String>();
-				String input = "";
-				int intCount = 0;
-				while ((input = buffReader.readLine()) != null) {
-					if (intCount == numLinesRequired) {
-						break;
-					}
-					inputArray.add(input);
-					intCount++;
-				}
-				buffReader.close();
-				while (!inputArray.isEmpty()) {
-					if (inputArray.peek().equals("")) {
-						inputArray.poll();
-						stdout.write(System.lineSeparator().getBytes(encoding));
-					} else if (inputArray.size() == 1) {
-						stdout.write(inputArray.poll().getBytes(encoding));
-					} else {
-						stdout.write(inputArray.poll().getBytes(encoding));
-						stdout.write(System.lineSeparator().getBytes(encoding));
-					}
-				}
-			}
-		} catch (Exception e) {
-			throw new TailException("Exception caught");
-		}
-	}
-
+	
+	
 	/**
 	 * Checks if a file is readable.
 	 * @param filePath
@@ -274,13 +193,125 @@ public class TailApplication implements Application {
 	 * @throws TailException
 	 * 		If the file is not readable
 	 */
-	boolean checkIfFileIsReadable(Path filePath) throws TailException {
-
-		
-		if (Files.exists(filePath) && Files.isReadable(filePath)) {
+	boolean checkIfFileIsReadable(Path filePath) throws TailException 
+	{	
+		if (Files.exists(filePath) && Files.isReadable(filePath)) 
+		{
 			return true;
-		} else {
+		} 
+		else 
+		{
 			throw new TailException("Could not read file");
 		}
 	}
+	
+	/**
+	 * Writes to specified OutputStream
+	 * 
+	 * @param stdout
+	 * 			  An OutputStream. Write stringToWrite to this OutputStream.
+	 * @param linesToWrite
+	 *            The lines to write to stdout
+	 * @throws TailException
+	 *             If stdout is null or there is an error writing to stdout
+	 */
+	void writeToStdout(OutputStream stdout,LinkedList<String> linesToWrite) throws TailException
+	{
+		if (stdout == null) 
+		{
+			throw new TailException("Null pointer exception - stdout is not defined");
+		}
+		
+		try 
+		{
+			while(!linesToWrite.isEmpty())
+			{
+				stdout.write(linesToWrite.removeLast().getBytes(CHARSET_UTF_8));
+				if(!linesToWrite.isEmpty())
+				{
+					stdout.write(NEW_LINE.getBytes(CHARSET_UTF_8));
+				}
+			}
+		} 
+		catch (IOException e) 
+		{
+			throw new TailException("Error writing to stdout");
+		}
+	}
+	
+	/**
+	 * Reads from file 
+	 *
+	 * @param filePath
+	 *            A Path. Read file from the file path given.
+	 * @return textToExtract
+	 * 			  Stack of read lines
+	 * @throws TailException 
+	 * 			  If there is an error reading from the file
+	 */
+	Stack<String> readFromFile(Path filePath) throws TailException
+	{
+		Stack<String> textToExtract = new Stack<String>();
+		
+		try 
+		{
+			FileInputStream fileInStream = new FileInputStream(filePath.toString());
+			BufferedReader buffReader = new BufferedReader(new InputStreamReader(fileInStream));
+			
+			String input = "";
+			
+			while ((input = buffReader.readLine()) != null) 
+			{
+				textToExtract.push(input);
+			}
+			
+			buffReader.close();
+		} 
+		catch (IOException e) 
+		{
+			throw new TailException("Error reading from file");
+		}
+		return textToExtract;
+	}
+	
+	/**
+	 * Reads from stdin 
+	 *
+	 * @param stdin
+	 *            An InputStream. Read input from this InputStream.
+	 * @return textToExtract
+	 * 			  Stack of read lines
+	 * @throws TailException 
+	 * 			  If stdin is null or there is an error reading from stdin
+	 */
+	Stack<String> readFromStdin(InputStream stdin) throws TailException
+	{
+		Stack<String> textToExtract = new Stack<String>();
+		
+		try
+		{
+			if (stdin == null) 
+			{
+				throw new TailException("Null pointer exception - stdin is not defined");
+			}
+			
+			BufferedReader buffReader = new BufferedReader(new InputStreamReader(stdin));
+	
+			String input = "";
+			
+			while ((input = buffReader.readLine()) != null) 
+			{
+				textToExtract.push(input);
+			}
+			
+			buffReader.close();
+		}
+		catch (Exception e) 
+		{
+			throw new TailException("Error reading from stdin");
+		}
+		
+		return textToExtract;
+	}
+	
 }

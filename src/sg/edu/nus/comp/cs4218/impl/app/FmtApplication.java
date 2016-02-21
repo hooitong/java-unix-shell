@@ -1,35 +1,41 @@
 package sg.edu.nus.comp.cs4218.impl.app;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Environment;
-import sg.edu.nus.comp.cs4218.exception.CatException;
+import sg.edu.nus.comp.cs4218.exception.FmtException;
 
 /**
- * The cat command concatenates the content of given files and prints on the
- * standard output.
+ * The fmt command wraps the given text at the specified maximum width without breaking
+ * a line in between words.  
  * 
  * <p>
- * <b>Command format:</b> <code>cat [FILE]...</code>
+ * <b>Command format:</b> <code>fmt [OPTIONS] [FILE]</code>
  * <dl>
+ * <dt>OPTIONS</dt>
+ * <dd> “​­w 50​” means print the given text where each line has at most 50 characters.     
+ * Default value is 80.</dd>
  * <dt>FILE</dt>
  * <dd>the name of the file(s). If no files are specified, use stdin.</dd>
  * </dl>
  * </p>
  */
-public class FmtApplication implements Application {
-
+public class FmtApplication implements Application 
+{
+	private static final String CHARSET_UTF_8 = "UTF-8";
+	private static final String NEW_LINE = System.lineSeparator();
+	private static final String WIDTH_FLAG = "-w";
+	
 	/**
-	 * Runs the cat application with the specified arguments.
+	 * Runs the fmt application with the specified arguments.
 	 * 
 	 * @param args
 	 *            Array of arguments for the application. Each array element is
@@ -41,127 +47,306 @@ public class FmtApplication implements Application {
 	 *            An OutputStream. The output of the command is written to this
 	 *            OutputStream.
 	 * 
-	 * @throws CatException
+	 * @throws FmtException
 	 *             If the file(s) specified do not exist or are unreadable.
 	 */
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout)
-			throws CatException {
-
-		if (args == null || args.length == 0) {
-			if (stdin == null || stdout == null) {
-				throw new CatException("Null Pointer Exception");
-			}
-			try {
-				int intCount;
-				while ((intCount = stdin.read()) != -1) {
-					stdout.write(intCount);
-				}
-			} catch (Exception exIO) {
-				throw new CatException("Exception Caught");
-			}
-		} else {
-			
-			int wrapValue = 80;
-			Path filePath = null;
-			
-			if(args[0].startsWith("-w"))
+			throws FmtException 
+	{
+		int wrapWidth;
+		int filePosition = -1;
+		switch(args.length)
+		{
+		case 0:
+			wrapWidth = 80;
+		case 1:
+			if(args[0].startsWith(WIDTH_FLAG))
 			{
-				wrapValue = Integer.parseInt(args[0].substring(3));
-				
-				if(args.length>1)
+				wrapWidth = checkWrapWidth(args[0]);
+			}
+			else
+			{
+				filePosition = 0;
+				wrapWidth = 80;
+			}
+			break;
+		case 2:
+			if(args[0].startsWith((WIDTH_FLAG)))
+			{
+				wrapWidth = checkWrapWidth(args[0]);
+				filePosition = 1;
+			}
+			else
+			{
+				throw new FmtException("Incorrect flag used to denote number of lines to print");
+			}
+			break;
+		default:
+			throw new FmtException("Incorrect number of arguments");
+		}
+		
+		String inputString = "";
+		if(filePosition>-1)
+		{
+			Path currentDir = Paths.get(Environment.currentDirectory);
+			Path filePath = currentDir.resolve(args[filePosition]);
+			boolean isFileReadable = false;
+			isFileReadable = checkIfFileIsReadable(filePath);
+			if (isFileReadable) 
+			{
+				inputString = readFromFile(filePath);
+			}
+			else
+			{
+				throw new FmtException("File not readable");
+			}
+		}
+		else
+		{
+			inputString = readFromStdin(stdin);
+		}
+		
+		String wrappedString = wrapText(inputString,wrapWidth);
+		writeToStdout(stdout,wrappedString);
+	}
+	
+	/**
+	 * Wraps text to specified width without breaking words
+	 * 
+	 * @param stringToWrap
+	 *            String to wrap
+	 * @param wrapWidth
+	 *            The value of the wrap width
+	 * @return wrappedString 
+	 * 		      Wrapped string
+	 * @throws FmtException
+	 *             If the wrap width is too short (i.e. shorter than the longest word in the string
+	 */
+	String wrapText(String stringToWrap,int wrapWidth) throws FmtException
+	{
+		if(stringToWrap.isEmpty())
+		{
+			return "";
+		}
+		stringToWrap = stringToWrap.replaceAll("(\\r|\\n)", " ");
+		String[] strArray = stringToWrap.split(" ");
+		
+		String wrappedString = "";
+		int i = 0;
+		
+		String tempLine = "";
+		
+		while(i < strArray.length)
+		{
+			String trimmedString = strArray[i].trim();
+			if(tempLine.length()==0)
+			{
+				if(wrapWidth<trimmedString.length())
 				{
-					Path currentDir = Paths.get(Environment.currentDirectory);
-					filePath = currentDir.resolve(args[1]);
-					checkIfFileIsReadable(filePath);
+					throw new FmtException("Wrap width too short");
 				}
-			}
-			else
-			{
-				Path currentDir = Paths.get(Environment.currentDirectory);
-				filePath = currentDir.resolve(args[0]);
-				checkIfFileIsReadable(filePath);
-			}
-			
-			String strToWrap = "";
-			if(filePath!=null)
-			{
-				//http://stackoverflow.com/questions/6684665/java-byte-array-to-string-to-byte-array
-				//Question by : http://stackoverflow.com/users/843387/0909em
-				//Answer by : http://stackoverflow.com/users/320700/yanick-rochon
-				
-						try {
-							byte[] byteFileArray = Files
-									.readAllBytes(filePath);
-							strToWrap = new String(byteFileArray);
-							
-						} catch (IOException e) {
-							throw new CatException(
-									"Could not write to output stream");
-						}
-			}
-			else
-			{
-				//http://www.mkyong.com/java/how-to-get-the-standard-input-in-java/
-				BufferedReader br = new BufferedReader(new InputStreamReader(stdin));
-				String input;
-				try {
-					while((input=br.readLine())!=null){
-						strToWrap.concat(input);
+				else
+				{
+					tempLine = tempLine.concat(trimmedString);
+					++i;
+					if(i==strArray.length)
+					{
+						wrappedString = wrappedString.concat(NEW_LINE+tempLine);
 					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 			}
-			
-			//http://stackoverflow.com/questions/593671/remove-end-of-line-characters-from-java-string
-			
-			strToWrap = strToWrap.replaceAll("(\\r|\\n)", "");
-			String[] strArray = strToWrap.split(" ");
-			
-			String wrappedString = "";
-			int i = 0;
-			while(i < strArray.length)
+			else
 			{
-				String tempLine = "";
-				while(i < strArray.length && (tempLine.length()+strArray[i].length())<wrapValue)
+				if((tempLine.length()+strArray[i].trim().length()+1)<wrapWidth)
 				{			
-					tempLine = tempLine.concat(" "+strArray[i]);
+					tempLine = tempLine.concat(" "+strArray[i].trim());
 					++i;
 				}
-				wrappedString = wrappedString.concat(tempLine+"\n");
+				else
+				{
+					if(wrappedString=="")
+					{
+						wrappedString = wrappedString.concat(tempLine);
+					}
+					else
+					{
+						wrappedString = wrappedString.concat(NEW_LINE+tempLine);
+					}
+					tempLine = "";
+				}
 			}
-			try {
-				stdout.write(wrappedString.toString().getBytes(Charset.forName("UTF-8")));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			
-			
-	}
-			
 		}
+		
+		return wrappedString;
+	}
+	
+	/**
+	 * Parses the wrap width from String to int
+	 * 
+	 * @param wrapWidthString
+	 *            The width to wrap received in String
+	 * @return wrapWidth 
+	 * 		 	  The width to wrap received in int
+	 * @throws FmtException
+	 *            If the wrapWidthString in not an integer or a negative number.
+	 */
+	int checkWrapWidth(String wrapWidthString) throws FmtException 
+	{
+		int wrapWidth;
+		
+		try 
+		{
+			wrapWidth = Integer.parseInt(wrapWidthString.substring(3, wrapWidthString.length()));
+		} 
+		catch (NumberFormatException nfe) 
+		{
+			throw new FmtException("Wrap width not a number");
+		}
+		System.out.println(wrapWidth);
+		if(wrapWidth<1)
+		{
+			throw new FmtException("Wrap width should be at least 1");
+		}
+		return wrapWidth;
 	}
 
 	/**
-	 * Checks if a file is readable.
+	 * Wraps text to specified width without breaking words
+	 * 
+	 * @param stdout
+	 * 			  An OutputStream. Write stringToWrite to this OutputStream.
+	 * @param stringToWrite
+	 *            The string to write to stdout
+	 * @throws FmtException
+	 *             If stdout is null or there is an error writing to stdout
+	 */
+	void writeToStdout(OutputStream stdout,String stringToWrite) throws FmtException
+	{
+		if (stdout == null) 
+		{
+			throw new FmtException("Null pointer exception - stdout is not defined");
+		}
+		
+		try 
+		{
+			stdout.write(stringToWrite.getBytes(CHARSET_UTF_8));
+		} 
+		catch (IOException e) 
+		{
+			throw new FmtException("Error writing to stdout");
+		}
+	}
+	
+	/**
+	 * Reads from file 
+	 *
+	 * @param filePath
+	 *            A Path. Read file from the file path given.
+	 * @return 
+	 * 			  Concatenated string read from file
+	 * @throws FmtException 
+	 * 			  If there is an error reading from the file
+	 */
+	String readFromFile(Path filePath) throws FmtException
+	{
+		String concatString = "";
+		
+		try 
+		{
+			FileInputStream fileInStream = new FileInputStream(filePath.toString());
+			BufferedReader buffReader = new BufferedReader(new InputStreamReader(fileInStream));
+			
+			String input = "";
+			
+			while ((input = buffReader.readLine()) != null) 
+			{
+				concatString = concatString.concat(input);
+			}
+			
+			buffReader.close();
+		} 
+		catch (IOException e) 
+		{
+			throw new FmtException("Error reading from file");
+		}
+		
+		return concatString;
+	}
+	
+	/**
+	 * Reads from stdin 
+	 *
+	 * @param stdin
+	 *            An InputStream. Read input from this InputStream.
+	 * @return 
+	 * 			  Concatenated string read from stdin
+	 * @throws FmtException 
+	 * 			  If stdin is null or there is an error reading from stdin
+	 */
+	String readFromStdin(InputStream stdin) throws FmtException
+	{
+		String concatString = "";
+		
+		try
+		{
+			if (stdin == null) 
+			{
+				throw new FmtException("Null pointer exception - stdin is not defined");
+			}
+			
+			BufferedReader buffReader = new BufferedReader(new InputStreamReader(stdin));
+	
+			String input = "";
+			
+			while ((input = buffReader.readLine()) != null) 
+			{
+				concatString = concatString.concat(input);
+			}
+			
+			buffReader.close();
+		}
+		catch (Exception e) 
+		{
+			throw new FmtException("Error reading from stdin");
+		}
+		
+		return concatString;
+	}
+	
+	/**
+	 * Checks if a file is readable
 	 * 
 	 * @param filePath
 	 *            The path to the file
-	 * @return True if the file is readable.
-	 * @throws CatException
-	 *             If the file is not readable
+	 * @return 
+	 * 			  True if the file is readable
+	 * @throws FmtException
+	 *            If the file is not readable
 	 */
-	boolean checkIfFileIsReadable(Path filePath) throws CatException {
-		
-		if (Files.isDirectory(filePath)) {
-			throw new CatException("This is a directory");
+	boolean checkIfFileIsReadable(Path filePath) throws FmtException 
+	{
+		if (Files.isDirectory(filePath)) 
+		{
+			throw new FmtException("This is a directory");
 		}
-		if (Files.isReadable(filePath)) {
+		if (Files.isReadable(filePath)) 
+		{
 			return true;
-		} else {
-			throw new CatException("Could not read file");
+		} 
+		else 
+		{
+			throw new FmtException("Could not read file");
 		}
 	}
 }
+
+//References
+
+//http://stackoverflow.com/questions/6684665/java-byte-array-to-string-to-byte-array
+//Question by : http://stackoverflow.com/users/843387/0909em
+//Answer by : http://stackoverflow.com/users/320700/yanick-rochon
+
+//http://stackoverflow.com/questions/593671/remove-end-of-line-characters-from-java-string
+
+//http://www.mkyong.com/java/how-to-get-the-standard-input-in-java/

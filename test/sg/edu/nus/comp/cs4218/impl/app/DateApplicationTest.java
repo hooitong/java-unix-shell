@@ -3,21 +3,23 @@ package sg.edu.nus.comp.cs4218.impl.app;
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 import org.junit.Test;
 
-public class DateApplicationTest {
+import sg.edu.nus.comp.cs4218.exception.DateException;
 
+public class DateApplicationTest 
+{
 	@Test
-	public final void testRun() throws IOException {
+	public final void testRun() throws DateException 
+	{	
 		DateApplication da = new DateApplication();
 		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();	
 		da.run(null, null, bos);
-		String ss = new String(bos.toByteArray());
-		assertEquals(sdf.toString(),ss);
+		String output = new String(bos.toByteArray());
+		assertEquals(sdf.toString(),output);
 	}
 }
 

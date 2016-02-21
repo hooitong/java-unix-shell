@@ -4,37 +4,143 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
-import sg.edu.nus.comp.cs4218.exception.CatException;
+import sg.edu.nus.comp.cs4218.Environment;
+import sg.edu.nus.comp.cs4218.exception.FmtException;
 
-public class FmtApplicationTest {
+public class FmtApplicationTest 
+{
+	private static FmtApplication fmtApplication;
+	private static final String NEW_LINE = System.lineSeparator();
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception 
+	{
+		fmtApplication = new FmtApplication();
+	}
 	
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+	}
+
 	@Before
-	public void setUp() {
-		//mockRootDirectory = Environment.currentDirectory + "mock-filesystem/";
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+	
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
+	
+	@Test
+	public final void testWrapText() throws FmtException 
+	{
+		int wrapValue = 11;
+		String wrappedText = fmtApplication.wrapText("The random String is tall", wrapValue);
+		String expectedString = "The random" + NEW_LINE + "String is" + NEW_LINE + "tall";
+		assertEquals(expectedString,wrappedText);
+	}
+
+	@Test
+	public void testTooShortWrapWidth() throws FmtException
+	{
+	    exception.expect(FmtException.class);
+	    exception.expectMessage("Wrap width too short");
+	    int wrapValue = 5;
+		fmtApplication.wrapText("The random String", wrapValue);
 	}
 	
 	@Test
-	public final void testRun() throws IOException {
-		FmtApplication fmt = new FmtApplication();
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	public void testNegativeWrapWidth() throws FmtException
+	{
+	    exception.expect(FmtException.class);
+	    exception.expectMessage("Wrap width should be at least 1");
+	    
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		String[] arguments = {"-w -50","sample.txt"};
+		fmtApplication.run(arguments, null, baos);
+	}
+	
+	@Test
+	public void testZeroWrapWidth() throws FmtException
+	{
+	    exception.expect(FmtException.class);
+	    exception.expectMessage("Wrap width should be at least 1");
+	    
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		String[] arguments = {"-w 0","sample.txt"};
+		fmtApplication.run(arguments, null, baos);
+	}
+	
+	@Test
+	public void testNonNumericWrapWidth() throws FmtException
+	{
+	    exception.expect(FmtException.class);
+	    exception.expectMessage("Wrap width not a number");
+	    
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		String[] arguments = {"-w ad3","sample.txt"};
+		fmtApplication.run(arguments, null, baos);
+	}
+	
+	@Test
+	public void testInvalidWrapWidthFlag() throws FmtException
+	{
+	    exception.expect(FmtException.class);
+	    exception.expectMessage("Incorrect flag used to denote number of lines to print");
+	    
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		String[] arguments = {"-n 50","sample.txt"};
+		fmtApplication.run(arguments, null, baos);
+	}
+	
+	@Test
+	public void testEmptyText() throws FmtException
+	{
+		int wrapValue = 11;
+		String wrappedText = fmtApplication.wrapText("", wrapValue);
+		String expectedString = "";
+		assertEquals(expectedString,wrappedText);
+	}
+	
+	@Test
+	public void testReadFromFile() throws FmtException
+	{
+		Path currentDir = Paths.get(Environment.currentDirectory);
+		Path filePath = currentDir.resolve("testRead.txt");
+		String readString = fmtApplication.readFromFile(filePath);
+		String expectedString = "Selon la préfecture, des engins explosifs avaient été";
+		assertEquals(expectedString,readString);
+	}
+}
+
+/*
+ * 
+ * /*ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		String testString = "Hey man";
 		ByteArrayInputStream bis = new ByteArrayInputStream(testString.getBytes());
 		
 		String[] arguements = {"sample.txt"};
-		try {
-			fmt.run(arguements, bis, bos);
-		} catch (CatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		fmtApplication.wrapText("T, wrapValue)
 		String ss = new String(bos.toByteArray());
 		String[] splitSS = ss.split("\n");
 		String[] split2 = splitSS[0].split(" ");
 		assertEquals("terminated.",split2[split2.length-1]);
-	}
-}
+ */
+
+//How do you assert that a certain exception is thrown in JUnit 4 tests?
+//http://stackoverflow.com/questions/156503/how-do-you-assert-that-a-certain-exception-is-thrown-in-junit-4-tests
+//Qn By : http://stackoverflow.com/users/1666/scdf
+//Ans By : http://stackoverflow.com/users/21234/skaffman
