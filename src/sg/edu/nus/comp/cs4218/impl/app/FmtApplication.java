@@ -203,7 +203,6 @@ public class FmtApplication implements Application
 		{
 			throw new FmtException("Wrap width not a number");
 		}
-		System.out.println(wrapWidth);
 		if(wrapWidth<1)
 		{
 			throw new FmtException("Wrap width should be at least 1");

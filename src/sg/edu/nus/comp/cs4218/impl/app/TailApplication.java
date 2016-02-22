@@ -141,9 +141,12 @@ public class TailApplication implements Application {
 		} 
 		catch (NumberFormatException nfe) 
 		{
-			throw new TailException("Invalid command, not a number.");
+			throw new TailException("Number of lines not a number");
 		}
-		
+		if(numLines<0)
+		{
+			throw new TailException("Wrap width should be at least 0");
+		}
 		return numLines;
 	}
 
@@ -162,7 +165,7 @@ public class TailApplication implements Application {
 	LinkedList<String> extractTail(Stack<String> textToExtractFrom,int numLines) throws TailException
 	{
 		LinkedList<String> extractedText = new LinkedList<String>();
-		if(textToExtractFrom.isEmpty())
+		if(textToExtractFrom.isEmpty()||numLines==0)
 		{
 			return extractedText;
 		}
@@ -171,7 +174,7 @@ public class TailApplication implements Application {
 		{
 			if(!textToExtractFrom.isEmpty())
 			{
-				extractedText.add(textToExtractFrom.pop());
+				extractedText.addFirst(textToExtractFrom.pop());
 				++count;
 			}
 			else
@@ -226,7 +229,7 @@ public class TailApplication implements Application {
 		{
 			while(!linesToWrite.isEmpty())
 			{
-				stdout.write(linesToWrite.removeLast().getBytes(CHARSET_UTF_8));
+				stdout.write(linesToWrite.removeFirst().getBytes(CHARSET_UTF_8));
 				if(!linesToWrite.isEmpty())
 				{
 					stdout.write(NEW_LINE.getBytes(CHARSET_UTF_8));
