@@ -5,7 +5,6 @@ import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-
 public class CalApplication implements Cal {
 
     @Override
