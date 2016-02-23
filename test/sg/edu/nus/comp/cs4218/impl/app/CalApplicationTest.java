@@ -1,13 +1,10 @@
-package sg.edu.nus.comp.cs4218.app;
+package sg.edu.nus.comp.cs4218.impl.app;
 
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Hooi Tong on 2/23/2016.
- */
-public class CalTest {
+public class CalApplicationTest {
 
     @Test
     public void testPrintCal() throws Exception {
@@ -36,6 +33,11 @@ public class CalTest {
 
     @Test
     public void testPrintCalForYearMondayFirst() throws Exception {
+
+    }
+
+    @Test
+    public void testRun() throws Exception {
 
     }
 }

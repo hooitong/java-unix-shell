@@ -1,13 +1,10 @@
-package sg.edu.nus.comp.cs4218.app;
+package sg.edu.nus.comp.cs4218.impl.app;
 
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Hooi Tong on 2/23/2016.
- */
-public class BcTest {
+public class BcApplicationTest {
 
     @Test
     public void testNumber() throws Exception {
