@@ -28,12 +28,12 @@ public class CallCommandTest {
 	public void testEvaluate() throws Exception {
         String expectedArgument = "test.txt";
         String mockApplication = "echo";
-        String cmdline = mockApplication + " " + mockApplication;
+        String cmdline = mockApplication + " " + expectedArgument;
         CallCommand testCommand = new CallCommand(cmdline);
 		ByteArrayOutputStream stubOutput = new ByteArrayOutputStream();
         testCommand.parse();
-		testCommand.evaluate(null, stubOutput);
-		String evaluatedString = new String(stubOutput.toByteArray(), "UTF-8");
+		testCommand.evaluate(System.in, stubOutput);
+		String evaluatedString = new String(stubOutput.toByteArray(), "UTF-8").trim();
 		assert (evaluatedString.equals(expectedArgument));
 	}
 
@@ -47,8 +47,9 @@ public class CallCommandTest {
 	public void testParse() throws Exception {
         String expectedArgument = "apple/3222.txt";
         String mockApplication = "cat";
-        String cmdline = mockApplication + " " + mockApplication;
+        String cmdline = mockApplication + " " + expectedArgument;
         CallCommand testCommand = new CallCommand(cmdline);
+		testCommand.parse();
 		assert (testCommand.argsArray.length == 1);
 		assert (testCommand.argsArray[0].equals(expectedArgument));
 		assert (testCommand.app.equals(mockApplication));

@@ -10,10 +10,8 @@ import java.io.OutputStream;
 
 public class PipeCommand implements Command {
 
-    public PipeCommand(CallCommand incoming, CallCommand outgoing) {
-    	if(incoming == null || outgoing == null){
-    		return;
-    	}
+    public PipeCommand(String cmdline) {
+
     }
 
     /**
