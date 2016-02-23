@@ -96,5 +96,16 @@ public class TailApplicationTest
 		
 		assertEquals(resultString,"");
 	}
+	
+	@Test
+	public void testNegativeNumLines() throws TailException
+	{
+		exception.expect(TailException.class);
+	    exception.expectMessage("Number of lines should be at least 0");
+	    
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		String[] arguments = {"-n -5","sample.txt"};
+		tailApplication.run(arguments, null, baos);
+	}
 
 }

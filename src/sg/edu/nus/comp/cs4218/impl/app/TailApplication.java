@@ -145,7 +145,7 @@ public class TailApplication implements Application {
 		}
 		if(numLines<0)
 		{
-			throw new TailException("Wrap width should be at least 0");
+			throw new TailException("Number of lines should be at least 0");
 		}
 		return numLines;
 	}
