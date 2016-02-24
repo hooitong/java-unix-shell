@@ -155,9 +155,9 @@ public class CallCommand implements Command {
 				throw new ShellException(errorMsg);
 			}
 			this.argsArray = Arrays.copyOfRange(cmdTokensArray, 1,
-					cmdTokensArray.length - 2);
+					nTokens - 2);
 		} else {
-			this.argsArray = new String[0];
+			this.argsArray = Arrays.copyOfRange(cmdTokensArray, 1, nTokens - 1);
 		}
 	}
 
@@ -349,7 +349,7 @@ public class CallCommand implements Command {
         List<String> tempList = new ArrayList<>();
         /* For each token, perform glob evaluation if any */
         for(String arg : args) {
-            if(arg.contains("*")) {
+            if(arg.contains("*") && !arg.matches("\"'")) {
                 /* Retrieve parent directory before wildcard */
                 int firstWildcard = arg.indexOf('*');
 

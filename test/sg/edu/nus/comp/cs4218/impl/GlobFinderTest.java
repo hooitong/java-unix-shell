@@ -21,6 +21,10 @@ public class GlobFinderTest {
 		mockRootDirectory = Environment.currentDirectory + "mock-filesystem/";
 	}
 
+	/**
+	 * TODO: Need to test for unquoted asterisks
+	 */
+
     /**
      * Test a simple glob pattern (non-nested) on a valid file that should be matched.
      *
