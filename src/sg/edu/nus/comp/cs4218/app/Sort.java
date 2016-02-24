@@ -19,7 +19,7 @@ public interface Sort extends Application {
 	/**
 	 * Returns an ordered list of lines containing only numbers
 	 */
-	public List<String> sortNumbers(String[] toSort, boolean numFlag);
+	public List<String> sortNumbers(String[] toSort);
 
 	/**
 	 * Returns an ordered list of lines containing only special characters
@@ -57,7 +57,7 @@ public interface Sort extends Application {
 	 * Returns an ordered list of lines containing numbers and special
 	 * characters
 	 */
-	public List<String> sortNumbersSpecialChars(String[] toSort, boolean numFlag);
+	public List<String> sortNumbersSpecialChars(String[] toSort);
 
 	/**
 	 * Returns an ordered list of lines containing simple and capital letters
@@ -75,17 +75,66 @@ public interface Sort extends Application {
 	 * Returns an ordered list of lines containing simple letters, numbers and
 	 * special characters
 	 */
-	public List<String> sortSimpleNumbersSpecialChars(String[] toSort, boolean numFlag);
+	public List<String> sortSimpleNumbersSpecialChars(String[] toSort);
 
 	/**
 	 * Returns an ordered list of lines containing capital letters, numbers and
 	 * special characters
 	 */
-	public List<String> sortCapitalNumbersSpecialChars(String[] toSort, boolean numFlag);
+	public List<String> sortCapitalNumbersSpecialChars(String[] toSort);
 
 	/**
 	 * Returns an ordered list of lines containing simple and capital letters,
 	 * numbers and special characters
 	 */
-	public List<String> sortAll(String[] toSort, boolean numFlag);
+	public List<String> sortAll(String[] toSort);
+
+	/**
+	 * Returns an ordered list of lines containing numbers in asc order
+	 */
+	public List<String> sortNumbersWithNumFlagOn(String[] toSort);
+
+	/**
+	 * Returns an ordered list of lines containing numbers and lowercase
+	 * characters in asc order
+	 */
+	public List<String> sortSimpleNumbersWithNumFlagOn(String[] toSort);
+
+	/**
+	 * Returns an ordered list of lines containing capitals and numbers
+	 * characters in asc order
+	 */
+	public List<String> sortCapitalNumberswithNumFlagOn(String[] toSort);
+
+	/**
+	 * Returns an ordered list of lines containing special and numbers
+	 * characters in asc order
+	 */
+	public List<String> sortNumbersSpecialCharsWithNumFlagOn(String[] toSort);
+
+	/**
+	 * Returns an ordered list of lines containing lowercase, uppercase and
+	 * numbers characters in asc order
+	 */
+	public List<String> sortSimpleCapitalNumberWithNumFlagOn(String[] toSort);
+
+	/**
+	 * Returns an ordered list of lines containing lowercase, numbers and
+	 * special characters in asc order
+	 */
+	public List<String> sortSimpleNumbersSpecialCharsWithNumFlagOn(
+			String[] toSort);
+
+	/**
+	 * Returns an ordered list of lines containing uppercase, numbers and
+	 * special characters in asc order
+	 */
+	public List<String> sortCapitalNumbersSpecialCharsWithNumFlagOn(
+			String[] toSort);
+
+	/**
+	 * Returns an ordered list of lines containing lowercase, uppercase, numbers
+	 * and special characters in asc order
+	 */
+	List<String> sortAllWithNumFlagOn(String[] toSort);
 }

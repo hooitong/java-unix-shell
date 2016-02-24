@@ -1,0 +1,8 @@
+apple
+bowl
+doll
+elephant
+cow
+ant
+apple
+bat

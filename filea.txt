@@ -1,0 +1,6 @@
+apple
+cat
+doll
+frog
+ant
+bat

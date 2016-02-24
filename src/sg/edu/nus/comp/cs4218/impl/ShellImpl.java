@@ -1,6 +1,7 @@
 package sg.edu.nus.comp.cs4218.impl;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +40,11 @@ public class ShellImpl implements Shell {
 			+ "as output redirection file.";
 	public static final String EXP_STDOUT = "Error writing to stdout.";
 	public static final String EXP_NOT_SUPPORTED = " not supported yet";
+	public static final String NEW_LINE = System.lineSeparator();
+	public static final int ZERO = 0;
+	public static final int ONE = 1;
+	public static final int TWO = 2;
+	public static final String PIPE = "|";
 
 	/**
 	 * Searches for and processes the commands enclosed by back quotes for
@@ -193,7 +199,7 @@ public class ShellImpl implements Shell {
 	 */
 	public static void closeInputStream(InputStream inputStream)
 			throws ShellException {
-		if (inputStream != System.in) {
+		if (inputStream != System.in && inputStream != null) {
 			try {
 				inputStream.close();
 			} catch (IOException e) {
@@ -214,7 +220,7 @@ public class ShellImpl implements Shell {
 	 */
 	public static void closeOutputStream(OutputStream outputStream)
 			throws ShellException {
-		if (outputStream != System.out) {
+		if (outputStream != System.out && outputStream != null) {
 			try {
 				outputStream.close();
 			} catch (IOException e) {
@@ -339,11 +345,48 @@ public class ShellImpl implements Shell {
 
 	@Override
 	public String pipeTwoCommands(String[] args) {
+//		ArrayList<String> cmdAl = new ArrayList<String>();
+//		StringBuilder sb = new StringBuilder("");
+//		for (int i = 0; i < args.length; i++) {
+//			if(!args[i].equals(PIPE)){
+//				sb.append(args[i]);
+//				sb.append(NEW_LINE);
+//			}else{
+//				cmdAl.add(sb.toString());
+//				sb.setLength(0);
+//			}	
+//		}
+////		if(!cmdAl.size() == TWO){
+////			throw new Exception
+////		}
+//		for (int i = 0; i < cmdAl.size(); i++) {
+//			CallCommand callCommand = new CallCommand(cmdAl.get(i));
+//			try {
+//				callCommand.parse();
+//			} catch (ShellException e) {
+//				e.printStackTrace();
+//			}
+//			
+//		}
 		return null;
 	}
 
 	@Override
 	public String pipeMultipleCommands(String[] args) {
+//		ArrayList<String> cmdAl = new ArrayList<String>();
+//		StringBuilder sb = new StringBuilder("");
+//		for (int i = 0; i < args.length; i++) {
+//			if(!args[i].equals(PIPE)){
+//				sb.append(args[i]);
+//				sb.append(NEW_LINE);
+//			}else{
+//				cmdAl.add(sb.toString());
+//				sb.setLength(0);
+//			}	
+//		}
+//		if(cmdAl.size() > TWO){
+//			
+//		}
 		return null;
 	}
 

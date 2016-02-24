@@ -80,12 +80,6 @@ public class CommApplication implements Comm {
 		ArrayList<String> strList1 = mainList.get(ZERO);
 		ArrayList<String> strList2 = mainList.get(ONE);
 		String[] temp = strList1.toArray(new String[strList1.size()]);
-		strList1 = new ArrayList<String>(Arrays.asList(MergeSort.mergeSort(
-				strList1.toArray(new String[strList1.size()]), ZERO,
-				strList1.size() - 1, false)));
-		strList2 = new ArrayList<String>(Arrays.asList(MergeSort.mergeSort(
-				strList2.toArray(new String[strList2.size()]), ZERO,
-				strList2.size() - 1, false)));
 		ArrayList<String> firstColAl = linesComparison(strList1, strList2).get(
 				COL_ZERO);
 		StringBuilder sb = new StringBuilder("");
@@ -110,12 +104,6 @@ public class CommApplication implements Comm {
 				stdin);
 		ArrayList<String> strList1 = mainList.get(ZERO);
 		ArrayList<String> strList2 = mainList.get(ONE);
-		strList1 = new ArrayList<String>(Arrays.asList(MergeSort.mergeSort(
-				strList1.toArray(new String[strList1.size()]), 0,
-				strList1.size() - 1, false)));
-		strList2 = new ArrayList<String>(Arrays.asList(MergeSort.mergeSort(
-				strList2.toArray(new String[strList2.size()]), 0,
-				strList2.size() - 1, false)));
 		ArrayList<String> middleColAl = linesComparison(strList1, strList2)
 				.get(COL_ONE);
 		StringBuilder sb = new StringBuilder("");
@@ -159,12 +147,6 @@ public class CommApplication implements Comm {
 				stdin);
 		ArrayList<String> strList1 = mainList.get(ZERO);
 		ArrayList<String> strList2 = mainList.get(ONE);
-		strList1 = new ArrayList<String>(Arrays.asList(MergeSort.mergeSort(
-				strList1.toArray(new String[strList1.size()]), 0,
-				strList1.size() - 1, false)));
-		strList2 = new ArrayList<String>(Arrays.asList(MergeSort.mergeSort(
-				strList2.toArray(new String[strList2.size()]), 0,
-				strList2.size() - 1, false)));
 		ArrayList<String> lastColAl = linesComparison(strList1, strList2).get(
 				COL_TWO);
 		StringBuilder sb = new StringBuilder("");

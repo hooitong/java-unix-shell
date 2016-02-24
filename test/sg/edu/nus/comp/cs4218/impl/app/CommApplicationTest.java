@@ -75,6 +75,7 @@ public class CommApplicationTest {
 				+ "banana" + TAB_LINE + NEW_LINE + "eggplant" + TAB_LINE
 				+ TAB_LINE + NEW_LINE + TAB_LINE + "zucchini" + TAB_LINE);
 		String actualResult = caTest.commBothMathches(args, null);
+		System.out.println(actualResult);
 		assertEquals(expectedResult, actualResult);
 	}
 
