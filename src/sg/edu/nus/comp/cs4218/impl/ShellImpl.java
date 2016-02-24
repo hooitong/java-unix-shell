@@ -1,6 +1,11 @@
 package sg.edu.nus.comp.cs4218.impl;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -352,23 +357,68 @@ public class ShellImpl implements Shell {
 		return null;
 	}
 
+	/**
+	 * Evaluates globbing with no files or directories.
+	 *
+	 * @param args arguments to be evaluated
+	 * @return empty string object
+     */
     @Override
     public String globNoPaths(String[] args) {
-        return null;
+        return "";
     }
 
+	/**
+	 * Evaluate globbing with one file.
+	 *
+	 * @param args arguments to be evaluated
+	 * @return string where arguments matches a single file
+     */
     @Override
     public String globOneFile(String[] args) {
-        return null;
+        String tempResult = "";
+		for(String arg: args) {
+			tempResult += arg + System.getProperty("line.separator");
+		}
+		return tempResult;
     }
 
+	/**
+	 * Evaluate globbing with files and directories one level down.
+	 *
+	 * @param args arguments to be evaluated
+	 * @return String that contains the evaluated arguments existing in the same directory.
+     */
     @Override
     public String globFilesDirectories(String[] args) {
-        return null;
+		return globHelper(args);
     }
 
+	/**
+	 * Evaluate globbing with files and directories multiple levels down.
+	 *
+	 * @param args arguments to be evaluated
+	 * @return String that contains the evaluated arguments existings multiple levels down.
+     */
     @Override
     public String globMultiLevel(String[] args) {
-        return null;
+		return globHelper(args);
     }
+
+	private String globHelper(String[] args) {
+		CallCommand helper = new CallCommand();
+		String tempResult = "";
+		try {
+			String[] globResult = helper.evaluateGlob(args);
+			for(String result: globResult) {
+				tempResult += result + System.getProperty("line.separator");
+			}
+		} catch (ShellException e){
+			for(String arg: args) {
+				tempResult += arg + System.getProperty("line.separator");
+			}
+		}
+
+		return tempResult;
+	}
 }
