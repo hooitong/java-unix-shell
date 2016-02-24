@@ -52,7 +52,7 @@ public class CalApplicationTest {
     @Test
     public void testPrintCalWithMondayFirst() throws Exception {
         String[] arguments = new String[0];
-        String[] lineOutputs = testCal.printCal(arguments).split(System.getProperty("line.separator"));
+        String[] lineOutputs = testCal.printCalWithMondayFirst(arguments).split(System.getProperty("line.separator"));
         int numberOfDays = new GregorianCalendar(currentYear, currentMonth, 1).getActualMaximum(Calendar.DAY_OF_MONTH);
         assert(lineOutputs[0].trim().equals(MONTHS[currentMonth] + " " + currentYear));
         assert(lineOutputs[1].trim().equals(START_MON));
@@ -70,7 +70,7 @@ public class CalApplicationTest {
     public void testPrintCalForMonthYear() throws Exception {
         String mockMonth = "June"; String mockYear = "1998";
         String[] arguments = {mockMonth, mockYear};
-        String[] lineOutputs = testCal.printCal(arguments).split(System.getProperty("line.separator"));
+        String[] lineOutputs = testCal.printCalForMonthYear(arguments).split(System.getProperty("line.separator"));
         assert(lineOutputs[0].trim().equals(MONTHS[currentMonth] + " " + currentYear));
         assert(lineOutputs[1].trim().equals(START_SUN));
         assert(lineOutputs[2].trim().startsWith("1"));
@@ -87,7 +87,7 @@ public class CalApplicationTest {
     public void testPrintCalForYearGrid() throws Exception {
         String mockYear = "2007";
         String[] arguments = {mockYear};
-        String rawOutput = testCal.printCal(arguments);
+        String rawOutput = testCal.printCalForYear(arguments);
         assert(rawOutput.contains(mockYear));
         for(String month : MONTHS) {
             assert(rawOutput.contains(month));
@@ -106,7 +106,7 @@ public class CalApplicationTest {
     public void testPrintCalForMonthYearMondayFirst() throws Exception {
         String mockMonth = "March"; String mockYear = "2016";
         String[] arguments = {mockMonth, mockYear};
-        String[] lineOutputs = testCal.printCal(arguments).split(System.getProperty("line.separator"));
+        String[] lineOutputs = testCal.printCalForMonthYearMondayFirst(arguments).split(System.getProperty("line.separator"));
         assert(lineOutputs[0].trim().equals(MONTHS[currentMonth] + " " + currentYear));
         assert(lineOutputs[1].trim().equals(START_MON));
         assert(lineOutputs[2].trim().startsWith("1"));
@@ -123,7 +123,7 @@ public class CalApplicationTest {
     public void testPrintCalForYearMondayFirst() throws Exception {
         String mockYear = "2011";
         String[] arguments = {mockYear};
-        String rawOutput = testCal.printCal(arguments);
+        String rawOutput = testCal.printCalForYearMondayFirst(arguments);
         assert(rawOutput.contains(mockYear));
         for(String month : MONTHS) {
             assert(rawOutput.contains(month));
