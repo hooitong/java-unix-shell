@@ -40,18 +40,26 @@ public class EchoApplication implements Application {
 			throw new EchoException("OutputStream not provided");
 		}
 		try {
-			System.out.println(args.length);
+			byte[] line;
+			String temp;
 			if (args.length == 0) {
 				stdout.write("\n\n".getBytes());
 			} else {
-				for (int i = 0; i < args.length; i++) {
-					stdout.write(args[i].getBytes());
+				for (int i = 0; i < args.length-1; i++) {
+					
+					temp = args[i] + " ";
+					line = temp.getBytes();
+					stdout.write(line);
 				}
+				stdout.write( args[args.length-1].getBytes());
 				stdout.write("\n".getBytes());
 			}
 		} catch (IOException e) {
 			throw new EchoException("IOException");
+		} catch (NullPointerException n){
+			throw new EchoException("NullPointerException");
 		}
 	}
-
+	
+	
 }

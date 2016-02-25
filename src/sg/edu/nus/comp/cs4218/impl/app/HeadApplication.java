@@ -30,6 +30,8 @@ import sg.edu.nus.comp.cs4218.exception.HeadException;
  * </p>
  */
 public class HeadApplication implements Application {
+	
+	private final String commDashN = "-n";
 
 	/**
 	 * Runs the head application with the specified arguments.
@@ -57,36 +59,21 @@ public class HeadApplication implements Application {
 	public void run(String[] args, InputStream stdin, OutputStream stdout)
 			throws HeadException {
 
-		if (args == null || args.length == 0 || args.length == 2) {
-			int numLinesToRead = 0;
-
-			if (args == null || args.length == 0) {
-				numLinesToRead = 15;
-			} else {
-				if (args.length == 2 && args[0].equals("--n")) {
-					numLinesToRead = checkNumberOfLinesInput(args[1]);
-				} else {
-					throw new HeadException(
-							"Invalid Head Command for reading from stdin");
-				}
-			}
-
+		int numLinesToRead;
+		
+		if(!headCommandIsValid(args, stdin, stdout)) 
+			throw new HeadException("Invalid Head Command");
+		if(!headCommandFlagisValid(args,stdin,stdout))
+			throw new HeadException("Incorrect flag used");
+		if(headCommandContainsNumberofLinesToRead(args)){
+			numLinesToRead = checkNumberOfLinesInput(args[1]);
+		}else{
+			numLinesToRead = 10;
+		}
+		//read from stdin
+		if(readFromStdin(args)){
 			readFromStdinAndWriteToStdout(stdout, numLinesToRead, stdin);
-
-		} else {
-			int numLines;
-
-			if (args.length == 3 || args.length == 1) {
-				if (args.length == 3 && args[0].equals("--n")) {
-					numLines = checkNumberOfLinesInput(args[1]);
-				} else if (args.length == 1) {
-					numLines = 15;
-				} else {
-					throw new HeadException("Incorrect flag used");
-				}
-			} else {
-				throw new HeadException("Invalid Head Command");
-			}
+		}else{
 
 			// check file
 			Path currentDir = Paths.get(Environment.currentDirectory);
@@ -99,10 +86,45 @@ public class HeadApplication implements Application {
 			isFileReadable = checkIfFileIsReadable(filePath);
 
 			if (isFileReadable) {
-				readFromFileAndWriteToStdout(stdout, numLines, filePath);
+				readFromFileAndWriteToStdout(stdout, numLinesToRead, filePath);
 			}
 		}
 	}
+	
+	private boolean headCommandIsValid(String[] args, InputStream stdin, OutputStream stdout){
+		if(stdout == null) //Nowhere to output
+			return false;
+		if(args == null){
+				if(stdin == null)
+					return false;
+		}else{
+			if(args.length >3) //Too many args
+				return false;
+			
+			if((args.length == 2 && stdin == null) || (args.length == 0 && stdin == null)) //No input
+				return false;
+		}
+		return true;
+	}
+
+	private boolean headCommandFlagisValid(String[] args, InputStream stdin, OutputStream stdout){
+		if(args != null && (args.length == 3 || args.length == 2)){
+			return (args[0].equals(commDashN));
+		}else
+			return true;
+	}
+	
+	private boolean headCommandContainsNumberofLinesToRead(String[] args) throws HeadException{
+		if(args != null && args.length >= 2)
+			return checkNumberOfLinesInput(args[1]) >0;
+			
+		return false;
+	}
+	
+	private boolean readFromStdin(String[] args){
+		return(args == null || args.length == 0 || args.length == 2);	
+	}
+	
 
 	/**
 	 * Read from stdin and output first N number of lines specified to stdout
