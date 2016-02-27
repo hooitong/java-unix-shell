@@ -9,14 +9,14 @@ import org.junit.Test;
 import static org.junit.Assert.fail;
 
 public class CallCommandTest {
-	private static final String TEMPLATE_EXTRACT_ARGS = " %s ";
+	private static final String TEMPLATE_ARGS = " %s ";
 	private Vector<String> testVector;
-    private CallCommand stubCommand;
+	private CallCommand stubCommand;
 
 	@Before
 	public void setUp() {
 		testVector = new Vector<>();
-        stubCommand = new CallCommand("");
+		stubCommand = new CallCommand("");
 	}
 
 	/**
@@ -26,12 +26,12 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testEvaluate() throws Exception {
-        String expectedArgument = "test.txt";
-        String mockApplication = "echo";
-        String cmdline = mockApplication + " " + expectedArgument;
-        CallCommand testCommand = new CallCommand(cmdline);
+		String expectedArgument = "test.txt";
+		String mockApplication = "echo";
+		String cmdline = mockApplication + " " + expectedArgument;
+		CallCommand testCommand = new CallCommand(cmdline);
 		ByteArrayOutputStream stubOutput = new ByteArrayOutputStream();
-        testCommand.parse();
+		testCommand.parse();
 		testCommand.evaluate(System.in, stubOutput);
 		String evaluatedString = new String(stubOutput.toByteArray(), "UTF-8").trim();
 		assert (evaluatedString.equals(expectedArgument));
@@ -45,10 +45,10 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testParse() throws Exception {
-        String expectedArgument = "apple/3222.txt";
-        String mockApplication = "cat";
-        String cmdline = mockApplication + " " + expectedArgument;
-        CallCommand testCommand = new CallCommand(cmdline);
+		String expectedArgument = "apple/3222.txt";
+		String mockApplication = "cat";
+		String cmdline = mockApplication + " " + expectedArgument;
+		CallCommand testCommand = new CallCommand(cmdline);
 		testCommand.parse();
 		assert (testCommand.argsArray.length == 1);
 		assert (testCommand.argsArray[0].equals(expectedArgument));
@@ -62,9 +62,9 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testExtractArgs() throws Exception {
-        String expectedArgument = "apple/3222.txt";
-        String cmdline = "cat " + expectedArgument;
-		stubCommand.extractArgs(String.format(TEMPLATE_EXTRACT_ARGS, cmdline), testVector);
+		String expectedArgument = "apple/3222.txt";
+		String cmdline = "cat " + expectedArgument;
+		stubCommand.extractArgs(String.format(TEMPLATE_ARGS, cmdline), testVector);
 		assert (testVector.size() == 2);
 		assert (testVector.get(1).equals(expectedArgument));
 	}
@@ -79,7 +79,7 @@ public class CallCommandTest {
 	public void testExtractArgsSingleQuotes() throws Exception {
 		String expectedArgument = "apple is good for health ; |";
 		String cmdline = "echo '" + expectedArgument + "'";
-        stubCommand.extractArgs(String.format(TEMPLATE_EXTRACT_ARGS, cmdline), testVector);
+		stubCommand.extractArgs(String.format(TEMPLATE_ARGS, cmdline), testVector);
 		assert (testVector.size() == 2);
 		assert (testVector.get(1).equals(expectedArgument));
 	}
@@ -95,7 +95,7 @@ public class CallCommandTest {
 		String expectedArgument = "orange is | not good ; for health ";
 		String cmdline = "echo \"" + expectedArgument + "\"";
 		Vector<String> testVector = new Vector<>();
-        stubCommand.extractArgs(String.format(TEMPLATE_EXTRACT_ARGS, cmdline), testVector);
+		stubCommand.extractArgs(String.format(TEMPLATE_ARGS, cmdline), testVector);
 		assert (testVector.size() == 2);
 		assert (testVector.get(1).equals(expectedArgument));
 	}
@@ -109,7 +109,7 @@ public class CallCommandTest {
 	public void testExtractArgsBackQuotes() throws Exception {
 		String expectedArgument = "`echo a`";
 		String cmdline = "echo " + expectedArgument;
-        stubCommand.extractArgs(String.format(TEMPLATE_EXTRACT_ARGS, cmdline), testVector);
+		stubCommand.extractArgs(String.format(TEMPLATE_ARGS, cmdline), testVector);
 		assert (testVector.size() == 2);
 		assert (testVector.get(1).equals(expectedArgument));
 	}
@@ -121,13 +121,13 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testExtractArgsSingleDoubleQuotes() throws Exception {
-		String expectedArgumentOne = "apple \" 123 \" prince";
-		String expectedArgumentTwo = "caitlyn 'killer frost' snow";
-		String cmdline = "cat '" + expectedArgumentOne + "' \"" + expectedArgumentTwo + "\"";
-        stubCommand.extractArgs(String.format(TEMPLATE_EXTRACT_ARGS, cmdline), testVector);
+		String expectedArgOne = "apple \" 123 \" prince";
+		String expectedArgTwo = "caitlyn 'killer frost' snow";
+		String cmdline = "cat '" + expectedArgOne + "' \"" + expectedArgTwo + "\"";
+		stubCommand.extractArgs(String.format(TEMPLATE_ARGS, cmdline), testVector);
 		assert (testVector.size() == 3);
-		assert (testVector.get(1).equals(expectedArgumentOne));
-		assert (testVector.get(2).equals(expectedArgumentTwo));
+		assert (testVector.get(1).equals(expectedArgOne));
+		assert (testVector.get(2).equals(expectedArgTwo));
 	}
 
 	/**
@@ -137,13 +137,14 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testExtractArgsDoubleBackQuotes() throws Exception {
-		String expectedArgumentOne = "`sweet 322throw ' 123 \" prince`";
-		String expectedArgumentTwo = "mel lisa `echo super-girl` benoist";
-		String cmdline = "cat " + expectedArgumentOne + " \"" + expectedArgumentTwo + "\"";
-        stubCommand.extractArgs(String.format(TEMPLATE_EXTRACT_ARGS, cmdline), testVector);;
+		String expectedArgOne = "`sweet 322throw ' 123 \" prince`";
+		String expectedArgTwo = "mel lisa `echo super-girl` benoist";
+		String cmdline = "cat " + expectedArgOne + " \"" + expectedArgTwo + "\"";
+		stubCommand.extractArgs(String.format(TEMPLATE_ARGS, cmdline), testVector);
+		;
 		assert (testVector.size() == 3);
-		assert (testVector.get(1).equals(expectedArgumentOne));
-		assert (testVector.get(2).equals(expectedArgumentTwo));
+		assert (testVector.get(1).equals(expectedArgOne));
+		assert (testVector.get(2).equals(expectedArgTwo));
 	}
 
 	/**
@@ -153,13 +154,13 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testExtractArgsSingleBackQuotes() throws Exception {
-		String expectedArgumentOne = "`test monster \" kappa 123 ' jelly`";
-		String expectedArgumentTwo = "barry `flash earth-1 ` AllEn";
-		String cmdline = "echo " + expectedArgumentOne + " '" + expectedArgumentTwo + "'";
-        stubCommand.extractArgs(String.format(TEMPLATE_EXTRACT_ARGS, cmdline), testVector);
+		String expectedArgOne = "`test monster \" kappa 123 ' jelly`";
+		String expectedArgTwo = "barry `flash earth-1 ` AllEn";
+		String cmdline = "echo " + expectedArgOne + " '" + expectedArgTwo + "'";
+		stubCommand.extractArgs(String.format(TEMPLATE_ARGS, cmdline), testVector);
 		assert (testVector.size() == 3);
-		assert (testVector.get(1).equals(expectedArgumentOne));
-		assert (testVector.get(2).equals(expectedArgumentTwo));
+		assert (testVector.get(1).equals(expectedArgOne));
+		assert (testVector.get(2).equals(expectedArgTwo));
 	}
 
 	/**
