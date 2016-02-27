@@ -34,8 +34,7 @@ public class CallCommand implements Command {
 	public static final String EXP_SYNTAX = "Invalid syntax encountered.";
 	public static final String EXP_REDIR_PIPE = "File output redirection and pipe "
 			+ "operator cannot be used side by side.";
-	public static final String EXP_SAME_REDIR = "Input redirection file same as "
-			+ "output redirection file.";
+	public static final String EXP_SAME_REDIR = "Input redirection file same as " + "output redirection file.";
 	public static final String EXP_STDOUT = "Error writing to stdout.";
 	public static final String EXP_NOT_SUPPORTED = " not supported yet";
 
@@ -72,8 +71,7 @@ public class CallCommand implements Command {
 	 *             If an exception happens while evaluating the sub-command.
 	 */
 	@Override
-	public void evaluate(InputStream stdin, OutputStream stdout)
-			throws AbstractApplicationException, ShellException {
+	public void evaluate(InputStream stdin, OutputStream stdout) throws AbstractApplicationException, ShellException {
 		if (error) {
 			throw new ShellException(errorMsg);
 		}
@@ -82,7 +80,7 @@ public class CallCommand implements Command {
 		OutputStream outputStream;
 
 		argsArray = ShellImpl.processBQ(argsArray);
-        argsArray = evaluateGlob(argsArray);
+		argsArray = evaluateGlob(argsArray);
 
 		if (("").equals(inputStreamS)) {// empty
 			inputStream = stdin;
@@ -139,8 +137,7 @@ public class CallCommand implements Command {
 			throw new ShellException(errorMsg);
 		}
 
-		String[] cmdTokensArray = cmdVector
-				.toArray(new String[cmdVector.size()]);
+		String[] cmdTokensArray = cmdVector.toArray(new String[cmdVector.size()]);
 		this.app = cmdTokensArray[0];
 		int nTokens = cmdTokensArray.length;
 
@@ -148,14 +145,12 @@ public class CallCommand implements Command {
 		if (nTokens >= 3) { // last 2 for inputRedir & >outputRedir
 			this.inputStreamS = cmdTokensArray[nTokens - 2].trim();
 			this.outputStreamS = cmdTokensArray[nTokens - 1].trim();
-			if (!("").equals(inputStreamS)
-					&& inputStreamS.equals(outputStreamS)) {
+			if (!("").equals(inputStreamS) && inputStreamS.equals(outputStreamS)) {
 				error = true;
 				errorMsg = ShellImpl.EXP_SAME_REDIR;
 				throw new ShellException(errorMsg);
 			}
-			this.argsArray = Arrays.copyOfRange(cmdTokensArray, 1,
-					nTokens - 2);
+			this.argsArray = Arrays.copyOfRange(cmdTokensArray, 1, nTokens - 2);
 		} else {
 			this.argsArray = Arrays.copyOfRange(cmdTokensArray, 1, nTokens - 1);
 		}
@@ -165,10 +160,10 @@ public class CallCommand implements Command {
 	 * Parses the sub-command's arguments to the call command and splits it into
 	 * its different components, namely the application name and the arguments
 	 * (if any), based on rules: Unquoted: any char except for whitespace
-	 * characters, quotes, newlines, semicolons �;�, �|�, �<� and �>�. Double
-	 * quoted: any char except \n, ", ` Single quoted: any char except \n, '
-	 * Back quotes in Double Quote for command substitution: DQ rules for
-	 * outside BQ + `anything but \n` in BQ.
+	 * characters, quotes, newlines, semicolons �;�, �|�, �<� and
+	 * �>�. Double quoted: any char except \n, ", ` Single quoted: any char
+	 * except \n, ' Back quotes in Double Quote for command substitution: DQ
+	 * rules for outside BQ + `anything but \n` in BQ.
 	 * 
 	 * @param str
 	 *            String of command to split.
@@ -189,23 +184,20 @@ public class CallCommand implements Command {
 		String patternSQ = "[\\s]+\'([^\\n']*)\'[\\s]";
 		String patternBQ = "[\\s]+(`[^\\n`]*`)[\\s]";
 		String patternBQinDQ = "[\\s]+\"([^\\n\"`]*`[^\\n]*`[^\\n\"`]*)\"[\\s]";
-		String[] patterns = { patternDash, patternUQ, patternDQ, patternSQ,
-				patternBQ, patternBQinDQ };
+		String[] patterns = { patternDash, patternUQ, patternDQ, patternSQ, patternBQ, patternBQinDQ };
 		String substring;
 		int newStartIdx = 0, smallestStartIdx, smallestPattIdx, newEndIdx = 0;
 		do {
 			substring = str.substring(newEndIdx);
 			smallestStartIdx = -1;
 			smallestPattIdx = -1;
-			if (substring.trim().startsWith("<")
-					|| substring.trim().startsWith(">")) {
+			if (substring.trim().startsWith("<") || substring.trim().startsWith(">")) {
 				break;
 			}
 			for (int i = 0; i < patterns.length; i++) {
 				Pattern pattern = Pattern.compile(patterns[i]);
 				Matcher matcher = pattern.matcher(substring);
-				if (matcher.find()
-						&& (matcher.start() < smallestStartIdx || smallestStartIdx == -1)) {
+				if (matcher.find() && (matcher.start() < smallestStartIdx || smallestStartIdx == -1)) {
 					smallestPattIdx = i;
 					smallestStartIdx = matcher.start();
 				}
@@ -249,8 +241,7 @@ public class CallCommand implements Command {
 	 *             When more than one input redirection string is found, or when
 	 *             invalid syntax is encountered..
 	 */
-	int extractInputRedir(String str, Vector<String> cmdVector, int endIdx)
-			throws ShellException {
+	int extractInputRedir(String str, Vector<String> cmdVector, int endIdx) throws ShellException {
 		String substring = str.substring(endIdx);
 		String strTrm = substring.trim();
 		if (strTrm.startsWith(">") || strTrm.isEmpty()) {
@@ -261,8 +252,7 @@ public class CallCommand implements Command {
 		}
 
 		int newEndIdx = endIdx;
-		Pattern inputRedirP = Pattern
-				.compile("[\\s]+<[\\s]+(([^\\n\"`'<>]*))[\\s]");
+		Pattern inputRedirP = Pattern.compile("[\\s]+<[\\s]+(([^\\n\"`'<>]*))[\\s]");
 		Matcher inputRedirM;
 		String inputRedirS = "";
 		int cmdVectorIndex = cmdVector.size() - 2;
@@ -305,8 +295,7 @@ public class CallCommand implements Command {
 	 *             When more than one input redirection string is found, or when
 	 *             invalid syntax is encountered..
 	 */
-	int extractOutputRedir(String str, Vector<String> cmdVector, int endIdx)
-			throws ShellException {
+	int extractOutputRedir(String str, Vector<String> cmdVector, int endIdx) throws ShellException {
 		String substring = str.substring(endIdx);
 		String strTrm = substring.trim();
 		if (strTrm.isEmpty()) {
@@ -317,8 +306,7 @@ public class CallCommand implements Command {
 		}
 
 		int newEndIdx = endIdx;
-		Pattern inputRedirP = Pattern
-				.compile("[\\s]+>[\\s]+(([^\\n\"`'<>]*))[\\s]");
+		Pattern inputRedirP = Pattern.compile("[\\s]+>[\\s]+(([^\\n\"`'<>]*))[\\s]");
 		Matcher inputRedirM;
 		String inputRedirS = "";
 		int cmdVectorIdx = cmdVector.size() - 1;
@@ -341,48 +329,51 @@ public class CallCommand implements Command {
 		return newEndIdx;
 	}
 
-    /**
-     * Evaluate globbing for each of the arguments. Replaces wildcards with
-     * appropriate files from globbing.
-     */
-    public String[] evaluateGlob(String[] args) throws ShellException{
-        List<String> tempList = new ArrayList<>();
-        /* For each token, perform glob evaluation if any */
-        for(String arg : args) {
-            if(arg.contains("*") && !arg.matches("\"'")) {
-                /* Retrieve parent directory before wildcard */
-                int firstWildcard = arg.indexOf('*');
+	/**
+	 * Evaluate globbing for each of the arguments. Replaces wildcards with
+	 * appropriate files from globbing.
+	 */
+	public String[] evaluateGlob(String... args) throws ShellException {
+		List<String> tempList = new ArrayList<>();
+		/* For each token, perform glob evaluation if any */
+		for (String arg : args) {
+			if (arg.contains("*") && !arg.matches("\"'")) {
+				/* Retrieve parent directory before wildcard */
+				int firstWildcard = arg.indexOf('*');
 
-                /* Find separator before this wildcard */
-                int beforeSeperator = arg.substring(0, firstWildcard).lastIndexOf('/');
+				/* Find separator before this wildcard */
+				int beforeSeperator = arg.substring(0, firstWildcard).lastIndexOf('/');
 
-                Path parentPath;
-                /* If there is no separators, it means that path to search is relative path */
-                if(beforeSeperator != -1) parentPath = Paths.get("");
-                else parentPath = new File(arg.substring(0, beforeSeperator)).toPath();
+				Path parentPath;
+				/*
+				 * If there is no separators, it means that path to search is
+				 * relative path
+				 */
+				parentPath = beforeSeperator == -1 ? new File(arg.substring(0, beforeSeperator)).toPath()
+						: Paths.get("");
 
-                String pattern = arg.substring(beforeSeperator + 1);
-                GlobFinder finder = new GlobFinder(pattern);
+				String pattern = arg.substring(beforeSeperator + 1);
+				GlobFinder finder = new GlobFinder(pattern);
 
-                try {
-                    Files.walkFileTree(parentPath.toAbsolutePath(), finder);
-                } catch (IOException e) {
-                    throw new ShellException(e.getMessage());
-                }
+				try {
+					Files.walkFileTree(parentPath.toAbsolutePath(), finder);
+				} catch (IOException e) {
+					throw new ShellException(e);
+				}
 
-                List<String> results = finder.getResults();
+				List<String> results = finder.getResults();
 
-                if(!results.isEmpty()) {
-                    tempList.addAll(results);
-                }
+				if (!results.isEmpty()) {
+					tempList.addAll(results);
+				}
 
-            } else {
-                /* Nothing to glob, no change to the arg */
-                tempList.add(arg);
-            }
-        }
-        return tempList.toArray(new String[tempList.size()]);
-    }
+			} else {
+				/* Nothing to glob, no change to the arg */
+				tempList.add(arg);
+			}
+		}
+		return tempList.toArray(new String[tempList.size()]);
+	}
 
 	/**
 	 * Terminates current execution of the command (unused for now)

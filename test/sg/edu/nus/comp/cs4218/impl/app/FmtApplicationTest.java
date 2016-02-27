@@ -22,27 +22,23 @@ public class FmtApplicationTest
 {
 	private static FmtApplication fmtApplication;
 	private static final String NEW_LINE = System.lineSeparator();
-
+	private static ByteArrayOutputStream baos;
+	private static String FILE_TO_READ = "sample.txt";
+	
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception 
 	{
 		fmtApplication = new FmtApplication();
 	}
 	
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception 
+	{
+		baos = new ByteArrayOutputStream();
 	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-	
-	@Rule
-	public ExpectedException exception = ExpectedException.none();
 	
 	@Test
 	public final void testWrapText() throws FmtException 
@@ -68,8 +64,7 @@ public class FmtApplicationTest
 	    exception.expect(FmtException.class);
 	    exception.expectMessage("Wrap width should be at least 1");
 	    
-	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		String[] arguments = {"-w -50","sample.txt"};
+		String[] arguments = {"-w","-50",FILE_TO_READ};
 		fmtApplication.run(arguments, null, baos);
 	}
 	
@@ -79,8 +74,7 @@ public class FmtApplicationTest
 	    exception.expect(FmtException.class);
 	    exception.expectMessage("Wrap width should be at least 1");
 	    
-	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		String[] arguments = {"-w 0","sample.txt"};
+		String[] arguments = {"-w","0",FILE_TO_READ};
 		fmtApplication.run(arguments, null, baos);
 	}
 	
@@ -90,8 +84,7 @@ public class FmtApplicationTest
 	    exception.expect(FmtException.class);
 	    exception.expectMessage("Wrap width not a number");
 	    
-	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		String[] arguments = {"-w ad3","sample.txt"};
+		String[] arguments = {"-w","ad3",FILE_TO_READ};
 		fmtApplication.run(arguments, null, baos);
 	}
 	
@@ -101,8 +94,7 @@ public class FmtApplicationTest
 	    exception.expect(FmtException.class);
 	    exception.expectMessage("Incorrect flag used to denote number of lines to print");
 	    
-	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		String[] arguments = {"-n 50","sample.txt"};
+		String[] arguments = {"-n","50",FILE_TO_READ};
 		fmtApplication.run(arguments, null, baos);
 	}
 	

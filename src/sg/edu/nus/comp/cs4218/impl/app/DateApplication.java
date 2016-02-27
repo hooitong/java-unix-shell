@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.exception.DateException;
@@ -19,7 +20,7 @@ import sg.edu.nus.comp.cs4218.exception.DateException;
 public class DateApplication implements Application 
 {
 	private static final String CHARSET_UTF_8 = "UTF-8";
-	private static final String dateFormat = "EEE MMM dd HH:mm:ss zzz yyyy";
+	private static final String DATE_FORMAT = "EEE MMM dd HH:mm:ss zzz yyyy";
 	
 	/**
 	 * Runs the date application with the specified arguments.
@@ -44,7 +45,7 @@ public class DateApplication implements Application
 			throw new DateException("Cannot write to stdout as it is null");
 		}
 		
-		String dateGenerated = generateDate(dateFormat);
+		String dateGenerated = generateDate(DATE_FORMAT);
 		try 
 		{
 			stdout.write(dateGenerated.getBytes(CHARSET_UTF_8));
@@ -60,14 +61,13 @@ public class DateApplication implements Application
 	 * 
 	 * @param dateFormat
 	 *            The format of the date to be generated
-	 * @return dateGenerated 
+	 * @return
 	 * 			  The date generated in the specified format
 	 */
 	String generateDate(String dateFormat)
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-		String dateGenerated = sdf.toString();
-		return dateGenerated;
+		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat,Locale.ENGLISH);
+		return sdf.toString();
 	}
 }
 

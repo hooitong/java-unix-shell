@@ -9,13 +9,13 @@ import org.junit.Test;
 import sg.edu.nus.comp.cs4218.Environment;
 
 public class GlobFinderTest {
-	private String mockSinglePattern, mockMultiPattern, mockRootDirectory;
+	private String mockRootDirectory;
 	private GlobFinder singleFinder, nestedFinder;
 
 	@Before
 	public void setUp() {
-		mockSinglePattern = "*.txt";
-		mockMultiPattern = "*/*/*.txt";
+		String mockSinglePattern = "*.txt";
+		String mockMultiPattern = "*/*/*.txt";
 		singleFinder = new GlobFinder(mockSinglePattern);
 		nestedFinder = new GlobFinder(mockMultiPattern);
 		mockRootDirectory = Environment.currentDirectory + "mock-filesystem/";

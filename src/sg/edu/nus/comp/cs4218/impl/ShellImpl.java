@@ -168,7 +168,7 @@ public class ShellImpl implements Shell {
 		try {
 			fInputStream = new FileInputStream(inputFile);
 		} catch (FileNotFoundException e) {
-			throw new ShellException(e.getMessage());
+			throw new ShellException(e);
 		}
 		return fInputStream;
 	}
@@ -192,7 +192,7 @@ public class ShellImpl implements Shell {
 		try {
 			fOutputStream = new FileOutputStream(outputFile);
 		} catch (FileNotFoundException e) {
-			throw new ShellException(e.getMessage());
+			throw new ShellException(e);
 		}
 		return fOutputStream;
 	}
@@ -212,7 +212,7 @@ public class ShellImpl implements Shell {
 			try {
 				inputStream.close();
 			} catch (IOException e) {
-				throw new ShellException(e.getMessage());
+				throw new ShellException(e);
 			}
 		}
 	}
@@ -233,7 +233,7 @@ public class ShellImpl implements Shell {
 			try {
 				outputStream.close();
 			} catch (IOException e) {
-				throw new ShellException(e.getMessage());
+				throw new ShellException(e);
 			}
 		}
 	}
@@ -257,7 +257,7 @@ public class ShellImpl implements Shell {
 		try {
 			stdout.write(((ByteArrayOutputStream) outputStream).toByteArray());
 		} catch (IOException e) {
-			throw new ShellException(EXP_STDOUT);
+			throw new ShellException(e);
 		}
 	}
 
@@ -364,8 +364,7 @@ public class ShellImpl implements Shell {
 	 */
 	@Override
 	public String pipeTwoCommands(String[] args) {
-		String result = pipeCaller(args);
-		return result;
+		return pipeCaller(args);
 	}
 
 	/**
@@ -377,14 +376,14 @@ public class ShellImpl implements Shell {
 	 */
 	@Override
 	public String pipeMultipleCommands(String[] args) {
-		String result = pipeCaller(args);
-		return result;
+		return pipeCaller(args);
 	}
 
 	/**
 	 * Since the interface cannot be modified to throw an exception due to
 	 * project requirements, a string of the error message is returned instead
 	 * when an exception occurs during the execution of one of the commands.
+	 * 
 	 * @param args
 	 * 
 	 * @return string the string could return an exception message (
@@ -393,8 +392,8 @@ public class ShellImpl implements Shell {
 	 */
 	@Override
 	public String pipeWithException(String[] args) {
-		String result = pipeCaller(args);
-		return result;
+		return pipeCaller(args);
+
 	}
 
 	/**
