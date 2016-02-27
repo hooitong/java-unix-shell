@@ -113,17 +113,19 @@ public class MergeSort {
 	private static String checkIfWordIsDigitLastResort(String line,
 			String result) {
 		String assumedNumberWord = "";
-		StringBuilder sb = new StringBuilder("");
+		StringBuilder stringBuilder = new StringBuilder("");
 		if (result.isEmpty()) {
 			for (int i = 0; i < line.length(); i++) {
 				if(!Character.isDigit(line.charAt(i))){
 					break;
 				}
-				sb.append(line.charAt(i));
+				stringBuilder.append(line.charAt(i));
 			}
-			result = sb.toString();
+			assumedNumberWord = stringBuilder.toString();
+		}else{
+			assumedNumberWord = result;
 		}
-		return result;
+		return assumedNumberWord;
 	}
 
 	/**
@@ -157,9 +159,6 @@ public class MergeSort {
 	 * @return int
 	 */
 	public static int compareIncludeNumOrder(String str1, String str2) {
-		String assumedNumWordStr1 = "";
-		String assumedNumWordStr2 = "";
-
 		if (str1.isEmpty() && !str2.isEmpty()) {
 			return -1;
 		} else if (!str1.isEmpty() && str2.isEmpty()) {
@@ -176,17 +175,17 @@ public class MergeSort {
 	 * @return int
 	 */
 	private static int checkOnlyAtFirstNumWord(String str1, String str2) {
-		String assumedNumWordStr1;
-		String assumedNumWordStr2;
-		assumedNumWordStr1 = extractFirstNumberWordFromLine(str1);
-		assumedNumWordStr2 = extractFirstNumberWordFromLine(str2);
+		String assumedNumStr1;
+		String assumedNumStr2;
+		assumedNumStr1 = extractFirstNumberWordFromLine(str1);
+		assumedNumStr2 = extractFirstNumberWordFromLine(str2);
 
-		if (!assumedNumWordStr1.isEmpty() && !assumedNumWordStr2.isEmpty()) {
-			if (assumedNumWordStr1.compareTo(assumedNumWordStr2) == 0) {
+		if (!assumedNumStr1.isEmpty() && !assumedNumStr2.isEmpty()) {
+			if (assumedNumStr1.compareTo(assumedNumStr2) == 0) {
 				return str1.compareTo(str2);
 			} else {
-				return Integer.parseInt(assumedNumWordStr1)
-						- Integer.parseInt(assumedNumWordStr2);
+				return Integer.parseInt(assumedNumStr1)
+						- Integer.parseInt(assumedNumStr2);
 			}
 		}else{
 			return str1.compareTo(str2);

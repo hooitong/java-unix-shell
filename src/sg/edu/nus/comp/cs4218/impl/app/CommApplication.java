@@ -42,8 +42,6 @@ public class CommApplication implements Comm {
 	private static final String NEW_LINE = System.lineSeparator();
 	private static final String TAB_LINE = "\t";
 
-	public CommApplication() {
-	}
 
 	/**
 	 * Returns string to print comparisons when there are no matches in both
@@ -52,18 +50,17 @@ public class CommApplication implements Comm {
 	 * @throws CommException
 	 */
 	@Override
-	public String commNoMatches(String[] args, InputStream stdin)
-			throws CommException {
-		String[] firstColArr = commOnlyFirst(args, stdin).split(NEW_LINE);
-		String[] middleColArr = commOnlySecond(args, stdin).split(NEW_LINE);
-		StringBuilder sb = new StringBuilder("");
+	public String commNoMatches(String[] args) {
+		String[] firstColArr = commOnlyFirst(args).split(NEW_LINE);
+		String[] middleColArr = commOnlySecond(args).split(NEW_LINE);
+		StringBuilder stringBuilder = new StringBuilder("");
 		for (int i = 0; i < firstColArr.length - 1; i++) {
-			sb.append(firstColArr[i]).append(middleColArr[i]).append(NEW_LINE);
+			stringBuilder.append(firstColArr[i]).append(middleColArr[i]).append(NEW_LINE);
 		}
-		sb.append(firstColArr[firstColArr.length - 1]).append(
+		stringBuilder.append(firstColArr[firstColArr.length - 1]).append(
 				middleColArr[firstColArr.length - 1]);
 
-		return sb.toString();
+		return stringBuilder.toString();
 	}
 
 	/**
@@ -73,22 +70,25 @@ public class CommApplication implements Comm {
 	 * @throws CommException
 	 */
 	@Override
-	public String commOnlyFirst(String[] args, InputStream stdin)
-			throws CommException {
-		ArrayList<ArrayList<String>> mainList = getContentFromStdinOrFile(args,
-				stdin);
-		ArrayList<String> strList1 = mainList.get(ZERO);
-		ArrayList<String> strList2 = mainList.get(ONE);
-		String[] temp = strList1.toArray(new String[strList1.size()]);
-		ArrayList<String> firstColAl = linesComparison(strList1, strList2).get(
-				COL_ZERO);
-		StringBuilder sb = new StringBuilder("");
-		for (int i = 0; i < firstColAl.size() - 1; i++) {
-			sb.append(firstColAl.get(i)).append(NEW_LINE);
-		}
-		sb.append(firstColAl.get(firstColAl.size() - 1));
+	public String commOnlyFirst(String[] args) {
+		StringBuilder stringBuilder = new StringBuilder("");
 
-		return sb.toString();
+		ArrayList<ArrayList<String>> mainList;
+		try {
+			mainList = getContentFromStdinOrFile(args);
+			ArrayList<String> strList1 = mainList.get(ZERO);
+			ArrayList<String> strList2 = mainList.get(ONE);
+			String[] temp = strList1.toArray(new String[strList1.size()]);
+			ArrayList<String> firstColAl = linesComparison(strList1, strList2)
+					.get(COL_ZERO);
+			for (int i = 0; i < firstColAl.size() - 1; i++) {
+				stringBuilder.append(firstColAl.get(i)).append(NEW_LINE);
+			}
+			stringBuilder.append(firstColAl.get(firstColAl.size() - 1));
+		} catch (CommException e) {
+			e.printStackTrace();
+		}
+		return stringBuilder.toString();
 	}
 
 	/**
@@ -98,20 +98,26 @@ public class CommApplication implements Comm {
 	 * @throws CommException
 	 */
 	@Override
-	public String commOnlySecond(String[] args, InputStream stdin)
-			throws CommException {
-		ArrayList<ArrayList<String>> mainList = getContentFromStdinOrFile(args,
-				stdin);
-		ArrayList<String> strList1 = mainList.get(ZERO);
-		ArrayList<String> strList2 = mainList.get(ONE);
-		ArrayList<String> middleColAl = linesComparison(strList1, strList2)
-				.get(COL_ONE);
-		StringBuilder sb = new StringBuilder("");
-		for (int i = 0; i < middleColAl.size() - 1; i++) {
-			sb.append(middleColAl.get(i)).append(NEW_LINE);
+	public String commOnlySecond(String[] args) {
+		StringBuilder stringBuilder = new StringBuilder("");
+		ArrayList<ArrayList<String>> mainList;
+		try {
+			mainList = getContentFromStdinOrFile(args);
+			ArrayList<String> strList1 = mainList.get(ZERO);
+			ArrayList<String> strList2 = mainList.get(ONE);
+			ArrayList<String> middleColAl = linesComparison(strList1, strList2)
+					.get(COL_ONE);
+
+			for (int i = 0; i < middleColAl.size() - 1; i++) {
+				stringBuilder.append(middleColAl.get(i)).append(NEW_LINE);
+			}
+			stringBuilder.append(middleColAl.get(middleColAl.size() - 1));
+
+		} catch (CommException e) {
+			e.printStackTrace();
 		}
-		sb.append(middleColAl.get(middleColAl.size() - 1));
-		return sb.toString();
+
+		return stringBuilder.toString();
 	}
 
 	/**
@@ -120,18 +126,16 @@ public class CommApplication implements Comm {
 	 * @throws CommException
 	 */
 	@Override
-	public String commBothMathches(String[] args, InputStream stdin)
-			throws CommException {
-		String[] firstTwoCols = commNoMatches(args, stdin).split(
-				NEW_LINE);
-		String[] lastCol = commAllMatches(args, stdin).split(NEW_LINE);
-		StringBuilder sb = new StringBuilder("");
+	public String commBothMathches(String[] args) {
+		String[] firstTwoCols = commNoMatches(args).split(NEW_LINE);
+		String[] lastCol = commAllMatches(args).split(NEW_LINE);
+		StringBuilder stringBuilder = new StringBuilder("");
 		for (int i = 0; i < firstTwoCols.length - 1; i++) {
-			sb.append(firstTwoCols[i]).append(lastCol[i]).append(NEW_LINE);
+			stringBuilder.append(firstTwoCols[i]).append(lastCol[i]).append(NEW_LINE);
 		}
-		sb.append(firstTwoCols[firstTwoCols.length - 1]).append(
+		stringBuilder.append(firstTwoCols[firstTwoCols.length - 1]).append(
 				lastCol[firstTwoCols.length - 1]);
-		return sb.toString();
+		return stringBuilder.toString();
 	}
 
 	/**
@@ -141,28 +145,51 @@ public class CommApplication implements Comm {
 	 * @throws CommException
 	 */
 	@Override
-	public String commAllMatches(String[] args, InputStream stdin)
-			throws CommException {
-		ArrayList<ArrayList<String>> mainList = getContentFromStdinOrFile(args,
-				stdin);
-		ArrayList<String> strList1 = mainList.get(ZERO);
-		ArrayList<String> strList2 = mainList.get(ONE);
-		ArrayList<String> lastColAl = linesComparison(strList1, strList2).get(
-				COL_TWO);
-		StringBuilder sb = new StringBuilder("");
-		for (int i = 0; i < lastColAl.size() - 1; i++) {
-			sb.append(lastColAl.get(i)).append(NEW_LINE);
+	public String commAllMatches(String[] args) {
+		ArrayList<ArrayList<String>> mainList;
+		StringBuilder stringBuilder = new StringBuilder("");
+		try {
+			mainList = getContentFromStdinOrFile(args);
+			ArrayList<String> strList1 = mainList.get(ZERO);
+			ArrayList<String> strList2 = mainList.get(ONE);
+			ArrayList<String> lastColAl = linesComparison(strList1, strList2)
+					.get(COL_TWO);
+
+			for (int i = 0; i < lastColAl.size() - 1; i++) {
+				stringBuilder.append(lastColAl.get(i)).append(NEW_LINE);
+			}
+			stringBuilder.append(lastColAl.get(lastColAl.size() - 1));
+		} catch (CommException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		sb.append(lastColAl.get(lastColAl.size() - 1));
-		return sb.toString();
+
+		return stringBuilder.toString();
 	}
 
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout)
 			throws CommException {
 
-		String resultStr = commBothMathches(args, stdin);
-		stdoutString(stdout, resultStr);
+		StringBuilder stringBuilder = new StringBuilder("");
+		ArrayList<ArrayList<String>> mainList = getContentFromStdinOrFile(args,
+				stdin);
+		ArrayList<String> strList1 = mainList.get(ZERO);
+		ArrayList<String> strList2 = mainList.get(ONE);
+		ArrayList<ArrayList<String>> resultAl = linesComparison(strList1,
+				strList2);
+		ArrayList<String> firstColAl = resultAl.get(ZERO);
+		ArrayList<String> secondColAl = resultAl.get(ONE);
+		ArrayList<String> thirdColAl = resultAl.get(TWO);
+
+		for (int i = 0; i < firstColAl.size() - 1; i++) {
+			stringBuilder.append(firstColAl.get(i)).append(secondColAl.get(i))
+					.append(thirdColAl.get(i)).append(NEW_LINE);
+		}
+		stringBuilder.append(firstColAl.get(firstColAl.size() - 1))
+				.append(secondColAl.get(secondColAl.size() - 1))
+				.append(thirdColAl.get(thirdColAl.size() - 1));
+		stdoutString(stdout, stringBuilder.toString());
 	}
 
 	private ArrayList<ArrayList<String>> getContentFromStdinOrFile(
@@ -185,7 +212,7 @@ public class CommApplication implements Comm {
 			strList2 = getFileContents(args, currentDir, file2Position);
 		} else {
 			throw new CommException(
-					"Legnth of arguments cannot be greater than 1");
+					"Length of arguments cannot be greater than 1");
 		}
 		mainList.add(strList1);
 		mainList.add(strList2);
@@ -200,8 +227,6 @@ public class CommApplication implements Comm {
 		ArrayList<ArrayList<String>> mainList = new ArrayList<ArrayList<String>>();
 		ArrayList<String> strList1 = new ArrayList<String>();
 		ArrayList<String> strList2 = new ArrayList<String>();
-		mainList.add(strList1);
-		mainList.add(strList2);
 
 		if (args == null || args.length == ZERO) {
 			file1Position = ONE;
@@ -216,13 +241,15 @@ public class CommApplication implements Comm {
 			throw new CommException(
 					"Legnth of arguments cannot be greater than 1");
 		}
+		mainList.add(strList1);
+		mainList.add(strList2);
 		return mainList;
 	}
 
 	public ArrayList<ArrayList<String>> linesComparison(
 			ArrayList<String> strList1, ArrayList<String> strList2) {
-		int indexOfLineFromFile1 = 0;
-		int indexOfLineFromFile2 = 0;
+		int indexLineFile1 = 0;
+		int indexLineFile2 = 0;
 		ArrayList<ArrayList<String>> mainAl = new ArrayList<ArrayList<String>>();
 		mainAl.add(new ArrayList<String>());
 		mainAl.add(new ArrayList<String>());
@@ -232,8 +259,8 @@ public class CommApplication implements Comm {
 			String lineA = "";
 			String lineB = "";
 
-			lineA = getLineFromList(strList1, indexOfLineFromFile1);
-			lineB = getLineFromList(strList2, indexOfLineFromFile2);
+			lineA = getLineFromList(strList1, indexLineFile1);
+			lineB = getLineFromList(strList2, indexLineFile2);
 
 			if (lineA.length() == 0 && lineB.length() == 0) {
 				break;
@@ -242,35 +269,35 @@ public class CommApplication implements Comm {
 				mainAl.get(COL_ZERO).add(TAB_LINE);
 				mainAl.get(COL_ONE).add(lineB);
 				mainAl.get(COL_TWO).add(TAB_LINE);
-				indexOfLineFromFile2++;
+				indexLineFile2++;
 			} else if (lineA.length() != 0 && lineB.length() == 0) {
 				// sb.append(lineA + TAB_LINE + TAB_LINE + NEW_LINE);
 				mainAl.get(COL_ZERO).add(lineA);
 				mainAl.get(COL_ONE).add(TAB_LINE);
 				mainAl.get(COL_TWO).add(TAB_LINE);
-				indexOfLineFromFile1++;
+				indexLineFile1++;
 			} else {// compare lines that are not empty
-				result = lineA.toString().compareTo(lineB.toString());
+				result = lineA.compareTo(lineB);
 				if (result == ZERO) {
 					// sb.append(TAB_LINE + TAB_LINE + lineA + NEW_LINE);
 					mainAl.get(COL_ZERO).add(TAB_LINE);
 					mainAl.get(COL_ONE).add(TAB_LINE);
 					mainAl.get(COL_TWO).add(lineA);
-					indexOfLineFromFile1++;
-					indexOfLineFromFile2++;
+					indexLineFile1++;
+					indexLineFile2++;
 
 				} else if (result < ZERO) {// output to first col
 					// sb.append(lineA + TAB_LINE + TAB_LINE + NEW_LINE);
 					mainAl.get(COL_ZERO).add(lineA);
 					mainAl.get(COL_ONE).add(TAB_LINE);
 					mainAl.get(COL_TWO).add(TAB_LINE);
-					indexOfLineFromFile1++;
+					indexLineFile1++;
 				} else {// output to second column
 					// sb.append(TAB_LINE + lineB + TAB_LINE + NEW_LINE);
 					mainAl.get(COL_ZERO).add(TAB_LINE);
 					mainAl.get(COL_ONE).add(lineB);
 					mainAl.get(COL_TWO).add(TAB_LINE);
-					indexOfLineFromFile2++;
+					indexLineFile2++;
 				}
 			}
 		}
@@ -278,10 +305,10 @@ public class CommApplication implements Comm {
 	}
 
 	private String getLineFromList(ArrayList<String> strList1,
-			int indexOfLineFromFile1) {
+			int lineIndexFile1) {
 		String currentLine = "";
-		if (strList1.size() != 0 && indexOfLineFromFile1 < strList1.size()) {
-			currentLine = strList1.get(indexOfLineFromFile1);
+		if (lineIndexFile1 < strList1.size()) {
+			currentLine = strList1.get(lineIndexFile1);
 		}
 		return currentLine;
 	}
@@ -296,7 +323,7 @@ public class CommApplication implements Comm {
 	 */
 	ArrayList<String> readFromFileAndWriteToStringList(Path filePath)
 			throws CommException {
-		ArrayList<String> al = new ArrayList<String>();
+		ArrayList<String> arrayList = new ArrayList<String>();
 		try {
 			FileInputStream fileInStream = new FileInputStream(
 					filePath.toString());
@@ -305,14 +332,14 @@ public class CommApplication implements Comm {
 
 			String input = "";
 			while ((input = buffReader.readLine()) != null) {
-				al.add(input);
+				arrayList.add(input);
 			}
 			buffReader.close();
 
 		} catch (IOException e) {
 			throw new CommException("IOException");
 		}
-		return al;
+		return arrayList;
 	}
 
 	/**
@@ -362,7 +389,7 @@ public class CommApplication implements Comm {
 
 	private ArrayList<String> readFromStdinAndWriteToStringList(
 			InputStream stdin) throws CommException {
-		ArrayList<String> al = new ArrayList<String>();
+		ArrayList<String> arrayList = new ArrayList<String>();
 		if (stdin == null) {
 			throw new CommException("Null Pointer Exception");
 		}
@@ -371,12 +398,12 @@ public class CommApplication implements Comm {
 		String input = "";
 		try {
 			while ((input = buffReader.readLine()) != null) {
-				al.add(input);
+				arrayList.add(input);
 			}
 		} catch (Exception e) {
 			throw new CommException("Exception caught");
 		}
-		return al;
+		return arrayList;
 	}
 
 	private void stdoutString(OutputStream stdout, String resultStr)
