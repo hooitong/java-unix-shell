@@ -34,7 +34,7 @@ public class SortApplicationTest {
 		inputArr8 = new String[] { "FE8", "APP1E", "APP13", "25DA", "F3B" };
 		inputArr9 = new String[] { "ap1E", "aPp1e", "6p3aR", "6Pear", "p3Ar" };
 		inputArr10 = new String[] { "8FE", "1APP1E", "100APP13", "25DAA",
-			"30F3B" };
+				"30F3B" };
 	}
 
 	/**
