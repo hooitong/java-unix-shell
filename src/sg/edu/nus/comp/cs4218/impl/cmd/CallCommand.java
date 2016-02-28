@@ -252,8 +252,8 @@ public class CallCommand implements Command {
 		}
 
 		int newEndIdx = endIdx;
-
-		Pattern inputRedirP = Pattern.compile("[\\s]*<[\\s]*(([^\\n\"`'<>]*))[\\s]");
+		Pattern inputRedirP = Pattern
+				.compile("[\\s]*<[\\s]*(([^\\n\"`'<>]*))[\\s]");
 		Matcher inputRedirM;
 		String inputRedirS = "";
 		int cmdVectorIndex = cmdVector.size() - 2;
@@ -307,8 +307,8 @@ public class CallCommand implements Command {
 		}
 
 		int newEndIdx = endIdx;
-		Pattern inputRedirP = Pattern.compile("[\\s]*>[\\s]*(([^\\n\"`'<>]*))[\\s]*");
-
+		Pattern inputRedirP = Pattern
+				.compile("[\\s]*>[\\s]*(([^\\n\"`'<>]*))[\\s]*");
 		Matcher inputRedirM;
 		String inputRedirS = "";
 		int cmdVectorIdx = cmdVector.size() - 1;
