@@ -3,6 +3,7 @@ package sg.edu.nus.comp.cs4218.impl.app;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.exception.EchoException;
@@ -31,35 +32,74 @@ public class EchoApplication implements Application {
 	 * @throws EchoException
 	 *             If an I/O exception occurs.
 	 */
-	public void run(String[] args, InputStream stdin, OutputStream stdout)
-			throws EchoException {
+
+
+	public void run(String[] args, InputStream stdin, OutputStream stdout) throws EchoException {
 		if (args == null) {
 			throw new EchoException("Null arguments");
 		}
 		if (stdout == null) {
 			throw new EchoException("OutputStream not provided");
 		}
-		try {
-			byte[] line;
-			String temp;
 			if (args.length == 0) {
-				stdout.write("\n\n".getBytes());
-			} else {
-				for (int i = 0; i < args.length-1; i++) {
-					
-					temp = args[i] + " ";
-					line = temp.getBytes();
-					stdout.write(line);
+				try{
+					writeIfArgsIsEmpty(stdout);
+				}catch(IOException i){
+					throw new EchoException("IOException" + i.getMessage());
 				}
-				stdout.write( args[args.length-1].getBytes());
+			} else {
+				try{
+					writeWhenArgsIsNonEmpty(args, stdout);
+				}catch (IOException i){
+					throw new EchoException("IOException" + i.getMessage());
+				}
+			}
+		
+
+	}
+
+	private void writeWhenArgsIsNonEmpty(String[] args, OutputStream stdout) throws IOException {
+		byte[] line;
+		String temp;
+		String[] cleanList = createList(args);
+		
+			for (int i = 0; i < cleanList.length - 1; i++) {
+
+				temp = cleanList[i] + " ";
+				line = temp.getBytes();
+				stdout.write(line);
+			}
+			if (cleanList.length >= 1) {
+				stdout.write(cleanList[cleanList.length - 1].getBytes());
 				stdout.write("\n".getBytes());
 			}
-		} catch (IOException e) {
-			throw new EchoException("IOException");
-		} catch (NullPointerException n){
-			throw new EchoException("NullPointerException");
-		}
+		
+		} 
+	
+
+	private void writeIfArgsIsEmpty(OutputStream stdout) throws IOException {
+			stdout.write("\n\n".getBytes());
 	}
-	
-	
+
+	private String[] createList(String...args ) {
+		int index = 0;
+		String[] cleanList = new String[args.length];
+		cleanList[index] = "\n";
+
+		for (int i = 0; i < args.length; i++) {
+			if (args[i] == null) {
+				continue;
+			}
+			String temp = args[i].trim();
+			if (temp.isEmpty()) {
+				continue;
+			}
+			cleanList[index] = temp;
+			index++;
+
+		}
+
+		return cleanList;
+	}
+
 }
