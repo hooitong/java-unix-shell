@@ -1,15 +1,12 @@
 package sg.edu.nus.comp.cs4218.impl;
 
 import java.io.*;
-<<<<<<< .merge_file_a12024
 import java.util.ArrayList;
-=======
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
->>>>>>> .merge_file_a07796
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,10 +15,12 @@ import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
+import sg.edu.nus.comp.cs4218.exception.PipeCommandException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.app.CatApplication;
 import sg.edu.nus.comp.cs4218.impl.app.EchoApplication;
 import sg.edu.nus.comp.cs4218.impl.app.HeadApplication;
+import sg.edu.nus.comp.cs4218.impl.app.SortApplication;
 import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
 import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.PipeCommand;
@@ -92,7 +91,7 @@ public class ShellImpl implements Shell {
 				// System.out.println("backquote" + bqStr);
 				OutputStream bqOutputStream = new ByteArrayOutputStream();
 				ShellImpl shell = new ShellImpl();
-				//shell.parseAndEvaluate(bqStr, bqOutputStream);
+				// shell.parseAndEvaluate(bqStr, bqOutputStream);
 
 				ByteArrayOutputStream outByte = (ByteArrayOutputStream) bqOutputStream;
 				byte[] byteArray = outByte.toByteArray();
@@ -142,6 +141,8 @@ public class ShellImpl implements Shell {
 			absApp = new HeadApplication();
 		} else if (("tail").equals(app)) {// tail [OPTIONS] [FILE]
 			absApp = new TailApplication();
+		} else if (("sort").equals(app)) {// tail [OPTIONS] [FILE]
+			absApp = new SortApplication();
 		} else { // invalid command
 			throw new ShellException(app + ": " + EXP_INVALID_APP);
 		}
@@ -167,7 +168,7 @@ public class ShellImpl implements Shell {
 		try {
 			fInputStream = new FileInputStream(inputFile);
 		} catch (FileNotFoundException e) {
-			throw new ShellException(e.getMessage());
+			throw new ShellException(e);
 		}
 		return fInputStream;
 	}
@@ -191,7 +192,7 @@ public class ShellImpl implements Shell {
 		try {
 			fOutputStream = new FileOutputStream(outputFile);
 		} catch (FileNotFoundException e) {
-			throw new ShellException(e.getMessage());
+			throw new ShellException(e);
 		}
 		return fOutputStream;
 	}
@@ -211,7 +212,7 @@ public class ShellImpl implements Shell {
 			try {
 				inputStream.close();
 			} catch (IOException e) {
-				throw new ShellException(e.getMessage());
+				throw new ShellException(e);
 			}
 		}
 	}
@@ -232,7 +233,7 @@ public class ShellImpl implements Shell {
 			try {
 				outputStream.close();
 			} catch (IOException e) {
-				throw new ShellException(e.getMessage());
+				throw new ShellException(e);
 			}
 		}
 	}
@@ -256,7 +257,7 @@ public class ShellImpl implements Shell {
 		try {
 			stdout.write(((ByteArrayOutputStream) outputStream).toByteArray());
 		} catch (IOException e) {
-			throw new ShellException(EXP_STDOUT);
+			throw new ShellException(e);
 		}
 	}
 
@@ -310,157 +311,177 @@ public class ShellImpl implements Shell {
 			}
 		}
 	}
-	
+
 	/**
 	 * Method to parse the given string command from the user.
-	 * @param cmdline 
-	 * 				The string to parse and execute
+	 * 
+	 * @param cmdline
+	 *            The string to parse and execute
 	 * @param stdout
 	 * @throws AbstractApplicationException
 	 * @throws ShellException
 	 */
-	
+
 	@Override
 	public void parseAndEvaluate(String cmdline, OutputStream stdout)
 			throws AbstractApplicationException, ShellException {
-        Command parentCommand = parse(cmdline);
-        parentCommand.evaluate(null, stdout);
+		Command parentCommand = parse(cmdline);
+		parentCommand.evaluate(null, stdout);
 	}
 
-    /**
-     * Attempt to pass using grammar syntax and return parent command.
-     * @param cmdline
-     *              The string to parse into a command
-     * @return parent command
-     * @throws ShellException
-     */
-    public static Command parse(String cmdline) throws ShellException {
-        int commandIndex = 0;
-        Command[] possibleCommands = new Command[3];
-        possibleCommands[0] = new CallCommand(cmdline);
-        possibleCommands[1] = new SequenceCommand(cmdline);
-        possibleCommands[2] = new PipeCommand(cmdline);
+	/**
+	 * Attempt to pass using grammar syntax and return parent command.
+	 * 
+	 * @param cmdline
+	 *            The string to parse into a command
+	 * @return parent command
+	 * @throws ShellException
+	 */
+	public static Command parse(String cmdline) throws ShellException {
+		int commandIndex = 0;
+		Command[] possibleCommands = new Command[3];
+		possibleCommands[0] = new CallCommand(cmdline);
+		possibleCommands[1] = new SequenceCommand(cmdline);
+		possibleCommands[2] = new PipeCommand(cmdline);
 
-        while(true) {
-            try {
-                possibleCommands[commandIndex].parse();
-                return possibleCommands[commandIndex];
-            } catch (ShellException e) {
-                if(++commandIndex == possibleCommands.length) throw e;
-            }
-        }
-    }
-
-	@Override
-	public String pipeTwoCommands(String[] args) {
-//		ArrayList<String> cmdAl = new ArrayList<String>();
-//		StringBuilder sb = new StringBuilder("");
-//		for (int i = 0; i < args.length; i++) {
-//			if(!args[i].equals(PIPE)){
-//				sb.append(args[i]);
-//				sb.append(NEW_LINE);
-//			}else{
-//				cmdAl.add(sb.toString());
-//				sb.setLength(0);
-//			}	
-//		}
-////		if(!cmdAl.size() == TWO){
-////			throw new Exception
-////		}
-//		for (int i = 0; i < cmdAl.size(); i++) {
-//			CallCommand callCommand = new CallCommand(cmdAl.get(i));
-//			try {
-//				callCommand.parse();
-//			} catch (ShellException e) {
-//				e.printStackTrace();
-//			}
-//			
-//		}
-		return null;
+		while (true) {
+			try {
+				possibleCommands[commandIndex].parse();
+				return possibleCommands[commandIndex];
+			} catch (ShellException e) {
+				if (++commandIndex == possibleCommands.length)
+					throw e;
+			}
+		}
 	}
 
+	/**
+	 * Evaluate pipe call with two commands
+	 * 
+	 * @param args
+	 * @return string the string could return the exception message or the
+	 *         actual result
+	 */
 	@Override
-	public String pipeMultipleCommands(String[] args) {
-//		ArrayList<String> cmdAl = new ArrayList<String>();
-//		StringBuilder sb = new StringBuilder("");
-//		for (int i = 0; i < args.length; i++) {
-//			if(!args[i].equals(PIPE)){
-//				sb.append(args[i]);
-//				sb.append(NEW_LINE);
-//			}else{
-//				cmdAl.add(sb.toString());
-//				sb.setLength(0);
-//			}	
-//		}
-//		if(cmdAl.size() > TWO){
-//			
-//		}
-		return null;
+	public String pipeTwoCommands(String... args) {
+		return pipeCaller(args);
 	}
 
+	/**
+	 * Evaluate pipe call with more than two commands
+	 * 
+	 * @param args
+	 * @return string the string could return the exception message or the
+	 *         actual result
+	 */
 	@Override
-	public String pipeWithException(String[] args) {
-		return null;
+	public String pipeMultipleCommands(String... args) {
+		return pipeCaller(args);
+	}
+
+	/**
+	 * Since the interface cannot be modified to throw an exception due to
+	 * project requirements, a string of the error message is returned instead
+	 * when an exception occurs during the execution of one of the commands.
+	 * 
+	 * @param args
+	 * 
+	 * @return string the string could return an exception message (
+	 *         "pipe: exception detected for one of the call commands") or the
+	 *         actual result
+	 */
+	@Override
+	public String pipeWithException(String... args) {
+		return pipeCaller(args);
+
+	}
+
+	/**
+	 * This methods calls all starts the parsing and evaluate pipe command
+	 * 
+	 * @param args
+	 * @return string the string could return the exception message or the
+	 *         actual result
+	 */
+	private String pipeCaller(String... args) {
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		String result = "";
+		String joinedStr = String.join(" ", args);
+		PipeCommand pipeCmd = new PipeCommand(joinedStr);
+		try {
+			pipeCmd.parse();
+			pipeCmd.evaluate(null, stdout);
+			result = stdout.toString();
+		} catch (AbstractApplicationException | ShellException e) {
+			result = e.getMessage();
+		}
+		return result;
 	}
 
 	/**
 	 * Evaluates globbing with no files or directories.
 	 *
-	 * @param args arguments to be evaluated
+	 * @param args
+	 *            arguments to be evaluated
 	 * @return empty string object
-     */
-    @Override
-    public String globNoPaths(String[] args) {
-        return "";
-    }
+	 */
+	@Override
+	public String globNoPaths(String[] args) {
+		return "";
+	}
 
 	/**
 	 * Evaluate globbing with one file.
 	 *
-	 * @param args arguments to be evaluated
+	 * @param args
+	 *            arguments to be evaluated
 	 * @return string where arguments matches a single file
-     */
-    @Override
-    public String globOneFile(String[] args) {
-        String tempResult = "";
-		for(String arg: args) {
+	 */
+	@Override
+	public String globOneFile(String[] args) {
+		String tempResult = "";
+		for (String arg : args) {
 			tempResult += arg + System.getProperty("line.separator");
 		}
 		return tempResult;
-    }
+	}
 
 	/**
 	 * Evaluate globbing with files and directories one level down.
 	 *
-	 * @param args arguments to be evaluated
-	 * @return String that contains the evaluated arguments existing in the same directory.
-     */
-    @Override
-    public String globFilesDirectories(String[] args) {
+	 * @param args
+	 *            arguments to be evaluated
+	 * @return String that contains the evaluated arguments existing in the same
+	 *         directory.
+	 */
+	@Override
+	public String globFilesDirectories(String[] args) {
 		return globHelper(args);
-    }
+	}
 
 	/**
 	 * Evaluate globbing with files and directories multiple levels down.
 	 *
-	 * @param args arguments to be evaluated
-	 * @return String that contains the evaluated arguments existings multiple levels down.
-     */
-    @Override
-    public String globMultiLevel(String[] args) {
+	 * @param args
+	 *            arguments to be evaluated
+	 * @return String that contains the evaluated arguments existings multiple
+	 *         levels down.
+	 */
+	@Override
+	public String globMultiLevel(String[] args) {
 		return globHelper(args);
-    }
+	}
 
 	private String globHelper(String[] args) {
 		CallCommand helper = new CallCommand();
 		String tempResult = "";
 		try {
 			String[] globResult = helper.evaluateGlob(args);
-			for(String result: globResult) {
+			for (String result : globResult) {
 				tempResult += result + System.getProperty("line.separator");
 			}
-		} catch (ShellException e){
-			for(String arg: args) {
+		} catch (ShellException e) {
+			for (String arg : args) {
 				tempResult += arg + System.getProperty("line.separator");
 			}
 		}

@@ -7,4 +7,8 @@ public class CommException extends AbstractApplicationException {
 	public CommException(String message) {
 		super("Comm: " + message);
 	}
+	
+	public CommException(String message, Exception exception) {
+		super("Comm: " + message);
+	}
 }

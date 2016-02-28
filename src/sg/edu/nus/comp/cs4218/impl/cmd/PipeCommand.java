@@ -4,6 +4,7 @@ import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
+import sg.edu.nus.comp.cs4218.exception.PipeCommandException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.ShellImpl;
 
@@ -14,7 +15,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class PipeCommand implements Command {
-	
+
 	static final String WHITESPACE = "\\s+";
 	static final char PIPE = '|';
 	static final int ZERO = 0;
@@ -25,68 +26,89 @@ public class PipeCommand implements Command {
 	ArrayList<CallCommand> cmdList = new ArrayList<CallCommand>();
 	Boolean error;
 	String errorMsg;
-	
-	public PipeCommand(String cmdLine) throws ShellException{
+
+	public PipeCommand(String cmdLine) {
 		this.argsList = new ArrayList<String>();
 		this.cmdline = cmdLine;
 		separateIntoIndividualCommands(cmdLine);
 	}
+
+	/**
+	 * this method uses the pipe as a delimiter and breaks a line of string into
+	 * their various call commands
+	 * 
+	 * @param string
+	 *            a string of commands
+	 */
 	private void separateIntoIndividualCommands(String cmdLine) {
-		StringBuilder sb = new StringBuilder("");
+		StringBuilder stringBuilder = new StringBuilder("");
 		for (int i = 0; i < cmdLine.length(); i++) {
-			if(cmdLine.charAt(i) != PIPE){
-				sb.append(cmdLine.charAt(i));
-			}else{
-				this.argsList.add(sb.toString().trim());
-				sb.setLength(ZERO);
+			if (cmdLine.charAt(i) == PIPE) {
+				this.argsList.add(stringBuilder.toString().trim());
+				stringBuilder.setLength(ZERO);
+			} else {
+				stringBuilder.append(cmdLine.charAt(i));
 			}
 		}
-		if(sb.length() != ZERO){
-			this.argsList.add(sb.toString().trim());
+		if (stringBuilder.length() != ZERO) {
+			this.argsList.add(stringBuilder.toString().trim());
 		}
 	}
-	public static void main(String[] args) throws ShellException, AbstractApplicationException {
-		String temp = "head file3.txt | tail -n 5";
-		ByteArrayOutputStream stdout = new ByteArrayOutputStream();;
-		ShellImpl shell = new ShellImpl();
-		shell.parseAndEvaluate(temp, stdout);
-		System.out.println(stdout);
-		
-	}
-    /**
-     * Evaluates command using data provided through stdin stream. Write result
-     * to stdout stream.
-     */
-    public void evaluate(InputStream stdin, OutputStream stdout) throws AbstractApplicationException, ShellException {
-    	ByteArrayOutputStream outgoingPipe = new ByteArrayOutputStream();
+
+	/**
+	 * Evaluates command using data provided through stdin stream. Write result
+	 * to stdout stream.
+	 */
+	public void evaluate(InputStream stdin, OutputStream stdout)
+			throws AbstractApplicationException, ShellException {
+		ByteArrayOutputStream outgoingPipe = new ByteArrayOutputStream();
 		for (int i = 0; i < this.cmdList.size(); i++) {
-			if(i == 0){
-				cmdList.get(i).evaluate(stdin, outgoingPipe);
-			}else if(i < this.cmdList.size() - 1){
-				InputStream incomingPipe = new ByteArrayInputStream(outgoingPipe.toByteArray());
+			if (i == 0) {
+				try {
+					cmdList.get(i).evaluate(stdin, outgoingPipe);
+				} catch (AbstractApplicationException | ShellException e) {
+					throw new PipeCommandException(
+							"exception detected for one of the call commands", e);
+				}
+			} else if (i < this.cmdList.size() - 1) {
+				InputStream incomingPipe = new ByteArrayInputStream(
+						outgoingPipe.toByteArray());
 				outgoingPipe.reset();
-				cmdList.get(i).evaluate(incomingPipe, outgoingPipe);
-			}else{
-				InputStream incomingPipe = new ByteArrayInputStream(outgoingPipe.toByteArray());
-				cmdList.get(i).evaluate(incomingPipe, stdout);
-			}			
+				try {
+					cmdList.get(i).evaluate(incomingPipe, outgoingPipe);
+				} catch (AbstractApplicationException | ShellException e) {
+					throw new PipeCommandException(
+							"exception detected for one of the call commands", e);
+				}
+
+			} else {
+				InputStream incomingPipe = new ByteArrayInputStream(
+						outgoingPipe.toByteArray());
+				try {
+					cmdList.get(i).evaluate(incomingPipe, stdout);
+				} catch (AbstractApplicationException | ShellException e) {
+					throw new PipeCommandException(
+							"exception detected for one of the call commands", e);
+				}
+
+			}
 		}
-    }
+	}
 
-    /**
-     * Terminates current execution of the command (unused for now)
-     */
-    @Override
-    public void terminate() {
-        // TODO Auto-generated method stub
-    }
+	/**
+	 * Terminates current execution of the command (unused for now)
+	 */
+	@Override
+	public void terminate() {
+		//unused
+	}
 
-    public void parse() throws ShellException{
-		for (int i = 0; i < argsList.size(); i++) {
+	public void parse() throws ShellException {
+		for (int i = 0; i < this.argsList.size(); i++) {
 			ShellImpl shell = new ShellImpl();
 			Command command = shell.parse(this.argsList.get(i));
-			cmdList.add((CallCommand)command);
-			
+			cmdList.add((CallCommand) command);
+
 		}
-    }
+	}
 }
