@@ -7,4 +7,22 @@ public class HeadException extends AbstractApplicationException {
 	public HeadException(String message) {
 		super("head: " + message);
 	}
+	
+	/**
+	 * Overloaded constructor to wrap any exception into a HeadException.
+	 * 
+	 * @param excep
+	 */
+	public HeadException(Exception excep) {
+		super("head: " + excep.getMessage());
+	}
+	
+	/**
+	 * Original exception stack is ignore, but print current message instead.
+	 * 
+	 * @param excep
+	 */
+	public HeadException(Exception excep, String message) {
+		super("head: " + message);
+	}
 }

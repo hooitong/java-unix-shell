@@ -7,4 +7,14 @@ public class EchoException extends AbstractApplicationException {
 	public EchoException(String message) {
 		super("echo: " + message);
 	}
+	
+	/**
+	 * Overloaded constructor to wrap any exception into a HeadException.
+	 * 
+	 * @param excep
+	 */
+	public EchoException(Exception excep) {
+		super("echo: " + excep.getMessage());
+	}
+	
 }
