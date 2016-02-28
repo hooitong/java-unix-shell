@@ -6,6 +6,11 @@ public class DateException extends AbstractApplicationException
 
 	public DateException(String message) 
 	{
-		super("tail: " + message);
+		super("date: " + message);
+	}
+	
+	public DateException(Exception excep) 
+	{
+		super("date: " + excep.getMessage());
 	}
 }

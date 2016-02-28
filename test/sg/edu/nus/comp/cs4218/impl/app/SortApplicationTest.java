@@ -12,12 +12,29 @@ import org.junit.Test;
 
 public class SortApplicationTest {
 	private static SortApplication sortApplication;
-	private static String[] args;
+	private static String[] args, inputArr1, inputArr2, inputArr3, inputArr4,
+			inputArr5, inputArr6, inputArr7, inputArr8, inputArr9, inputArr10;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		sortApplication = new SortApplication();
 		args = new String[] { "examples/sort.txt" };
+		inputArr1 = new String[] { "100 B*anana", "20 B*anana", "#B@n@n0",
+				"P3@r", "p3@R" };
+		inputArr2 = new String[] { "AP1#E", "APP1E#", "6P3@R", "6PE@R",
+				"&P3AL", "100 AP1#E", "30 AP1#E" };
+		inputArr3 = new String[] { "&23jan", "100 pea*s", "jer100 *", "20 m!n",
+				"chief) 24" };
+		inputArr4 = new String[] { "Appl^", "APpl^", "!peAR", "!Pear", "!peAr" };
+		inputArr5 = new String[] { "100 @", "50 @", "1 &(*", "22#%!", "33 *&@",
+				"#%356", "68!" };
+		inputArr6 = new String[] { "1oranges", "100apples", "22pears",
+				"january2016", "feb16" };
+		inputArr7 = new String[] { "5", "100", "1", "10", "33" };
+		inputArr8 = new String[] { "FE8", "APP1E", "APP13", "25DA", "F3B" };
+		inputArr9 = new String[] { "ap1E", "aPp1e", "6p3aR", "6Pear", "p3Ar" };
+		inputArr10 = new String[] { "8FE", "1APP1E", "100APP13", "25DAA",
+			"30F3B" };
 	}
 
 	/**
@@ -56,8 +73,7 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortNumbers() {
-		String[] inputArr = new String[] { "5", "100", "1", "10", "33" };
-		List<String> arrayList = sortApplication.sortNumbers(inputArr);
+		List<String> arrayList = sortApplication.sortNumbers(inputArr7);
 		assertEquals("1", arrayList.get(0));
 		assertEquals("10", arrayList.get(1));
 		assertEquals("100", arrayList.get(2));
@@ -70,8 +86,8 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortNumbersWithNumFlag() {
-		String[] inputArr = new String[] { "5", "100", "1", "10", "33" };
-		List<String> arrayList = sortApplication.sortNumbersWithNumFlagOn(inputArr);
+		List<String> arrayList = sortApplication
+				.sortNumbersWithNumFlagOn(inputArr7);
 		assertEquals("1", arrayList.get(0));
 		assertEquals("5", arrayList.get(1));
 		assertEquals("10", arrayList.get(2));
@@ -115,9 +131,7 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortSimpleNumbers() {
-		String[] inputArr = new String[] { "1oranges", "100apples", "22pears",
-				"january2016", "feb16" };
-		List<String> arrayList = sortApplication.sortSimpleNumbers(inputArr);
+		List<String> arrayList = sortApplication.sortSimpleNumbers(inputArr6);
 		assertEquals("100apples", arrayList.get(0));
 		assertEquals("1oranges", arrayList.get(1));
 		assertEquals("22pears", arrayList.get(2));
@@ -131,10 +145,8 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortSimpleNumbersWithNumFlagOn() {
-		String[] inputArr = new String[] { "1oranges", "100apples", "22pears",
-				"january2016", "feb16" };
 		List<String> arrayList = sortApplication
-				.sortSimpleNumbersWithNumFlagOn(inputArr);
+				.sortSimpleNumbersWithNumFlagOn(inputArr6);
 		assertEquals("1oranges", arrayList.get(0));
 		assertEquals("22pears", arrayList.get(1));
 		assertEquals("100apples", arrayList.get(2));
@@ -150,7 +162,8 @@ public class SortApplicationTest {
 	public void testSortSimpleSpecialChars() {
 		String[] inputArr = new String[] { "*oranges", "a^pples", "a!pples",
 				"feb*", "feb%" };
-		List<String> arrayList = sortApplication.sortSimpleSpecialChars(inputArr);
+		List<String> arrayList = sortApplication
+				.sortSimpleSpecialChars(inputArr);
 		assertEquals("*oranges", arrayList.get(0));
 		assertEquals("a!pples", arrayList.get(1));
 		assertEquals("a^pples", arrayList.get(2));
@@ -164,9 +177,7 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortCapitalNumbers() {
-		String[] inputArr = new String[] { "FE8", "APP1E", "APP13", "25DA",
-				"F3B" };
-		List<String> arrayList = sortApplication.sortCapitalNumbers(inputArr);
+		List<String> arrayList = sortApplication.sortCapitalNumbers(inputArr8);
 		assertEquals("25DA", arrayList.get(0));
 		assertEquals("APP13", arrayList.get(1));
 		assertEquals("APP1E", arrayList.get(2));
@@ -180,13 +191,11 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortCapitalNumbersWithNumFlagOn() {
-		String[] inputArr = new String[] { "8FE", "1APP1E", "100APP13", "25DA",
-				"30F3B" };
 		List<String> arrayList = sortApplication
-				.sortCapitalNumberswithNumFlagOn(inputArr);
+				.sortCapitalNumberswithNumFlagOn(inputArr10);
 		assertEquals("1APP1E", arrayList.get(0));
 		assertEquals("8FE", arrayList.get(1));
-		assertEquals("25DA", arrayList.get(2));
+		assertEquals("25DAA", arrayList.get(2));
 		assertEquals("30F3B", arrayList.get(3));
 		assertEquals("100APP13", arrayList.get(4));
 	}
@@ -197,8 +206,8 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortCapitalSpecialChars() {
-		String[] inputArr = new String[] { "F**", "!F*", ")JD", "$GA", "*DE" };
-		List<String> arrayList = sortApplication.sortCapitalSpecialChars(inputArr);
+		String[] input = new String[] { "F**", "!F*", ")JD", "$GA", "*DE" };
+		List<String> arrayList = sortApplication.sortCapitalSpecialChars(input);
 		assertEquals("!F*", arrayList.get(0));
 		assertEquals("$GA", arrayList.get(1));
 		assertEquals(")JD", arrayList.get(2));
@@ -212,9 +221,8 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortNumbersSpecialChars() {
-		String[] inputArr = new String[] { "100 @", "1 &(*", "22#%!", "33 *&@",
-				"#%356" };
-		List<String> arrayList = sortApplication.sortNumbersSpecialChars(inputArr);
+		List<String> arrayList = sortApplication
+				.sortNumbersSpecialChars(inputArr5);
 		assertEquals("#%356", arrayList.get(0));
 		assertEquals("1 &(*", arrayList.get(1));
 		assertEquals("100 @", arrayList.get(2));
@@ -228,10 +236,8 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortNumbersSpecialCharsWithNumFlagOn() {
-		String[] inputArr = new String[] { "100 @", "50 @", "1 &(*", "22#%!",
-				"33 *&@", "#%356", "68!" };
 		List<String> arrayList = sortApplication
-				.sortNumbersSpecialCharsWithNumFlagOn(inputArr);
+				.sortNumbersSpecialCharsWithNumFlagOn(inputArr5);
 		assertEquals("#%356", arrayList.get(0));
 		assertEquals("1 &(*", arrayList.get(1));
 		assertEquals("22#%!", arrayList.get(2));
@@ -246,9 +252,8 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortSimpleCapitalNumber() {
-		String[] inputArr = new String[] { "ap1E", "aPp1e", "6p3aR", "6Pear",
-				"p3Ar" };
-		List<String> arrayList = sortApplication.sortSimpleCapitalNumber(inputArr);
+		List<String> arrayList = sortApplication
+				.sortSimpleCapitalNumber(inputArr9);
 		assertEquals("6Pear", arrayList.get(0));
 		assertEquals("6p3aR", arrayList.get(1));
 		assertEquals("aPp1e", arrayList.get(2));
@@ -262,15 +267,15 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortSimpleCapitalNumberWithNumFlagOn() {
-		String[] inputArr = new String[] { "ap1E", "100aPp1e", "66p3aR",
-				"1Pear", "p3Ar" };
+		String[] input = new String[] { "ap1EE", "100aPp1e", "66p3aR", "1Pear",
+				"p3Arr" };
 		List<String> arrayList = sortApplication
-				.sortSimpleCapitalNumberWithNumFlagOn(inputArr);
+				.sortSimpleCapitalNumberWithNumFlagOn(input);
 		assertEquals("1Pear", arrayList.get(0));
 		assertEquals("66p3aR", arrayList.get(1));
 		assertEquals("100aPp1e", arrayList.get(2));
-		assertEquals("ap1E", arrayList.get(3));
-		assertEquals("p3Ar", arrayList.get(4));
+		assertEquals("ap1EE", arrayList.get(3));
+		assertEquals("p3Arr", arrayList.get(4));
 	}
 
 	/**
@@ -279,10 +284,8 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortSimpleCapitalSpecialChars() {
-		String[] inputArr = new String[] { "Appl^", "APpl^", "!peAR", "!Pear",
-				"!peAr" };
 		List<String> arrayList = sortApplication
-				.sortSimpleCapitalSpecialChars(inputArr);
+				.sortSimpleCapitalSpecialChars(inputArr4);
 		assertEquals("!Pear", arrayList.get(0));
 		assertEquals("!peAR", arrayList.get(1));
 		assertEquals("!peAr", arrayList.get(2));
@@ -296,10 +299,8 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortSimpleNumbersSpecialChars() {
-		String[] inputArr = new String[] { "&23jan", "100 pea*s", "jer100 *",
-				"20 m!n", "chief) 24" };
 		List<String> arrayList = sortApplication
-				.sortSimpleNumbersSpecialChars(inputArr);
+				.sortSimpleNumbersSpecialChars(inputArr3);
 		assertEquals("&23jan", arrayList.get(0));
 		assertEquals("100 pea*s", arrayList.get(1));
 		assertEquals("20 m!n", arrayList.get(2));
@@ -313,10 +314,8 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortSimpleNumbersSpecialCharsWithNumFlagOn() {
-		String[] inputArr = new String[] { "&23jan", "100 pea*s", "jer100 *",
-				"20 m!n", "chief) 24" };
 		List<String> arrayList = sortApplication
-				.sortSimpleNumbersSpecialCharsWithNumFlagOn(inputArr);
+				.sortSimpleNumbersSpecialCharsWithNumFlagOn(inputArr3);
 		assertEquals("&23jan", arrayList.get(0));
 		assertEquals("20 m!n", arrayList.get(1));
 		assertEquals("100 pea*s", arrayList.get(2));
@@ -330,10 +329,8 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortCapitalNumbersSpecialChars() {
-		String[] inputArr = new String[] { "AP1#E", "APP1E#", "6P3@R", "6PE@R",
-				"&P3AL", "100 AP1#E", "30 AP1#E" };
 		List<String> arrayList = sortApplication
-				.sortCapitalNumbersSpecialChars(inputArr);
+				.sortCapitalNumbersSpecialChars(inputArr2);
 		assertEquals("&P3AL", arrayList.get(0));
 		assertEquals("100 AP1#E", arrayList.get(1));
 		assertEquals("30 AP1#E", arrayList.get(2));
@@ -349,10 +346,8 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortCapitalNumbersSpecialCharsWithNumFlag() {
-		String[] inputArr = new String[] { "AP1#E", "APP1E#", "6P3@R", "6PE@R",
-				"&P3AL", "100 AP1#E", "30 AP1#E" };
 		List<String> arrayList = sortApplication
-				.sortCapitalNumbersSpecialCharsWithNumFlagOn(inputArr);
+				.sortCapitalNumbersSpecialCharsWithNumFlagOn(inputArr2);
 		assertEquals("&P3AL", arrayList.get(0));
 		assertEquals("6P3@R", arrayList.get(1));
 		assertEquals("6PE@R", arrayList.get(2));
@@ -369,9 +364,7 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortAll() {
-		String[] inputArr = new String[] { "100 B*anana", "20 B*anana",
-				"#B@n@n0", "P3@r", "p3@R" };
-		List<String> arrayList = sortApplication.sortAll(inputArr);
+		List<String> arrayList = sortApplication.sortAll(inputArr1);
 		assertEquals("#B@n@n0", arrayList.get(0));
 		assertEquals("100 B*anana", arrayList.get(1));
 		assertEquals("20 B*anana", arrayList.get(2));
@@ -385,9 +378,8 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortAllNumFlagOn() {
-		String[] inputArr = new String[] { "100 B*anana", "20 B*anana",
-				"#B@n@n0", "P3@r", "p3@R" };
-		List<String> arrayList = sortApplication.sortAllWithNumFlagOn(inputArr);
+		List<String> arrayList = sortApplication
+				.sortAllWithNumFlagOn(inputArr1);
 		assertEquals("#B@n@n0", arrayList.get(0));
 		assertEquals("20 B*anana", arrayList.get(1));
 		assertEquals("100 B*anana", arrayList.get(2));

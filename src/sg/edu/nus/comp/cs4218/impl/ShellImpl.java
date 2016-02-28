@@ -363,7 +363,7 @@ public class ShellImpl implements Shell {
 	 *         actual result
 	 */
 	@Override
-	public String pipeTwoCommands(String[] args) {
+	public String pipeTwoCommands(String... args) {
 		return pipeCaller(args);
 	}
 
@@ -375,7 +375,7 @@ public class ShellImpl implements Shell {
 	 *         actual result
 	 */
 	@Override
-	public String pipeMultipleCommands(String[] args) {
+	public String pipeMultipleCommands(String... args) {
 		return pipeCaller(args);
 	}
 
@@ -391,7 +391,7 @@ public class ShellImpl implements Shell {
 	 *         actual result
 	 */
 	@Override
-	public String pipeWithException(String[] args) {
+	public String pipeWithException(String... args) {
 		return pipeCaller(args);
 
 	}
@@ -403,7 +403,7 @@ public class ShellImpl implements Shell {
 	 * @return string the string could return the exception message or the
 	 *         actual result
 	 */
-	private String pipeCaller(String[] args) {
+	private String pipeCaller(String... args) {
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		String result = "";
 		String joinedStr = String.join(" ", args);

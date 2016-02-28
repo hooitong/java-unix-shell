@@ -6,6 +6,7 @@ import java.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class CallCommandTest {
@@ -171,7 +172,12 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testExtractInputRedir() throws Exception {
-		fail("To be written for EF2");
+		String stringToTest = "sort ­n < file1.txt > file2.txt";
+		Vector<String> cmdVector = new Vector<String>();
+		cmdVector.addElement("");
+		cmdVector.addElement("");
+        stubCommand.extractInputRedir(stringToTest, cmdVector, 8);
+        assertEquals(cmdVector.get(0),"file1.txt");
 	}
 
 	/**
@@ -182,7 +188,12 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testExtractOutputRedir() throws Exception {
-		fail("To be written for EF2");
+		String stringToTest = "sort ­n < file1.txt > file2.txt";
+		Vector<String> cmdVector = new Vector<String>();
+		cmdVector.addElement("");
+		cmdVector.addElement("");
+        stubCommand.extractOutputRedir(stringToTest, cmdVector, 20);
+        assertEquals(cmdVector.get(1),"file2.txt");
 	}
 
 	/**

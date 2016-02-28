@@ -21,6 +21,8 @@ public class CommApplicationTest {
 
 	private static final String NEW_LINE = System.lineSeparator();
 	private static final String TAB_LINE = "\t";
+	private static String col1Result, col2Result, col3Result, bothMatchResult,
+			noMatchResult;
 
 	private static CommApplication caTest;
 	private static String[] args;
@@ -29,50 +31,64 @@ public class CommApplicationTest {
 	public static void setUpBeforeClass() throws Exception {
 		caTest = new CommApplication();
 		args = new String[] { "file1.txt", "file2.txt" };
+		col1Result = (TAB_LINE + NEW_LINE + TAB_LINE + NEW_LINE + TAB_LINE
+				+ NEW_LINE + "eggplant" + NEW_LINE + TAB_LINE);
+		col2Result = (TAB_LINE + NEW_LINE + TAB_LINE + NEW_LINE + "banana"
+				+ NEW_LINE + TAB_LINE + NEW_LINE + "zucchini");
+		col3Result = ("apple" + NEW_LINE + "banana" + NEW_LINE + TAB_LINE
+				+ NEW_LINE + TAB_LINE + NEW_LINE + TAB_LINE);
+
+		String[] col1ResultArr = col1Result.split(NEW_LINE);
+		String[] col2ResultArr = col2Result.split(NEW_LINE);
+		String[] col3ResultArr = col3Result.split(NEW_LINE);
+		StringBuilder sbBoth = new StringBuilder("");
+		StringBuilder sbNone = new StringBuilder("");
+		for (int i = 0; i < col1ResultArr.length - 1; i++) {
+			sbBoth.append(col1ResultArr[i]).append(col2ResultArr[i])
+					.append(col3ResultArr[i]).append(NEW_LINE);
+			sbNone.append(col1ResultArr[i]).append(col2ResultArr[i])
+					.append(NEW_LINE);
+		}
+		sbBoth.append(col1ResultArr[col1ResultArr.length - 1])
+				.append(col2ResultArr[col2ResultArr.length - 1])
+				.append(col3ResultArr[col3ResultArr.length - 1]);
+		sbNone.append(col1ResultArr[col1ResultArr.length - 1]).append(
+				col2ResultArr[col2ResultArr.length - 1]);
+		bothMatchResult = sbBoth.toString();
+		noMatchResult = sbNone.toString();
 	}
 
 	@Test
 	public void testCommNoMatches() {
-		String expectedResult = (TAB_LINE + TAB_LINE + NEW_LINE + TAB_LINE
-				+ TAB_LINE + NEW_LINE + TAB_LINE + "banana" + NEW_LINE
-				+ "eggplant" + TAB_LINE + NEW_LINE + TAB_LINE + "zucchini");
 		String actualResult = caTest.commNoMatches(args);
-		assertEquals(expectedResult, actualResult);
+		assertEquals(noMatchResult, actualResult);
 
 	}
 
 	@Test
 	public void testCommOnlyFirst() {
-		String expectedResult = (TAB_LINE + NEW_LINE + TAB_LINE + NEW_LINE
-				+ TAB_LINE + NEW_LINE + "eggplant" + NEW_LINE + TAB_LINE);
 		String actualResult = caTest.commOnlyFirst(args);
-		assertEquals(expectedResult, actualResult);
+		assertEquals(col1Result, actualResult);
 	}
 
 	@Test
 	public void testCommOnlySecond() {
-		String expectedResult = (TAB_LINE + NEW_LINE + TAB_LINE + NEW_LINE
-				+ "banana" + NEW_LINE + TAB_LINE + NEW_LINE + "zucchini");
 		String actualResult = caTest.commOnlySecond(args);
-		assertEquals(expectedResult, actualResult);
+		assertEquals(col2Result, actualResult);
 	}
 
 	@Test
 	public void testCommBothMathches() {
-		String expectedResult = (TAB_LINE + TAB_LINE + "apple" + NEW_LINE
-				+ TAB_LINE + TAB_LINE + "banana" + NEW_LINE + TAB_LINE
-				+ "banana" + TAB_LINE + NEW_LINE + "eggplant" + TAB_LINE
-				+ TAB_LINE + NEW_LINE + TAB_LINE + "zucchini" + TAB_LINE);
 		String actualResult = caTest.commBothMathches(args);
-		assertEquals(expectedResult, actualResult);
+		System.out.println(bothMatchResult);
+		assertEquals(bothMatchResult, actualResult);
 	}
 
 	@Test
 	public void testCommAllMatches() {
-		String expectedResult = ("apple" + NEW_LINE + "banana" + NEW_LINE
-				+ TAB_LINE + NEW_LINE + TAB_LINE + NEW_LINE + TAB_LINE);
+
 		String actualResult = caTest.commAllMatches(args);
-		assertEquals(expectedResult, actualResult);
+		assertEquals(col3Result, actualResult);
 	}
 
 	/**
@@ -83,13 +99,8 @@ public class CommApplicationTest {
 	@Test
 	public void testRun() throws CommException {
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-		;
-		String expectedResult = (TAB_LINE + TAB_LINE + "apple" + NEW_LINE
-				+ TAB_LINE + TAB_LINE + "banana" + NEW_LINE + TAB_LINE
-				+ "banana" + TAB_LINE + NEW_LINE + "eggplant" + TAB_LINE
-				+ TAB_LINE + NEW_LINE + TAB_LINE + "zucchini" + TAB_LINE);
 		caTest.run(args, null, stdout);
-		assertEquals(expectedResult, stdout.toString());
+		assertEquals(bothMatchResult, stdout.toString());
 	}
 
 	/**
@@ -101,14 +112,11 @@ public class CommApplicationTest {
 	public void testRunWithStdin() throws CommException {
 		String contentStr = "apple" + NEW_LINE + "banana" + NEW_LINE
 				+ "eggplant";
-		InputStream inputStream = new java.io.ByteArrayInputStream(contentStr.getBytes());
+		InputStream inputStream = new java.io.ByteArrayInputStream(
+				contentStr.getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		String[] args2 = new String[] { "file2.txt" };
-		String expectedResult = (TAB_LINE + TAB_LINE + "apple" + NEW_LINE
-				+ TAB_LINE + TAB_LINE + "banana" + NEW_LINE + TAB_LINE
-				+ "banana" + TAB_LINE + NEW_LINE + "eggplant" + TAB_LINE
-				+ TAB_LINE + NEW_LINE + TAB_LINE + "zucchini" + TAB_LINE);
 		caTest.run(args2, inputStream, stdout);
-		assertEquals(expectedResult, stdout.toString());
+		assertEquals(bothMatchResult, stdout.toString());
 	}
 };

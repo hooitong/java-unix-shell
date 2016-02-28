@@ -34,6 +34,11 @@ public class DateApplicationTest
 		bis = new ByteArrayInputStream("This is a test string".getBytes());
 	}
 	
+	/**
+     *  Test the one and only default case
+     *
+     * @throws Exception
+     */
 	@Test
 	public final void testRun() throws DateException 
 	{	

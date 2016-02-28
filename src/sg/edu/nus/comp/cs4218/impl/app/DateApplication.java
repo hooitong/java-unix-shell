@@ -52,7 +52,7 @@ public class DateApplication implements Application
 		} 
 		catch (IOException e) 
 		{
-			throw new DateException("Error writing to the outputstream");
+			throw new DateException(e);
 		}
 	}
 	

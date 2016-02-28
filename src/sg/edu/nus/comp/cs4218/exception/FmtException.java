@@ -6,6 +6,11 @@ public class FmtException extends AbstractApplicationException
 
 	public FmtException(String message) 
 	{
-		super("tail: " + message);
+		super("fmt: " + message);
+	}
+	
+	public FmtException(Exception excep) 
+	{
+		super("fmt: " + excep.getMessage());
 	}
 }

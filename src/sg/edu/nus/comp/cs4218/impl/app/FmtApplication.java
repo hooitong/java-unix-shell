@@ -162,8 +162,8 @@ public class FmtApplication implements Application {
 
 		try {
 			wrapWidth = Integer.parseInt(wrapWidthString);
-		} catch (NumberFormatException nfe) {
-			throw new FmtException("Wrap width not a number");
+		} catch (NumberFormatException e) {
+			throw new FmtException(e);
 		}
 		if (wrapWidth < 1) {
 			throw new FmtException("Wrap width should be at least 1");
@@ -189,7 +189,7 @@ public class FmtApplication implements Application {
 		try {
 			stdout.write(stringToWrite.getBytes(CHARSET_UTF_8));
 		} catch (IOException e) {
-			throw new FmtException("Error writing to stdout");
+			throw new FmtException(e);
 		}
 	}
 
@@ -217,7 +217,7 @@ public class FmtApplication implements Application {
 
 			buffReader.close();
 		} catch (IOException e) {
-			throw new FmtException("Error reading from file");
+			throw new FmtException(e);
 		}
 
 		return concatString;
@@ -250,7 +250,7 @@ public class FmtApplication implements Application {
 
 			buffReader.close();
 		} catch (Exception e) {
-			throw new FmtException("Error reading from stdin");
+			throw new FmtException(e);
 		}
 
 		return concatString;
