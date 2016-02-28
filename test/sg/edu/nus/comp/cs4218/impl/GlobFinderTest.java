@@ -1,5 +1,7 @@
 package sg.edu.nus.comp.cs4218.impl;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,53 +24,56 @@ public class GlobFinderTest {
 		nestedFinder = new GlobFinder(mockMultiPattern, mockRootDirectory);
 	}
 
-    /**
-     * Test a simple glob pattern (non-nested) on a valid file that should be matched.
-     *
-     * @throws Exception
-     */
+	/**
+	 * Test a simple glob pattern (non-nested) on a valid file that should be
+	 * matched.
+	 *
+	 * @throws Exception
+	 */
 	@Test
 	public void testValidGlobFind() throws Exception {
 		Path mockAbsolutePath = Paths.get(mockRootDirectory + "/quantum.txt");
 		singleFinder.globFind(mockAbsolutePath);
-		assert (!singleFinder.getResults().isEmpty());
-		assert (singleFinder.getResults().get(0).equals(mockAbsolutePath.toString()));
+		assertTrue(!singleFinder.getResults().isEmpty());
+		assertTrue(singleFinder.getResults().get(0).equals(mockAbsolutePath.toString()));
 	}
 
-    /**
-     *  Test a simple glob pattern (non-nested) on a invalid file that should not be matched.
-     *
-     * @throws Exception
-     */
+	/**
+	 * Test a simple glob pattern (non-nested) on a invalid file that should not
+	 * be matched.
+	 *
+	 * @throws Exception
+	 */
 	@Test
 	public void testInvalidGlobFind() throws Exception {
 		Path mockAbsolutePath = Paths.get(mockRootDirectory + "/tango/Kat.cpp");
 		singleFinder.globFind(mockAbsolutePath);
-		assert (singleFinder.getResults().isEmpty());
+		assertTrue(singleFinder.getResults().isEmpty());
 	}
 
-    /**
-     *  Test a glob pattern (nested) on a valid file that should be matched.
-     *
-     * @throws Exception
-     */
+	/**
+	 * Test a glob pattern (nested) on a valid file that should be matched.
+	 *
+	 * @throws Exception
+	 */
 	@Test
 	public void testValidNestedGlobFind() throws Exception {
 		Path mockAbsolutePath = Paths.get(mockRootDirectory + "/21-herb/hola/kappa.txt");
 		nestedFinder.globFind(mockAbsolutePath);
-		assert (!nestedFinder.getResults().isEmpty());
-		assert(nestedFinder.getResults().get(0).equals(mockAbsolutePath.toString()));
+		assertTrue(!nestedFinder.getResults().isEmpty());
+		assertTrue(nestedFinder.getResults().get(0).equals(mockAbsolutePath.toString()));
 	}
 
-    /**
-     *  Test a glob pattern (nested) on a invalid file that should not be matched.
-     *
-     * @throws Exception
-     */
+	/**
+	 * Test a glob pattern (nested) on a invalid file that should not be
+	 * matched.
+	 *
+	 * @throws Exception
+	 */
 	@Test
 	public void testInvalidNestedGlobFind() throws Exception {
 		Path mockRelativePath = Paths.get("apple/vadar.txt");
 		nestedFinder.globFind(mockRelativePath);
-		assert (nestedFinder.getResults().isEmpty());
+		assertTrue(nestedFinder.getResults().isEmpty());
 	}
 }

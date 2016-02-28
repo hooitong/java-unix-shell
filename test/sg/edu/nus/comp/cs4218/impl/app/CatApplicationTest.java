@@ -93,7 +93,7 @@ public class CatApplicationTest {
 	public void runCAppWithStdin0D() throws CatException {
 		try {
 			args = new String[1];
-			args[0] = TEXT_INPUT2_TXT;
+			args[0] = filePath + TEXT_INPUT2_TXT;
 			filePath += TEXT_INPUT_TXT;
 			input = new FileInputStream(filePath);
 			cApp.run(args, input, null);
@@ -156,7 +156,7 @@ public class CatApplicationTest {
 	public void runCAppWithStdin2A(){
 	try{
 		args = new String[1];
-		args[0] = ONELINETXT;
+		args[0] = filePath + ONELINETXT;
 		output = new ByteArrayOutputStream();
 		cApp.run(args, null, output);
 		assertEquals(output.toString(), expectedOutput3());
@@ -205,7 +205,7 @@ public class CatApplicationTest {
 	public void runCAppWithStdin2D(){
 		try{
 			args = new String[1];
-			args[0] = EMPTYFILE;
+			args[0] = filePath + EMPTYFILE;
 			output = new ByteArrayOutputStream();
 			cApp.run(args, null, output);
 			assertEquals(output.toString(), "");
@@ -238,9 +238,9 @@ public class CatApplicationTest {
 	public void runCAppWithStdin3B() throws CatException {
 
 		args = new String[3];
-		args[0] = ONELINETXT;
-		args[1] = EMPTYFILE;
-		args[2] = TEXT_INPUT2_TXT;
+		args[0] = filePath + ONELINETXT;
+		args[1] = filePath + EMPTYFILE;
+		args[2] = filePath + TEXT_INPUT2_TXT;
 		output = new ByteArrayOutputStream();
 		cApp.run(args, null, output);
 		assertEquals(output.toString(), expectedOutput3() + "\n" + expectedOutput2());
@@ -257,8 +257,8 @@ public class CatApplicationTest {
 
 			args = new String[3];
 			args[0] = "filezzzz.txt";
-			args[1] = ONELINETXT;
-			args[2] = TEXT_INPUT2_TXT;
+			args[1] = filePath + ONELINETXT;
+			args[2] = filePath + TEXT_INPUT2_TXT;
 			output = new ByteArrayOutputStream();
 			cApp.run(args, null, output);
 		

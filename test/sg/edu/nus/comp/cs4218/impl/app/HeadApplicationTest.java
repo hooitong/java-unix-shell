@@ -391,7 +391,7 @@ public class HeadApplicationTest {
 
 		try {
 			args = new String[1];
-			args[0] = TEXTINPUT_EMPTY;
+			args[0] = filePath + TEXTINPUT_EMPTY;
 			output = new ByteArrayOutputStream();
 			hApp.readFromArgsAndWriteToStdout(args, output, 0);
 			assertEquals(output.toString(), "");
@@ -407,7 +407,7 @@ public class HeadApplicationTest {
 
 		try {
 			args = new String[1];
-			args[0] = TEXTINPUT_TXT;
+			args[0] = filePath + TEXTINPUT_TXT;
 			output = new ByteArrayOutputStream();
 			hApp.readFromArgsAndWriteToStdout(args, output, 0);
 			assertEquals(output.toString(), "");
@@ -423,7 +423,7 @@ public class HeadApplicationTest {
 
 		try {
 			args = new String[1];
-			args[0] = TEXTINPUT_TXT;
+			args[0] = filePath + TEXTINPUT_TXT;
 			output = new ByteArrayOutputStream();
 			hApp.readFromArgsAndWriteToStdout(args, output, 5);
 			assertEquals(output.toString(), expectedOutput1());
@@ -450,7 +450,7 @@ public class HeadApplicationTest {
 
 		try {
 			args = new String[3];
-			args[2] = TEXTINPUT_TXT;
+			args[2] = filePath + TEXTINPUT_TXT;
 			output = new ByteArrayOutputStream();
 			hApp.readFromArgsAndWriteToStdout(args, output, 5);
 			assertEquals(output.toString(), expectedOutput1());
@@ -525,7 +525,7 @@ public class HeadApplicationTest {
 	@Test(expected = HeadException.class)
 	public void testrun0B() throws HeadException {
 		args = new String[1];
-		args[0] = TEXTINPUT_TXT;
+		args[0] = filePath + TEXTINPUT_TXT;
 		try {
 			input = new FileInputStream(filePath + TEXTINPUT_TXT);
 		} catch (FileNotFoundException e) {
@@ -538,7 +538,7 @@ public class HeadApplicationTest {
 	@Test(expected = HeadException.class)
 	public void testrun0C() throws HeadException {
 		args = new String[1];
-		args[0] = TEXTINPUT_TXT;
+		args[0] = filePath + TEXTINPUT_TXT;
 		try {
 			input = new FileInputStream(filePath + TEXTINPUT_TXT);
 		} catch (FileNotFoundException e) {
@@ -551,7 +551,7 @@ public class HeadApplicationTest {
 	@Test(expected = HeadException.class)
 	public void testrun0D() throws HeadException {
 		args = new String[1];
-		args[0] = TEXTINPUT_TXT;
+		args[0] = filePath + TEXTINPUT_TXT;
 		try {
 			input = new FileInputStream(filePath + TEXTINPUT_TXT);
 		} catch (FileNotFoundException e) {
@@ -572,7 +572,7 @@ public class HeadApplicationTest {
 	@Test
 	public void testrun1() {
 		args = new String[1];
-		args[0] = TEXTINPUT2_TXT;
+		args[0] = filePath + TEXTINPUT2_TXT;
 		output = new ByteArrayOutputStream();
 		try {
 			hApp.run(args, null, output);
@@ -587,7 +587,7 @@ public class HeadApplicationTest {
 	@Test
 	public void testrun1B() {
 		args = new String[1];
-		args[0] = TEXTINPUT_TXT;
+		args[0] = filePath + TEXTINPUT_TXT;
 		output = new ByteArrayOutputStream();
 		try {
 			hApp.run(args, null, output);
@@ -614,7 +614,7 @@ public class HeadApplicationTest {
 		args = new String[3];
 		args[0] = "-n";
 		args[1] = "5";
-		args[2] = TEXTINPUT2_TXT;
+		args[2] = filePath + TEXTINPUT2_TXT;
 		output = new ByteArrayOutputStream();
 		try {
 			hApp.run(args, null, output);
@@ -631,7 +631,7 @@ public class HeadApplicationTest {
 		args = new String[3];
 		args[0] = "--n";
 		args[1] = "5";
-		args[2] = TEXTINPUT2_TXT;
+		args[2] = filePath + TEXTINPUT2_TXT;
 		output = new ByteArrayOutputStream();
 		hApp.run(args, null, output);
 
@@ -645,7 +645,7 @@ public class HeadApplicationTest {
 		args = new String[3];
 		args[0] = "-n";
 		args[1] = "hjadhas";
-		args[2] = TEXTINPUT2_TXT;
+		args[2] = filePath + TEXTINPUT2_TXT;
 		output = new ByteArrayOutputStream();
 		hApp.run(args, null, output);
 
@@ -659,7 +659,7 @@ public class HeadApplicationTest {
 		args = new String[3];
 		args[0] = "-n";
 		args[1] = "5";
-		args[2] = "non.txt";
+		args[2] = filePath + "non.txt";
 		output = new ByteArrayOutputStream();
 		hApp.run(args, null, output);
 
@@ -674,7 +674,7 @@ public class HeadApplicationTest {
 		args[1] = " ";
 		args[2] = "2";
 		args[3] = "non";
-		args[4] = ".txt";
+		args[4] = filePath + ".txt";
 		output = new ByteArrayOutputStream();
 		hApp.run(args, null, output);
 

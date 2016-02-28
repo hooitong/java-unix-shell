@@ -39,6 +39,6 @@ public class CalApplication implements Cal {
 
     @Override
     public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
-
+    	throw new UnsupportedOperationException();
     }
 }

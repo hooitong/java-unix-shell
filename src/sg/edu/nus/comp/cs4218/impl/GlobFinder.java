@@ -39,7 +39,9 @@ public class GlobFinder extends SimpleFileVisitor<Path> {
 	}
 
 	private String separatorsToSystem(String path) {
-		if (path == null) return null;
+		if (path == null) {
+			return null;
+		}
 		/* If Windows System */
 		if (File.separatorChar == '\\') {
 			return path.replace('/', File.separatorChar).replace("\\", "\\\\");
