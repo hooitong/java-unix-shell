@@ -7,4 +7,8 @@ public class PipeCommandException extends AbstractApplicationException {
 	public PipeCommandException(String message) {
 		super("pipe: " + message);
 	}
+
+	public PipeCommandException(String message, Exception exception) {
+		super("pipe: " + message);
+	}
 }

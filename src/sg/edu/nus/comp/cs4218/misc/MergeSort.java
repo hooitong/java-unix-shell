@@ -3,6 +3,11 @@ package sg.edu.nus.comp.cs4218.misc;
 public class MergeSort {
 	private static final int ZERO = 0;
 	private static final int WHITESPACE = 32;
+	private final boolean numFlag;
+
+	public MergeSort(boolean numFlag) {
+		this.numFlag = numFlag;
+	}
 
 	/**
 	 * Uses the merge sort algorithm. Start by dividing them before calling
@@ -18,17 +23,17 @@ public class MergeSort {
 	 *            set true to enable alphanum ordering
 	 * @return an sorted array
 	 */
-	public static String[] mergeSort(String[] toSort, int pos1, int pos2,
-			boolean numFlag) {
+	public  String[] mergeSort(String[] toSort, int pos1, int pos2
+			 ) {
 		int front = pos1;
 		int mid = 0;
 		int back = pos2;
 
 		if (front < back) {
 			mid = (front + back) / 2;
-			mergeSort(toSort, front, mid, numFlag);
-			mergeSort(toSort, mid + 1, back, numFlag);
-			merge(toSort, front, mid, back, numFlag);
+			mergeSort(toSort, front, mid);
+			mergeSort(toSort, mid + 1, back);
+			merge(toSort, front, mid, back);
 		}
 
 		return toSort;
@@ -50,15 +55,15 @@ public class MergeSort {
 	 *            set true to enable alphanum ordering
 	 * @return an sorted array
 	 */
-	public static void merge(String[] toSort, int front, int mid, int back,
-			boolean numFlag) {
+	public  void merge(String[] toSort, int front, int mid, int back
+			 ) {
 		int rightOfMid = mid + 1;
 		int left = front;
 		int iterate = 0;
 		String[] tempArr = new String[back - front + 1];
 
 		while (left <= mid && rightOfMid <= back) {
-			if (numFlag) {// alphanum
+			if (this.numFlag) {// alphanum
 				if (compareIncludeNumOrder(toSort[left], toSort[rightOfMid]) <= 0) {
 					tempArr[iterate++] = toSort[left++];
 				} else {
@@ -93,7 +98,7 @@ public class MergeSort {
 	 *            input string
 	 * @return a string
 	 */
-	public static String extractFirstNumberWordFromLine(String line) {
+	public  String extractFirstNumberWordFromLine(String line) {
 		String result = "";
 		result = checkIfStringIsDigit(line);
 		result = checkIfWordIsDigitLastResort(line, result);
@@ -110,19 +115,19 @@ public class MergeSort {
 	 *            an empty string if the input line does not consists of numbers
 	 * @return the first word of a string that is a number
 	 */
-	private static String checkIfWordIsDigitLastResort(String line,
+	private  String checkIfWordIsDigitLastResort(String line,
 			String result) {
 		String assumedNumberWord = "";
 		StringBuilder stringBuilder = new StringBuilder("");
 		if (result.isEmpty()) {
 			for (int i = 0; i < line.length(); i++) {
-				if(!Character.isDigit(line.charAt(i))){
+				if (!Character.isDigit(line.charAt(i))) {
 					break;
 				}
 				stringBuilder.append(line.charAt(i));
 			}
 			assumedNumberWord = stringBuilder.toString();
-		}else{
+		} else {
 			assumedNumberWord = result;
 		}
 		return assumedNumberWord;
@@ -135,7 +140,7 @@ public class MergeSort {
 	 *            input string
 	 * @return the orginal string
 	 */
-	private static String checkIfStringIsDigit(String line) {
+	private  String checkIfStringIsDigit(String line) {
 		String result = "";
 		int count = 0;
 		for (int i = 0; i < line.length(); i++) {
@@ -158,7 +163,7 @@ public class MergeSort {
 	 *            second input string
 	 * @return int
 	 */
-	public static int compareIncludeNumOrder(String str1, String str2) {
+	public  int compareIncludeNumOrder(String str1, String str2) {
 		if (str1.isEmpty() && !str2.isEmpty()) {
 			return -1;
 		} else if (!str1.isEmpty() && str2.isEmpty()) {
@@ -174,20 +179,20 @@ public class MergeSort {
 	 * @param str2
 	 * @return int
 	 */
-	private static int checkOnlyAtFirstNumWord(String str1, String str2) {
+	private  int checkOnlyAtFirstNumWord(String str1, String str2) {
 		String assumedNumStr1;
 		String assumedNumStr2;
 		assumedNumStr1 = extractFirstNumberWordFromLine(str1);
 		assumedNumStr2 = extractFirstNumberWordFromLine(str2);
 
-		if (!assumedNumStr1.isEmpty() && !assumedNumStr2.isEmpty()) {
+		if (assumedNumStr1.length() > 0 && assumedNumStr2.length() > 0) {
 			if (assumedNumStr1.compareTo(assumedNumStr2) == 0) {
 				return str1.compareTo(str2);
 			} else {
 				return Integer.parseInt(assumedNumStr1)
 						- Integer.parseInt(assumedNumStr2);
 			}
-		}else{
+		} else {
 			return str1.compareTo(str2);
 		}
 	}
