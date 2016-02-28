@@ -19,9 +19,23 @@ public class ShellImplTest {
         mockShell = new ShellImpl();
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Test
-    public void testProcessBQ() throws Exception {
+    public void testProcessBQOnly() throws Exception {
         fail("To be written for EF2");
+    }
+
+    @Test
+    public void testProcessBQNested() throws Exception {
+
+    }
+
+    @Test
+    public void testProcessBQInvalid() throws Exception {
+
     }
 
     /**
@@ -132,20 +146,5 @@ public class ShellImplTest {
         String cmdline = "test; ";
         Command mockCommand = ShellImpl.parse(cmdline);
         fail("Should be throwing exception due to invalid syntax");
-    }
-
-    @Test
-    public void testPipeTwoCommands() throws Exception {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    public void testPipeMultipleCommands() throws Exception {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    public void testPipeWithException() throws Exception {
-        fail("Not yet implemented");
     }
 }
