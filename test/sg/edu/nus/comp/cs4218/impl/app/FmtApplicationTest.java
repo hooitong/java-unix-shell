@@ -23,7 +23,7 @@ public class FmtApplicationTest
 	private static FmtApplication fmtApplication;
 	private static final String NEW_LINE = System.lineSeparator();
 	private static ByteArrayOutputStream baos;
-	private static String FILE_TO_READ = "sample.txt";
+	private static String fileToRead = "sample.txt";
 	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
@@ -64,7 +64,7 @@ public class FmtApplicationTest
 	    exception.expect(FmtException.class);
 	    exception.expectMessage("Wrap width should be at least 1");
 	    
-		String[] arguments = {"-w","-50",FILE_TO_READ};
+		String[] arguments = {"-w","-50",fileToRead};
 		fmtApplication.run(arguments, null, baos);
 	}
 	
@@ -74,7 +74,7 @@ public class FmtApplicationTest
 	    exception.expect(FmtException.class);
 	    exception.expectMessage("Wrap width should be at least 1");
 	    
-		String[] arguments = {"-w","0",FILE_TO_READ};
+		String[] arguments = {"-w","0",fileToRead};
 		fmtApplication.run(arguments, null, baos);
 	}
 	
@@ -84,7 +84,7 @@ public class FmtApplicationTest
 	    exception.expect(FmtException.class);
 	    exception.expectMessage("Wrap width not a number");
 	    
-		String[] arguments = {"-w","ad3",FILE_TO_READ};
+		String[] arguments = {"-w","ad3",fileToRead};
 		fmtApplication.run(arguments, null, baos);
 	}
 	
@@ -94,7 +94,7 @@ public class FmtApplicationTest
 	    exception.expect(FmtException.class);
 	    exception.expectMessage("Incorrect flag used to denote number of lines to print");
 	    
-		String[] arguments = {"-n","50",FILE_TO_READ};
+		String[] arguments = {"-n","50",fileToRead};
 		fmtApplication.run(arguments, null, baos);
 	}
 	

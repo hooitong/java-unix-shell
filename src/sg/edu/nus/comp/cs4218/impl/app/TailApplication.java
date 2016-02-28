@@ -125,7 +125,7 @@ public class TailApplication implements Application {
 		try {
 			numLines = Integer.parseInt(numLinesString);
 		} catch (NumberFormatException nfe) {
-			throw new TailException("Number of lines not a number");
+			throw new TailException(nfe);
 		}
 		if (numLines < 0) {
 			throw new TailException("Number of lines should be at least 0");
@@ -203,7 +203,7 @@ public class TailApplication implements Application {
 				}
 			}
 		} catch (IOException e) {
-			throw new TailException("Error writing to stdout");
+			throw new TailException(e);
 		}
 	}
 
@@ -231,7 +231,7 @@ public class TailApplication implements Application {
 
 			buffReader.close();
 		} catch (IOException e) {
-			throw new TailException("Error reading from file");
+			throw new TailException(e);
 		}
 		return textToExtract;
 	}
@@ -260,8 +260,8 @@ public class TailApplication implements Application {
 			}
 
 			buffReader.close();
-		} catch (Exception e) {
-			throw new TailException("Error reading from stdin");
+		} catch (IOException e) {
+			throw new TailException(e);
 		}
 
 		return textToExtract;

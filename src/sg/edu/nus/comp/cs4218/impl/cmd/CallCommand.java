@@ -262,7 +262,7 @@ public class CallCommand implements Command {
 
 		int newEndIdx = endIdx;
 		Pattern inputRedirP = Pattern
-				.compile("[\\s]+<[\\s]+(([^\\n\"`'<>]*))[\\s]");
+				.compile("[\\s]*<[\\s]*(([^\\n\"`'<>]*))[\\s]");
 		Matcher inputRedirM;
 		String inputRedirS = "";
 		int cmdVectorIndex = cmdVector.size() - 2;
@@ -275,7 +275,7 @@ public class CallCommand implements Command {
 					throw new ShellException(EXP_SYNTAX);
 				}
 				inputRedirS = inputRedirM.group(1);
-				cmdVector.set(cmdVectorIndex, inputRedirS);
+				cmdVector.set(cmdVectorIndex, inputRedirS.replace(String.valueOf((char) 160), " ").trim());
 				newEndIdx = newEndIdx + inputRedirM.end() - 1;
 			} else {
 				break;
@@ -318,7 +318,7 @@ public class CallCommand implements Command {
 
 		int newEndIdx = endIdx;
 		Pattern inputRedirP = Pattern
-				.compile("[\\s]+>[\\s]+(([^\\n\"`'<>]*))[\\s]");
+				.compile("[\\s]*>[\\s]*(([^\\n\"`'<>]*))[\\s]*");
 		Matcher inputRedirM;
 		String inputRedirS = "";
 		int cmdVectorIdx = cmdVector.size() - 1;
@@ -331,7 +331,7 @@ public class CallCommand implements Command {
 					throw new ShellException(EXP_SYNTAX);
 				}
 				inputRedirS = inputRedirM.group(1);
-				cmdVector.set(cmdVectorIdx, inputRedirS);
+				cmdVector.set(cmdVectorIdx, inputRedirS.replace(String.valueOf((char) 160), " ").trim());
 				newEndIdx = newEndIdx + inputRedirM.end() - 1;
 			} else {
 				break;
@@ -394,3 +394,8 @@ public class CallCommand implements Command {
 	}
 
 }
+
+//strange white space
+//http://stackoverflow.com/questions/23974982/cant-trim-or-replaceall-a-strange-whitespace
+//Question by : http://stackoverflow.com/users/558559/crayl
+//Answer by : http://stackoverflow.com/users/558559/crayl
