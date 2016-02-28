@@ -1,14 +1,13 @@
 package sg.edu.nus.comp.cs4218.impl.cmd;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayOutputStream;
 import java.nio.file.Paths;
 import java.util.Vector;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class CallCommandTest {
 	private static final String TEMPLATE_ARGS = " %s ";
@@ -36,7 +35,7 @@ public class CallCommandTest {
 		testCommand.parse();
 		testCommand.evaluate(System.in, stubOutput);
 		String evaluatedString = new String(stubOutput.toByteArray(), "UTF-8").trim();
-		assert (evaluatedString.equals(expectedArgument));
+		assertTrue(evaluatedString.equals(expectedArgument));
 	}
 
 	/**
@@ -52,9 +51,9 @@ public class CallCommandTest {
 		String cmdline = mockApplication + " " + expectedArgument;
 		CallCommand testCommand = new CallCommand(cmdline);
 		testCommand.parse();
-		assert (testCommand.argsArray.length == 1);
-		assert (testCommand.argsArray[0].equals(expectedArgument));
-		assert (testCommand.app.equals(mockApplication));
+		assertTrue(testCommand.argsArray.length == 1);
+		assertTrue(testCommand.argsArray[0].equals(expectedArgument));
+		assertTrue(testCommand.app.equals(mockApplication));
 	}
 
 	/**
@@ -67,8 +66,8 @@ public class CallCommandTest {
 		String expectedArgument = "apple/3222.txt";
 		String cmdline = "cat " + expectedArgument;
 		stubCommand.extractArgs(String.format(TEMPLATE_ARGS, cmdline), testVector);
-		assert (testVector.size() == 2);
-		assert (testVector.get(1).equals(expectedArgument));
+		assertTrue(testVector.size() == 2);
+		assertTrue(testVector.get(1).equals(expectedArgument));
 	}
 
 	/**
@@ -82,8 +81,8 @@ public class CallCommandTest {
 		String expectedArgument = "apple is good for health ; |";
 		String cmdline = "echo '" + expectedArgument + "'";
 		stubCommand.extractArgs(String.format(TEMPLATE_ARGS, cmdline), testVector);
-		assert (testVector.size() == 2);
-		assert (testVector.get(1).equals(expectedArgument));
+		assertTrue(testVector.size() == 2);
+		assertTrue(testVector.get(1).equals(expectedArgument));
 	}
 
 	/**
@@ -98,8 +97,8 @@ public class CallCommandTest {
 		String cmdline = "echo \"" + expectedArgument + "\"";
 		Vector<String> testVector = new Vector<>();
 		stubCommand.extractArgs(String.format(TEMPLATE_ARGS, cmdline), testVector);
-		assert (testVector.size() == 2);
-		assert (testVector.get(1).equals(expectedArgument));
+		assertTrue(testVector.size() == 2);
+		assertTrue(testVector.get(1).equals(expectedArgument));
 	}
 
 	/**
@@ -112,8 +111,8 @@ public class CallCommandTest {
 		String expectedArgument = "`echo a`";
 		String cmdline = "echo " + expectedArgument;
 		stubCommand.extractArgs(String.format(TEMPLATE_ARGS, cmdline), testVector);
-		assert (testVector.size() == 2);
-		assert (testVector.get(1).equals(expectedArgument));
+		assertTrue(testVector.size() == 2);
+		assertTrue(testVector.get(1).equals(expectedArgument));
 	}
 
 	/**
@@ -127,9 +126,9 @@ public class CallCommandTest {
 		String expectedArgTwo = "caitlyn 'killer frost' snow";
 		String cmdline = "cat '" + expectedArgOne + "' \"" + expectedArgTwo + "\"";
 		stubCommand.extractArgs(String.format(TEMPLATE_ARGS, cmdline), testVector);
-		assert (testVector.size() == 3);
-		assert (testVector.get(1).equals(expectedArgOne));
-		assert (testVector.get(2).equals(expectedArgTwo));
+		assertTrue(testVector.size() == 3);
+		assertTrue(testVector.get(1).equals(expectedArgOne));
+		assertTrue(testVector.get(2).equals(expectedArgTwo));
 	}
 
 	/**
@@ -144,9 +143,9 @@ public class CallCommandTest {
 		String cmdline = "cat " + expectedArgOne + " \"" + expectedArgTwo + "\"";
 		stubCommand.extractArgs(String.format(TEMPLATE_ARGS, cmdline), testVector);
 		;
-		assert (testVector.size() == 3);
-		assert (testVector.get(1).equals(expectedArgOne));
-		assert (testVector.get(2).equals(expectedArgTwo));
+		assertTrue(testVector.size() == 3);
+		assertTrue(testVector.get(1).equals(expectedArgOne));
+		assertTrue(testVector.get(2).equals(expectedArgTwo));
 	}
 
 	/**
@@ -160,9 +159,9 @@ public class CallCommandTest {
 		String expectedArgTwo = "barry `flash earth-1 ` AllEn";
 		String cmdline = "echo " + expectedArgOne + " '" + expectedArgTwo + "'";
 		stubCommand.extractArgs(String.format(TEMPLATE_ARGS, cmdline), testVector);
-		assert (testVector.size() == 3);
-		assert (testVector.get(1).equals(expectedArgOne));
-		assert (testVector.get(2).equals(expectedArgTwo));
+		assertTrue(testVector.size() == 3);
+		assertTrue(testVector.get(1).equals(expectedArgOne));
+		assertTrue(testVector.get(2).equals(expectedArgTwo));
 	}
 
 	/**
@@ -177,8 +176,8 @@ public class CallCommandTest {
 		Vector<String> cmdVector = new Vector<String>();
 		cmdVector.addElement("");
 		cmdVector.addElement("");
-        stubCommand.extractInputRedir(stringToTest, cmdVector, 8);
-        assertEquals(cmdVector.get(0),"file1.txt");
+		stubCommand.extractInputRedir(stringToTest, cmdVector, 8);
+		assertEquals(cmdVector.get(0), "file1.txt");
 	}
 
 	/**
@@ -193,68 +192,68 @@ public class CallCommandTest {
 		Vector<String> cmdVector = new Vector<String>();
 		cmdVector.addElement("");
 		cmdVector.addElement("");
-        stubCommand.extractOutputRedir(stringToTest, cmdVector, 20);
-        assertEquals(cmdVector.get(1),"file2.txt");
+		stubCommand.extractOutputRedir(stringToTest, cmdVector, 20);
+		assertEquals(cmdVector.get(1), "file2.txt");
 	}
 
 	/**
-	 * Test whether the method can process an array of valid arguments, evaluate globbing
-	 * and return the newly replaced arguments.
+	 * Test whether the method can process an array of valid arguments, evaluate
+	 * globbing and return the newly replaced arguments.
 	 *
 	 * @throws Exception
-     */
+	 */
 	@Test
 	public void testValidEvaluateGlob() throws Exception {
-		String[] mockArgs = {"mock-filesystem/*.txt", "mock-filesystem/*/*/*.txt", "mock-filesystem/21-herb/*"};
+		String[] mockArgs = { "mock-filesystem/*.txt", "mock-filesystem/*/*/*.txt", "mock-filesystem/21-herb/*" };
 		String[] results = stubCommand.evaluateGlob(mockArgs);
 		String firstArgOne = Paths.get("mock-filesystem/quantum.txt").toAbsolutePath().toString();
 		String secondArgOne = Paths.get("mock-filesystem/21-herb/hola/Kappa.txt").toAbsolutePath().toString();
 		String thirdArgOne = Paths.get("mock-filesystem/21-herb/hola").toAbsolutePath().toString();
 		String thirdArgTwo = Paths.get("mock-filesystem/21-herb/sideload.txt").toAbsolutePath().toString();
-		assert(results.length == 4);
-		assert(firstArgOne.equals(results[0]));
-		assert(secondArgOne.equals(results[1]));
-		assert(thirdArgOne.equals(results[2]));
-		assert(thirdArgTwo.equals(results[3]));
+		assertTrue(results.length == 4);
+		assertTrue(firstArgOne.equals(results[0]));
+		assertTrue(secondArgOne.equals(results[1]));
+		assertTrue(thirdArgOne.equals(results[2]));
+		assertTrue(thirdArgTwo.equals(results[3]));
 	}
 
 	/**
-	 * Test whether the method can process arguments that contains single and double quotes
-	 * and not evaluate globbing on them and return the original argument.
+	 * Test whether the method can process arguments that contains single and
+	 * double quotes and not evaluate globbing on them and return the original
+	 * argument.
 	 *
 	 * @throws Exception
-     */
+	 */
 	@Test
 	public void testQuotedEvaluateGlob() throws Exception {
 		String singleQuote = "'mock-filesystem/*.txt'";
 		String doubleQuote = "\"mock-filesystem/21-herb/hola\"";
 		String mixedQuotes = "'mock-filesystem/\"*.txt\"'";
 		String quotedFile = "mock-filesystem/tango/'.*";
-		String[] mockArgs = {singleQuote, doubleQuote, mixedQuotes, quotedFile};
+		String[] mockArgs = { singleQuote, doubleQuote, mixedQuotes, quotedFile };
 		String[] results = stubCommand.evaluateGlob(mockArgs);
 		String quotedFileResult = Paths.get("mock-filesystem/tango/'.json").toAbsolutePath().toString();
-		assert(results.length == 4);
-		assert(singleQuote.equals(results[0]));
-		assert(doubleQuote.equals(results[1]));
-		assert(mixedQuotes.equals(results[2]));
-		assert(quotedFileResult.equals(results[3]));
+		assertTrue(results.length == 4);
+		assertTrue(singleQuote.equals(results[0]));
+		assertTrue(doubleQuote.equals(results[1]));
+		assertTrue(mixedQuotes.equals(results[2]));
+		assertTrue(quotedFileResult.equals(results[3]));
 	}
-
 
 	/**
 	 * Test whether the method can process arguments that contains asterisks but
 	 * cannot be matched or invalid syntax and return the original arguments.
 	 *
 	 * @throws Exception
-     */
+	 */
 	@Test
 	public void testInvalidEvaluateGlob() throws Exception {
 		String invalidFile = "mock-filesystem/*.kat";
 		String noGlobArg = "mock-filesystem/quantum.txt";
-		String[] mockArgs = {invalidFile, noGlobArg};
+		String[] mockArgs = { invalidFile, noGlobArg };
 		String[] results = stubCommand.evaluateGlob(mockArgs);
-		assert(results.length == 1);
-		assert(noGlobArg.equals(results[0]));
+		assertTrue(results.length == 1);
+		assertTrue(noGlobArg.equals(results[0]));
 	}
 
 	/**
