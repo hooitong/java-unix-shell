@@ -218,7 +218,9 @@ public class CommApplication implements Comm {
 		ArrayList<String> strList1 = new ArrayList<String>();
 		ArrayList<String> strList2 = new ArrayList<String>();
 
-		if (args.length == ONE) {
+		if (args.length == ZERO || args == null) {
+			throw new CommException("Length of arguments 0 or null");
+		} else if (args.length == ONE) {
 			file2Position = ZERO;
 			strList1 = readFromStdinAndWriteToStringList(stdin);
 			strList2 = getFileContents(args, currentDir, file2Position);
@@ -229,7 +231,7 @@ public class CommApplication implements Comm {
 			strList2 = getFileContents(args, currentDir, file2Position);
 		} else {
 			throw new CommException(
-					"Length of arguments cannot be greater than 1");
+					"Length of arguments cannot be greater than 2");
 		}
 		mainList.add(strList1);
 		mainList.add(strList2);
@@ -256,9 +258,10 @@ public class CommApplication implements Comm {
 		ArrayList<String> strList2 = new ArrayList<String>();
 
 		if (args == null || args.length == ZERO) {
-			file1Position = ONE;
-			// strList1 = readFromStdinAndWriteToStringList(stdin);
-			strList2 = getFileContents(args, currentDir, file2Position);
+			throw new CommException("Length of arguments 0 or null");
+		} else if (args.length == ONE) {
+			throw new CommException(
+					"stdin can only be tested using run method as interface's parameters are not allowed to be changed due to project requirements");
 		} else if (args.length == TWO) {
 			file1Position = ZERO;
 			file2Position = ONE;
@@ -266,7 +269,7 @@ public class CommApplication implements Comm {
 			strList2 = getFileContents(args, currentDir, file2Position);
 		} else {
 			throw new CommException(
-					"Legnth of arguments cannot be greater than 1");
+					"Legnth of arguments cannot be greater than 2");
 		}
 		mainList.add(strList1);
 		mainList.add(strList2);

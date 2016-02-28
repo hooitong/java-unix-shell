@@ -2,6 +2,8 @@ package sg.edu.nus.comp.cs4218.impl.app;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import org.junit.After;
@@ -10,7 +12,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import sg.edu.nus.comp.cs4218.exception.SortException;
+
 public class SortApplicationTest {
+	private static final String NEW_LINE = System.lineSeparator();
 	private static SortApplication sortApplication;
 	private static String[] args, inputArr1, inputArr2, inputArr3, inputArr4,
 			inputArr5, inputArr6, inputArr7, inputArr8, inputArr9, inputArr10;
@@ -385,6 +390,104 @@ public class SortApplicationTest {
 		assertEquals("100 B*anana", arrayList.get(2));
 		assertEquals("P3@r", arrayList.get(3));
 		assertEquals("p3@R", arrayList.get(4));
+	}
+
+	/**
+	 * Test using only arguments only
+	 * 
+	 * @throws SortException
+	 */
+	@Test
+	public void testRunArgsOnly() throws SortException {
+		String[] argsArr = new String[] { "-n", "examples/sort.txt" };
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		sortApplication.run(argsArr, null, stdout);
+		String expectedResult = "arthur" + NEW_LINE + "benny" + NEW_LINE
+				+ "jerry" + NEW_LINE + "nicholas" + NEW_LINE + "zackary"
+				+ NEW_LINE;
+		assertEquals(expectedResult, stdout.toString());
+	}
+
+	/**
+	 * Test using only arguments only with num flag on
+	 * 
+	 * @throws SortException
+	 */
+	@Test
+	public void testRunArgsOnlyWithNumFlag() throws SortException {
+		String[] argsArr = new String[] { "-n", "examples/numbersort.txt" };
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		sortApplication.run(argsArr, null, stdout);
+		String expectedResult = "9" + NEW_LINE + "11" + NEW_LINE + "23"
+				+ NEW_LINE + "65" + NEW_LINE + "1000" + NEW_LINE;
+		assertEquals(expectedResult, stdout.toString());
+	}
+
+	/**
+	 * Test using only stdin
+	 * @throws SortException
+	 */
+	@Test
+	public void testRunStdinMissingArgs() throws SortException {
+		String[] argsArr = new String[] {};
+		String contentStr = "8" + NEW_LINE + "68" + NEW_LINE + "105";
+		String expected = "105" + NEW_LINE + "68" + NEW_LINE + "8" + NEW_LINE;
+		InputStream inputStream = new java.io.ByteArrayInputStream(
+				contentStr.getBytes());
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		sortApplication.run(argsArr, inputStream, stdout);
+		assertEquals(expected, stdout.toString());
+	}
+	
+	/**test using both args and stdin
+	 * @throws SortException
+	 */
+	@Test
+	public void testRunArgsStdin() throws SortException {
+		String[] argsArr = new String[] { "-n" };
+		String contentStr = "112" + NEW_LINE + "68" + NEW_LINE + "681";
+		String expected = "68" + NEW_LINE + "112" + NEW_LINE + "681" + NEW_LINE;
+		InputStream inputStream = new java.io.ByteArrayInputStream(
+				contentStr.getBytes());
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		sortApplication.run(argsArr, inputStream, stdout);
+		assertEquals(expected, stdout.toString());
+	}
+
+	/**
+	 * Test without both args and stdin
+	 * 
+	 * @throws SortException
+	 */
+	@Test(expected = SortException.class)
+	public void testRunMissingArgsStdin() throws SortException {
+		String[] argsArr = new String[] {};
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		sortApplication.run(argsArr, null, stdout);
+	}
+
+	/**
+	 * Test with args (numflag) but missing stdin
+	 * 
+	 * @throws SortException
+	 */
+	@Test(expected = SortException.class)
+	public void testRunArgsMissingStdin() throws SortException {
+		String[] argsArr = new String[] { "-n" };
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		sortApplication.run(argsArr, null, stdout);
+	}
+
+	/**
+	 * Test with invalid args (numflag) but missing stdin
+	 * 
+	 * @throws SortException
+	 */
+	@Test(expected = SortException.class)
+	public void testRunInvalidArgsMissingStdin() throws SortException {
+		String[] argsArr = new String[] { "-j" };
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		sortApplication.run(argsArr, null, stdout);
 	}
 
 }

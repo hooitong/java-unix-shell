@@ -30,7 +30,7 @@ public class CommApplicationTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		caTest = new CommApplication();
-		args = new String[] { "file1.txt", "file2.txt" };
+		args = new String[] { "examples/file1.txt", "examples/file2.txt" };
 		col1Result = (TAB_LINE + NEW_LINE + TAB_LINE + NEW_LINE + TAB_LINE
 				+ NEW_LINE + "eggplant" + NEW_LINE + TAB_LINE);
 		col2Result = (TAB_LINE + NEW_LINE + TAB_LINE + NEW_LINE + "banana"
@@ -86,37 +86,76 @@ public class CommApplicationTest {
 
 	@Test
 	public void testCommAllMatches() {
-
 		String actualResult = caTest.commAllMatches(args);
 		assertEquals(col3Result, actualResult);
 	}
 
 	/**
-	 * tests the run method without using stdin
+	 * tests the run method using args for both files
 	 * 
 	 * @throws CommException
 	 */
 	@Test
-	public void testRun() throws CommException {
+	public void testRunArgsOnly() throws CommException {
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		caTest.run(args, null, stdout);
 		assertEquals(bothMatchResult, stdout.toString());
 	}
 
 	/**
-	 * tests the run method using stdin
+	 * tests the run method using stdin and args
 	 * 
 	 * @throws CommException
 	 */
 	@Test
-	public void testRunWithStdin() throws CommException {
+	public void testRunWithArgsStdin() throws CommException {
 		String contentStr = "apple" + NEW_LINE + "banana" + NEW_LINE
 				+ "eggplant";
 		InputStream inputStream = new java.io.ByteArrayInputStream(
 				contentStr.getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-		String[] args2 = new String[] { "file2.txt" };
+		String[] args2 = new String[] { "examples/file2.txt" };
 		caTest.run(args2, inputStream, stdout);
 		assertEquals(bothMatchResult, stdout.toString());
 	}
-};
+	
+	/**
+	 * tests the run method using args for 1 file but missing stdin
+	 * 
+	 * @throws CommException
+	 */
+	@Test(expected = CommException.class)
+	public void testRunArgsMissingStdin() throws CommException {
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		String[] args1 = new String[]{"file3.txt"};
+		caTest.run(args1, null, stdout);
+	}
+	
+	/**
+	 * tests the run method but missing args and stdin
+	 * 
+	 * @throws CommException
+	 */
+	@Test(expected = CommException.class)
+	public void testRunMissingArgsStdin() throws CommException {
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		String[] args1 = new String[]{};
+		caTest.run(args1, null, stdout);
+	}
+	
+	/**
+	 * tests the run method but missing args
+	 * 
+	 * @throws CommException
+	 */
+	@Test(expected = CommException.class)
+	public void testRunStdinMissingArgs() throws CommException {
+		String contentStr = "PINEAPPLE" + NEW_LINE + "PEAR" + NEW_LINE
+				+ "MANGO";
+		InputStream inputStream = new java.io.ByteArrayInputStream(
+				contentStr.getBytes());
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		String[] args1 = new String[]{};
+		caTest.run(args1, inputStream, stdout);
+	}
+}

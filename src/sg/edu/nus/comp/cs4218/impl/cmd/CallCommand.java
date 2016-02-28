@@ -80,7 +80,7 @@ public class CallCommand implements Command {
 		OutputStream outputStream;
 
 		argsArray = ShellImpl.processBQ(argsArray);
-		argsArray = evaluateGlob(argsArray);
+		//argsArray = evaluateGlob(argsArray);
 
 		if (("").equals(inputStreamS)) {// empty
 			inputStream = stdin;

@@ -33,7 +33,7 @@ public class PipeCommandTest {
 	 */
 	@Test
 	public void testPipeMultipleCommands() {
-		String cmdLine = "head -n 20 file3.txt | sort | head -n 7 | sort -n";
+		String cmdLine = "head -n 20 examples/file3.txt | sort | head -n 7 | sort -n";
 		String expectedResult = "1" + NEW_LINE + "10" + NEW_LINE + "11"
 				+ NEW_LINE + "12" + NEW_LINE + "13" + NEW_LINE + "14"
 				+ NEW_LINE + "15" + NEW_LINE;
@@ -46,7 +46,7 @@ public class PipeCommandTest {
 	 */
 	@Test
 	public void testPipeTwoCommands() {
-		String cmdLine = "sort file3.txt | head -n 5";
+		String cmdLine = "sort examples/file3.txt | head -n 5";
 		String expectedResult = "1" + NEW_LINE + "10" + NEW_LINE + "11"
 				+ NEW_LINE + "12" + NEW_LINE + "13" + NEW_LINE;
 		String actualResult = shell.pipeTwoCommands(cmdLine.split(" "));
@@ -60,7 +60,7 @@ public class PipeCommandTest {
 	@Test
 	public void testPipeWithExceptionBehind() {
 		String expectedResult = "pipe: exception detected for one of the call commands";
-		String cmdLine = "sort file3.txt | head -j 2";
+		String cmdLine = "sort examples/file3.txt | head -j 2";
 		String actualResult = shell.pipeWithException(cmdLine.split(" "));
 		assertEquals(expectedResult, actualResult);
 	}
@@ -72,7 +72,7 @@ public class PipeCommandTest {
 	@Test
 	public void testPipeWithExceptionInfront() {
 		String expectedResult = "pipe: exception detected for one of the call commands";
-		String cmdLine = "sort -j file3.txt | head";
+		String cmdLine = "sort -j examples/file3.txt | head";
 		String actualResult = shell.pipeWithException(cmdLine.split(" "));
 		assertEquals(expectedResult, actualResult);
 	}
@@ -86,7 +86,7 @@ public class PipeCommandTest {
 	@Test
 	public void testFromShell() throws ShellException,
 			AbstractApplicationException {
-		String temp = "sort -n file3.txt | head -n 5";
+		String temp = "sort -n examples/file3.txt | head -n 5";
 		String expected = "1" + NEW_LINE + "2" + NEW_LINE + "3" + NEW_LINE
 				+ "4" + NEW_LINE + "5" + NEW_LINE;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
@@ -105,7 +105,7 @@ public class PipeCommandTest {
 	@Test(expected = PipeCommandException.class)
 	public void testFromShellWithExceptionInFront() throws ShellException,
 			AbstractApplicationException {
-		String temp = "sort -j file3.txt | head -n 5";
+		String temp = "sort -j examples/file3.txt | head -n 5";
 		String expected = "1" + NEW_LINE + "2" + NEW_LINE + "3" + NEW_LINE
 				+ "4" + NEW_LINE + "5" + NEW_LINE;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
@@ -123,7 +123,7 @@ public class PipeCommandTest {
 	@Test(expected = PipeCommandException.class)
 	public void testFromShellWithExceptionBehind() throws ShellException,
 			AbstractApplicationException {
-		String temp = "sort -n file3.txt | head -j 5";
+		String temp = "sort -n examples/file3.txt | head -j 5";
 		String expected = "1" + NEW_LINE + "2" + NEW_LINE + "3" + NEW_LINE
 				+ "4" + NEW_LINE + "5" + NEW_LINE;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
