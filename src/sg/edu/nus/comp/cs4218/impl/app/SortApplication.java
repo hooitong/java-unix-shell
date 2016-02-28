@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,12 +22,16 @@ import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.app.Sort;
 import sg.edu.nus.comp.cs4218.exception.SortException;
 import sg.edu.nus.comp.cs4218.misc.MergeSort;
+import sg.edu.nus.comp.cs4218.misc.SortHelper;
 
 public class SortApplication implements Sort {
 
 	private static final int MAX_LENGTH = 2;
 	private static final int ONE = 1;
 	private static final int ZERO = 0;
+	private static final int TWO = 2;
+	private static final int THREE = 3;
+	private static final int FOUR = 4;
 	private static final String CHARSET_UTF_8 = "UTF-8";
 
 	/**
@@ -34,17 +39,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortStringsSimple(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int simpleCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			simpleCount = getSimpleCharInLineCount(currentLine);
-			if (simpleCount == currentLine.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(ONE, toSort));
+		return SortHelper.sortHelper(extractedList);
 	}
 
 	/**
@@ -52,17 +49,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortStringsCapital(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int capitalCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			capitalCount = getCapitalCharInLineCount(currentLine);
-			if (capitalCount == currentLine.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(ONE, toSort));
+		return SortHelper.sortHelper(extractedList);
 	}
 
 	/**
@@ -70,17 +59,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortNumbers(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int numberCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			numberCount = getNumberCharInLineCount(currentLine);
-			if (numberCount == currentLine.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(ONE, toSort));
+		return SortHelper.sortHelper(extractedList);
 	}
 
 	/**
@@ -88,17 +69,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortNumbersWithNumFlagOn(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int numberCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			numberCount = getNumberCharInLineCount(currentLine);
-			if (numberCount == currentLine.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelperWithNumFlag(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(ONE, toSort));
+		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
 	/**
@@ -106,37 +79,18 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSpecialChars(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int specialCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			specialCount = getSpecialCharInLineCount(currentLine);
-			if (specialCount == currentLine.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(ONE, toSort));
+		return SortHelper.sortHelper(extractedList);
 	}
 
 	/**
 	 * Returns an ordered list of lines containing simple and capital letters
 	 */
 	public List<String> sortSimpleCapital(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int simpleCount = 0, capitalCount = 0;
-
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			simpleCount = getSimpleCharInLineCount(currentLine);
-			capitalCount = getCapitalCharInLineCount(currentLine);
-			if (simpleCount != 0 && capitalCount != 0
-					&& (simpleCount + capitalCount) == currentLine.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(TWO, toSort));
+		return SortHelper.sortHelper(extractedList);
 	}
 
 	/**
@@ -144,19 +98,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSimpleNumbers(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int simpleCount = 0, numberCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			simpleCount = getSimpleCharInLineCount(currentLine);
-			numberCount = getNumberCharInLineCount(currentLine);
-			if (simpleCount != 0 && numberCount != 0
-					&& (simpleCount + numberCount) == currentLine.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(TWO, toSort));
+		return SortHelper.sortHelper(extractedList);
 	}
 
 	/**
@@ -165,19 +109,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSimpleNumbersWithNumFlagOn(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int simpleCount = 0, numberCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			simpleCount = getSimpleCharInLineCount(currentLine);
-			numberCount = getNumberCharInLineCount(currentLine);
-			if (simpleCount != 0 && numberCount != 0
-					&& (simpleCount + numberCount) == currentLine.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelperWithNumFlag(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(TWO, toSort));
+		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
 	/**
@@ -186,19 +120,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSimpleSpecialChars(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int simpleCount = 0, specialCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			simpleCount = getSimpleCharInLineCount(currentLine);
-			specialCount = getSpecialCharInLineCount(currentLine);
-			if (simpleCount != 0 && specialCount != 0
-					&& (simpleCount + specialCount) == currentLine.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(TWO, toSort));
+		return SortHelper.sortHelper(extractedList);
 	}
 
 	/**
@@ -206,19 +130,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortCapitalNumbers(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int capitalCount = 0, numberCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			capitalCount = getCapitalCharInLineCount(currentLine);
-			numberCount = getNumberCharInLineCount(currentLine);
-			if (capitalCount != 0 && numberCount != 0
-					&& (capitalCount + numberCount) == currentLine.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(TWO, toSort));
+		return SortHelper.sortHelper(extractedList);
 	}
 
 	/**
@@ -227,19 +141,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortCapitalNumberswithNumFlagOn(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int capitalCount = 0, numberCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			capitalCount = getCapitalCharInLineCount(currentLine);
-			numberCount = getNumberCharInLineCount(currentLine);
-			if (capitalCount != 0 && numberCount != 0
-					&& (capitalCount + numberCount) == currentLine.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelperWithNumFlag(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(TWO, toSort));
+		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
 	/**
@@ -248,19 +152,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortCapitalSpecialChars(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int capitalCount = 0, specialCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			capitalCount = getCapitalCharInLineCount(currentLine);
-			specialCount = getSpecialCharInLineCount(currentLine);
-			if (capitalCount != 0 && specialCount != 0
-					&& (capitalCount + specialCount) == currentLine.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(TWO, toSort));
+		return SortHelper.sortHelper(extractedList);
 	}
 
 	/**
@@ -269,19 +163,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortNumbersSpecialChars(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int numberCount = 0, specialCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			numberCount = getNumberCharInLineCount(currentLine);
-			specialCount = getSpecialCharInLineCount(currentLine);
-			if (numberCount != 0 && specialCount != 0
-					&& (numberCount + specialCount) == currentLine.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(TWO, toSort));
+		return SortHelper.sortHelper(extractedList);
 	}
 
 	/**
@@ -290,19 +174,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortNumbersSpecialCharsWithNumFlagOn(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int numberCount = 0, specialCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			numberCount = getNumberCharInLineCount(currentLine);
-			specialCount = getSpecialCharInLineCount(currentLine);
-			if (numberCount != 0 && specialCount != 0
-					&& (numberCount + specialCount) == currentLine.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelperWithNumFlag(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(TWO, toSort));
+		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
 	/**
@@ -311,23 +185,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSimpleCapitalNumber(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int simpleCount = 0, capitalCount = 0, numberCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			simpleCount = getSimpleCharInLineCount(currentLine);
-			capitalCount = getCapitalCharInLineCount(currentLine);
-			numberCount = getNumberCharInLineCount(currentLine);
-			if (simpleCount != 0
-					&& capitalCount != 0
-					&& numberCount != 0
-					&& (simpleCount + capitalCount + numberCount) == currentLine
-							.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(THREE, toSort));
+		return SortHelper.sortHelper(extractedList);
 	}
 
 	/**
@@ -336,23 +196,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSimpleCapitalNumberWithNumFlagOn(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int simpleCount = 0, capitalCount = 0, numberCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			simpleCount = getSimpleCharInLineCount(currentLine);
-			capitalCount = getCapitalCharInLineCount(currentLine);
-			numberCount = getNumberCharInLineCount(currentLine);
-			if (simpleCount != 0
-					&& capitalCount != 0
-					&& numberCount != 0
-					&& (simpleCount + capitalCount + numberCount) == currentLine
-							.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelperWithNumFlag(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(THREE, toSort));
+		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
 	/**
@@ -361,39 +207,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSimpleCapitalSpecialChars(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int simpleCount = 0, capitalCount = 0, specialCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			simpleCount = getSimpleCharInLineCount(currentLine);
-			capitalCount = getCapitalCharInLineCount(currentLine);
-			specialCount = getSpecialCharInLineCount(currentLine);
-			if (simpleCount != 0
-					&& capitalCount != 0
-					&& specialCount != 0
-					&& (simpleCount + capitalCount + specialCount) == currentLine
-							.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
-	}
-
-	private List<String> sortHelper(List<String> resultList) {
-		MergeSort mergeSort = new MergeSort(false);
-		ArrayList<String> ansList = new ArrayList<String>(Arrays.asList(mergeSort.mergeSort(
-				resultList.toArray(new String[resultList.size()]), ZERO,
-				resultList.size() - 1)));
-		return ansList;
-	}
-
-	private List<String> sortHelperWithNumFlag(List<String> resultList) {
-		MergeSort mergeSort = new MergeSort(true);
-		ArrayList<String> ansList = new ArrayList<String>(Arrays.asList(mergeSort.mergeSort(
-				resultList.toArray(new String[resultList.size()]), ZERO,
-				resultList.size() - 1)));
-		return ansList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(THREE, toSort));
+		return SortHelper.sortHelper(extractedList);
 	}
 
 	/**
@@ -402,23 +218,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSimpleNumbersSpecialChars(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int simpleCount = 0, numberCount = 0, specialCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			simpleCount = getSimpleCharInLineCount(currentLine);
-			numberCount = getNumberCharInLineCount(currentLine);
-			specialCount = getSpecialCharInLineCount(currentLine);
-			if (simpleCount != 0
-					&& numberCount != 0
-					&& specialCount != 0
-					&& (simpleCount + numberCount + specialCount) == currentLine
-							.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(THREE, toSort));
+		return SortHelper.sortHelper(extractedList);
 	}
 
 	/**
@@ -428,23 +230,9 @@ public class SortApplication implements Sort {
 	@Override
 	public List<String> sortSimpleNumbersSpecialCharsWithNumFlagOn(
 			String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int simpleCount = 0, numberCount = 0, specialCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			simpleCount = getSimpleCharInLineCount(currentLine);
-			numberCount = getNumberCharInLineCount(currentLine);
-			specialCount = getSpecialCharInLineCount(currentLine);
-			if (simpleCount != 0
-					&& numberCount != 0
-					&& specialCount != 0
-					&& (simpleCount + numberCount + specialCount) == currentLine
-							.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelperWithNumFlag(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(THREE, toSort));
+		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
 	/**
@@ -453,23 +241,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortCapitalNumbersSpecialChars(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int capitalCount = 0, numberCount = 0, specialCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			capitalCount = getCapitalCharInLineCount(currentLine);
-			numberCount = getNumberCharInLineCount(currentLine);
-			specialCount = getSpecialCharInLineCount(currentLine);
-			if (capitalCount != 0
-					&& numberCount != 0
-					&& specialCount != 0
-					&& (capitalCount + numberCount + specialCount) == currentLine
-							.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(THREE, toSort));
+		return SortHelper.sortHelper(extractedList);
 	}
 
 	/**
@@ -479,23 +253,9 @@ public class SortApplication implements Sort {
 	@Override
 	public List<String> sortCapitalNumbersSpecialCharsWithNumFlagOn(
 			String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int capitalCount = 0, numberCount = 0, specialCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			capitalCount = getCapitalCharInLineCount(currentLine);
-			numberCount = getNumberCharInLineCount(currentLine);
-			specialCount = getSpecialCharInLineCount(currentLine);
-			if (capitalCount != 0
-					&& numberCount != 0
-					&& specialCount != 0
-					&& (capitalCount + numberCount + specialCount) == currentLine
-							.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelperWithNumFlag(resultList);
-		return resultList;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(THREE, toSort));
+		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
 	/**
@@ -504,26 +264,10 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortAll(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int simpleCount = 0, capitalCount = 0, numberCount = 0, specialCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			simpleCount = getSimpleCharInLineCount(currentLine);
-			capitalCount = getCapitalCharInLineCount(currentLine);
-			numberCount = getNumberCharInLineCount(currentLine);
-			specialCount = getSpecialCharInLineCount(currentLine);
-			if (simpleCount != 0
-					&& capitalCount != 0
-					&& numberCount != 0
-					&& specialCount != 0
-					&& (simpleCount + capitalCount + numberCount + specialCount) == currentLine
-							.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelper(resultList);
-		return resultList;
-	};
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(FOUR, toSort));
+		return SortHelper.sortHelper(extractedList);
+	}
 
 	/**
 	 * Returns an ordered list of lines containing simple and capital letters,
@@ -531,103 +275,9 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortAllWithNumFlagOn(String... toSort) {
-		List<String> resultList = new ArrayList<String>();
-		int simpleCount = 0, capitalCount = 0, numberCount = 0, specialCount = 0;
-		for (int i = 0; i < toSort.length; i++) {
-			String currentLine = toSort[i];
-			simpleCount = getSimpleCharInLineCount(currentLine);
-			capitalCount = getCapitalCharInLineCount(currentLine);
-			numberCount = getNumberCharInLineCount(currentLine);
-			specialCount = getSpecialCharInLineCount(currentLine);
-			if (simpleCount != 0
-					&& capitalCount != 0
-					&& numberCount != 0
-					&& specialCount != 0
-					&& (simpleCount + capitalCount + numberCount + specialCount) == currentLine
-							.length()) {
-				resultList.add(currentLine);
-			}
-		}
-		resultList = sortHelperWithNumFlag(resultList);
-		return resultList;
-	};
-
-	/**
-	 * Counts lower case letters in a string
-	 * 
-	 * @param string
-	 *            input line
-	 * @return int count of lower case letters
-	 */
-	private int getSimpleCharInLineCount(String currentLine) {
-		int count = 0;
-		for (int j = 0; j < currentLine.length(); j++) {
-			int currentChar = currentLine.charAt(j);
-			if (Character.isLetter(currentChar)
-					&& Character.isLowerCase(currentChar)) {
-				count++;
-			}
-		}
-
-		return count;
-	}
-
-	/**
-	 * Counts uppercase letters in a string
-	 * 
-	 * @param string
-	 *            input line
-	 * @return int count of uppercase leters
-	 */
-	private int getCapitalCharInLineCount(String currentLine) {
-		int count = 0;
-		for (int j = 0; j < currentLine.length(); j++) {
-			char currentChar = (char) currentLine.charAt(j);
-			if (Character.isLetter(currentChar)
-					&& Character.isUpperCase(currentChar)) {
-				count++;
-			}
-		}
-
-		return count;
-	}
-
-	/**
-	 * Get a count of digits present in a string /**
-	 * 
-	 * @param string
-	 *            input line
-	 * @return int a count of digits
-	 */
-	private int getNumberCharInLineCount(String currentLine) {
-		int count = 0;
-		for (int j = 0; j < currentLine.length(); j++) {
-			int currentChar = currentLine.charAt(j);
-			if (Character.isDigit(currentChar)) {
-				count++;
-			}
-		}
-
-		return count;
-	}
-
-	/**
-	 * count the number of special characters in a string
-	 * 
-	 * @param string
-	 *            input line
-	 * @return int a count of special characters
-	 */
-	private int getSpecialCharInLineCount(String currentLine) {
-		int count = 0;
-		for (int j = 0; j < currentLine.length(); j++) {
-			char currentChar = (char) currentLine.charAt(j);
-			if (!Character.isDigit(currentChar)
-					&& !Character.isLetter(currentChar)) {
-				count++;
-			}
-		}
-		return count;
+		List<String> extractedList = new ArrayList<String>(
+				SortHelper.separateBasedOnType(FOUR, toSort));
+		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
 	@Override
@@ -804,5 +454,4 @@ public class SortApplication implements Sort {
 		}
 		return arrayList.toArray(new String[arrayList.size()]);
 	}
-
 }

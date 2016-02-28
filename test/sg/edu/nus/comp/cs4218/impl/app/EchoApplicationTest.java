@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -94,13 +95,16 @@ public class EchoApplicationTest {
 		assertEquals(output.toString(), "This is a trap\n");
 	}
 
+	@After
+	public void tearDown() throws Exception {
+		args = null;
+	}
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		eApp = null;
-		args = null;
 
 	}
 

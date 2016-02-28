@@ -156,7 +156,8 @@ public class CommApplication implements Comm {
 			ArrayList<String> strList1 = mainList.get(ZERO);
 			ArrayList<String> strList2 = mainList.get(ONE);
 			LineComparison lineCompare = new LineComparison(strList1, strList2);
-			ArrayList<String> lastColAl = lineCompare.compareLines().get(COL_TWO);
+			ArrayList<String> lastColAl = lineCompare.compareLines().get(
+					COL_TWO);
 
 			for (int i = 0; i < lastColAl.size() - 1; i++) {
 				stringBuilder.append(lastColAl.get(i)).append(NEW_LINE);
@@ -195,6 +196,19 @@ public class CommApplication implements Comm {
 		stdoutString(stdout, stringBuilder.toString());
 	}
 
+	/**
+	 * This method returns ArrayList<ArrayList<String>> containing contents of
+	 * both files in the arguments
+	 * 
+	 * @param args
+	 *            initial arguments
+	 * @param stdin
+	 *            inputstream to be read for contents
+	 * @return ArrayList<ArrayList<String>> index zero returns an arraylist of
+	 *         string from file1 index one returns an arraylist of string from
+	 *         file2
+	 * @throws CommException
+	 */
 	private ArrayList<ArrayList<String>> getContentFromStdinOrFile(
 			String[] args, InputStream stdin) throws CommException {
 		Path currentDir = Paths.get(Environment.currentDirectory);
@@ -222,6 +236,16 @@ public class CommApplication implements Comm {
 		return mainList;
 	}
 
+	/**
+	 * This method returns ArrayList<ArrayList<String>> containing contents of
+	 * both files in the arguments
+	 * 
+	 * @param args
+	 *            initial arguments
+	 * @return index zero returns an arraylist of string from file1, index one
+	 *         returns an arraylist of string from file2
+	 * @throws CommException
+	 */
 	private ArrayList<ArrayList<String>> getContentFromStdinOrFile(
 			String... args) throws CommException {
 		Path currentDir = Paths.get(Environment.currentDirectory);

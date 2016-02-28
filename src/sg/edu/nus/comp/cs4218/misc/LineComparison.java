@@ -12,12 +12,19 @@ public class LineComparison {
 	private static final String NEW_LINE = System.lineSeparator();
 	private static final String TAB_LINE = "\t";
 	ArrayList<String> strList1, strList2;
-	
-	
-	public LineComparison(ArrayList<String> strList1, ArrayList<String> strList2){
+
+	public LineComparison(ArrayList<String> strList1, ArrayList<String> strList2) {
 		this.strList1 = strList1;
 		this.strList2 = strList2;
 	}
+
+	/**
+	 * This method compare lines in the given two input list
+	 * 
+	 * @return ArrayList<ArrayList<String>> the zero index returns the
+	 *         commfirst, the first index returns the commsecond the second
+	 *         index returns, the commallmatches
+	 */
 	public ArrayList<ArrayList<String>> compareLines() {
 		int indexLineFile1 = 0;
 		int indexLineFile2 = 0;
@@ -67,9 +74,17 @@ public class LineComparison {
 		}
 		return mainAl;
 	}
-	
-	private String getLineFromList(ArrayList<String> strList,
-			int lineIndexFile1) {
+
+	/**
+	 * This method gets the particular line from a list based on the index
+	 * provided
+	 * 
+	 * @param ArrayList
+	 *            <String>
+	 * @param int
+	 * @return string content of the string
+	 */
+	private String getLineFromList(ArrayList<String> strList, int lineIndexFile1) {
 		String currentLine = "";
 		if (lineIndexFile1 < strList.size()) {
 			currentLine = strList.get(lineIndexFile1);
