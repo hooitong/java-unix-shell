@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Environment;
@@ -42,54 +43,91 @@ public class CatApplication implements Application {
 	 *             If the file(s) specified do not exist or are unreadable.
 	 */
 	@Override
-	public void run(String[] args, InputStream stdin, OutputStream stdout)
-			throws CatException {
+	public void run(String[] args, InputStream stdin, OutputStream stdout) throws CatException {
 
-		if (args == null || args.length == 0) {
-			if (stdin == null || stdout == null) {
-				throw new CatException("Null Pointer Exception");
-			}
-			try {
-				int intCount;
-				while ((intCount = stdin.read()) != -1) {
-					stdout.write(intCount);
-				}
-			} catch (Exception exIO) {
-				throw new CatException("Exception Caught");
-			}
+		throwExceptionIfNoOutputStream(stdout);
+		throwExceptionIfNoInput(args, stdin);
+		if (fileIsSpecified(args)) {
+			readFromArgs(args, stdout);
 		} else {
+			readFromStdin(stdin, stdout);
+		}
 
-			int numOfFiles = args.length;
+	}
 
-			if (numOfFiles > 0) {
-				Path filePath;
-				Path[] filePathArray = new Path[numOfFiles];
-				Path currentDir = Paths.get(Environment.currentDirectory);
-				boolean isFileReadable = false;
+	private void readFromArgs(String[] args, OutputStream stdout) throws CatException {
+		int numOfFiles = args.length;
 
-				for (int i = 0; i < numOfFiles; i++) {
+		Path filePath;
+		ArrayList<Path> filePathArray = new ArrayList<Path>();
+		Path currentDir = Paths.get(Environment.currentDirectory);
+		boolean isFileReadable = false;
+		
+		
+		for (int i = 0; i < numOfFiles; i++) {
+			try {
+				String temp = args[i].trim();
+				if (temp.isEmpty()) {
+					continue;
+				} else {
 					filePath = currentDir.resolve(args[i]);
 					isFileReadable = checkIfFileIsReadable(filePath);
 					if (isFileReadable) {
-						filePathArray[i] = filePath;
+						filePathArray.add(filePath);
 					}
 				}
+			} catch (NullPointerException npe) {
+				throw new CatException(npe, "NullPointerException");
+			}
+		}
 
-				// file could be read. perform cat command
-				if (filePathArray.length != 0) {
-					for (int j = 0; j < filePathArray.length - 1; j++) {
-						try {
-							byte[] byteFileArray = Files
-									.readAllBytes(filePathArray[j]);
-							stdout.write(byteFileArray);
-						} catch (IOException e) {
-							throw new CatException(
-									"Could not write to output stream");
-						}
+		// file could be read. perform cat command
+		if (filePathArray.isEmpty()) {
+			throw new CatException("Invalid filepath");
+		} else {
+
+			for (int j = 0; j < filePathArray.size() - 1; j++) {
+				try {
+					byte[] byteFileArray = Files.readAllBytes(filePathArray.get(j));
+					if (byteFileArray.length <= 0) { // Empty file
+						continue;
 					}
-
+					stdout.write(byteFileArray);
+					byte[] newLine = "\n".getBytes("UTF-8");
+					stdout.write(newLine);
+					stdout.flush();
+				} catch (IOException e) {
+					throw new CatException(e);
 				}
 			}
+			if (!filePathArray.isEmpty()) {
+				try {
+					byte[] byteFileArray = Files.readAllBytes(filePathArray.get(filePathArray.size() - 1));
+
+					stdout.write(byteFileArray);
+					stdout.flush();
+				} catch (IOException e1) {
+					throw new CatException(e1);
+				}
+			}
+
+		}
+
+	}
+
+	/*
+	 * Note: when reading from inputStream, no new line is added at the end of the file
+	 */
+	private void readFromStdin(InputStream stdin, OutputStream stdout) throws CatException {
+		try {
+			int intCount;
+			while ((intCount = stdin.read()) != -1) {
+				stdout.write(intCount);
+			}
+			stdout.flush();
+
+		} catch (IOException io) {
+			throw new CatException(io);
 		}
 	}
 
@@ -103,14 +141,36 @@ public class CatApplication implements Application {
 	 *             If the file is not readable
 	 */
 	boolean checkIfFileIsReadable(Path filePath) throws CatException {
-		
-		if (Files.isDirectory(filePath)) {
-			throw new CatException("This is a directory");
-		}
+		/*
+		 * if (Files.isDirectory(filePath)) { throw new CatException(
+		 * "This is a directory"); }
+		 */
 		if (Files.exists(filePath) && Files.isReadable(filePath)) {
 			return true;
 		} else {
 			throw new CatException("Could not read file");
 		}
+	}
+
+	private void throwExceptionIfNoOutputStream(OutputStream stdout) throws CatException {
+		if (stdout == null) {
+			throw new CatException("No output stream.");
+		}
+	}
+
+	private void throwExceptionIfNoInput(String[] args, InputStream stdin) throws CatException {
+		if (args == null) {
+			if (stdin == null) {
+				throw new CatException("No input");
+			}
+		} else {
+			if (args.length == 0) {
+				throw new CatException("No input");
+			}
+		}
+	}
+
+	private boolean fileIsSpecified(String... args) {
+		return (args != null && args.length > 0);
 	}
 }
