@@ -99,6 +99,7 @@ public class EchoApplicationTest {
 	public void tearDown() throws Exception {
 		args = null;
 	}
+
 	/**
 	 * @throws java.lang.Exception
 	 */

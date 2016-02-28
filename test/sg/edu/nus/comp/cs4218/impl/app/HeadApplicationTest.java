@@ -55,7 +55,7 @@ public class HeadApplicationTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		filePath = "test/sg/edu/nus/comp/cs4218/impl/app/testdoc/";
+		filePath = "examples/";
 	}
 
 	/******************************************************************************
@@ -73,7 +73,7 @@ public class HeadApplicationTest {
 	// Case 1: empty text file
 	@Test
 	public void testMethodCheckIfFileIsReadable() throws HeadException {
-		
+
 		filePath += TEXTINPUT_EMPTY;
 		textFile = Paths.get(filePath);
 		assertTrue(hApp.checkIfFileIsReadable(textFile));
@@ -250,13 +250,6 @@ public class HeadApplicationTest {
 	@Test(expected = HeadException.class)
 	public void testMethodCheckNumberOfLinesInput5() throws HeadException {
 		hApp.checkNumberOfLinesInput("1$$2$3");
-	}
-
-	// Case 6: Contain space in front of the number
-	// Should this be discarded?
-	@Test(expected = HeadException.class)
-	public void testMethodCheckNumberOfLinesInput6() throws HeadException {
-		hApp.checkNumberOfLinesInput(" 13");
 	}
 
 	/******************************************************************************
@@ -653,7 +646,6 @@ public class HeadApplicationTest {
 
 	// Case 2D: argument
 	// Invalid command: no such filename
-	// Expected output: 5 lines of output
 	@Test(expected = HeadException.class)
 	public void testrun2D() throws HeadException {
 		args = new String[3];

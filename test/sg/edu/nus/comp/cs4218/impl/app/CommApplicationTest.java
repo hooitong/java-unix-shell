@@ -21,8 +21,7 @@ public class CommApplicationTest {
 
 	private static final String NEW_LINE = System.lineSeparator();
 	private static final String TAB_LINE = "\t";
-	private static String col1Result, col2Result, col3Result, bothMatchResult,
-			noMatchResult;
+	private static String col1Result, col2Result, col3Result, bothMatchResult, noMatchResult;
 
 	private static CommApplication caTest;
 	private static String[] args;
@@ -31,12 +30,11 @@ public class CommApplicationTest {
 	public static void setUpBeforeClass() throws Exception {
 		caTest = new CommApplication();
 		args = new String[] { "examples/file1.txt", "examples/file2.txt" };
-		col1Result = (TAB_LINE + NEW_LINE + TAB_LINE + NEW_LINE + TAB_LINE
-				+ NEW_LINE + "eggplant" + NEW_LINE + TAB_LINE);
-		col2Result = (TAB_LINE + NEW_LINE + TAB_LINE + NEW_LINE + "banana"
-				+ NEW_LINE + TAB_LINE + NEW_LINE + "zucchini");
-		col3Result = ("apple" + NEW_LINE + "banana" + NEW_LINE + TAB_LINE
-				+ NEW_LINE + TAB_LINE + NEW_LINE + TAB_LINE);
+		col1Result = (TAB_LINE + NEW_LINE + TAB_LINE + NEW_LINE + TAB_LINE + NEW_LINE + "eggplant" + NEW_LINE
+				+ TAB_LINE);
+		col2Result = (TAB_LINE + NEW_LINE + TAB_LINE + NEW_LINE + "banana" + NEW_LINE + TAB_LINE + NEW_LINE
+				+ "zucchini");
+		col3Result = ("apple" + NEW_LINE + "banana" + NEW_LINE + TAB_LINE + NEW_LINE + TAB_LINE + NEW_LINE + TAB_LINE);
 
 		String[] col1ResultArr = col1Result.split(NEW_LINE);
 		String[] col2ResultArr = col2Result.split(NEW_LINE);
@@ -44,16 +42,12 @@ public class CommApplicationTest {
 		StringBuilder sbBoth = new StringBuilder("");
 		StringBuilder sbNone = new StringBuilder("");
 		for (int i = 0; i < col1ResultArr.length - 1; i++) {
-			sbBoth.append(col1ResultArr[i]).append(col2ResultArr[i])
-					.append(col3ResultArr[i]).append(NEW_LINE);
-			sbNone.append(col1ResultArr[i]).append(col2ResultArr[i])
-					.append(NEW_LINE);
+			sbBoth.append(col1ResultArr[i]).append(col2ResultArr[i]).append(col3ResultArr[i]).append(NEW_LINE);
+			sbNone.append(col1ResultArr[i]).append(col2ResultArr[i]).append(NEW_LINE);
 		}
-		sbBoth.append(col1ResultArr[col1ResultArr.length - 1])
-				.append(col2ResultArr[col2ResultArr.length - 1])
+		sbBoth.append(col1ResultArr[col1ResultArr.length - 1]).append(col2ResultArr[col2ResultArr.length - 1])
 				.append(col3ResultArr[col3ResultArr.length - 1]);
-		sbNone.append(col1ResultArr[col1ResultArr.length - 1]).append(
-				col2ResultArr[col2ResultArr.length - 1]);
+		sbNone.append(col1ResultArr[col1ResultArr.length - 1]).append(col2ResultArr[col2ResultArr.length - 1]);
 		bothMatchResult = sbBoth.toString();
 		noMatchResult = sbNone.toString();
 	}
@@ -109,16 +103,14 @@ public class CommApplicationTest {
 	 */
 	@Test
 	public void testRunWithArgsStdin() throws CommException {
-		String contentStr = "apple" + NEW_LINE + "banana" + NEW_LINE
-				+ "eggplant";
-		InputStream inputStream = new java.io.ByteArrayInputStream(
-				contentStr.getBytes());
+		String contentStr = "apple" + NEW_LINE + "banana" + NEW_LINE + "eggplant";
+		InputStream inputStream = new java.io.ByteArrayInputStream(contentStr.getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		String[] args2 = new String[] { "examples/file2.txt" };
 		caTest.run(args2, inputStream, stdout);
 		assertEquals(bothMatchResult, stdout.toString());
 	}
-	
+
 	/**
 	 * tests the run method using args for 1 file but missing stdin
 	 * 
@@ -127,10 +119,10 @@ public class CommApplicationTest {
 	@Test(expected = CommException.class)
 	public void testRunArgsMissingStdin() throws CommException {
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-		String[] args1 = new String[]{"file3.txt"};
+		String[] args1 = new String[] { "file3.txt" };
 		caTest.run(args1, null, stdout);
 	}
-	
+
 	/**
 	 * tests the run method but missing args and stdin
 	 * 
@@ -139,10 +131,10 @@ public class CommApplicationTest {
 	@Test(expected = CommException.class)
 	public void testRunMissingArgsStdin() throws CommException {
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-		String[] args1 = new String[]{};
+		String[] args1 = new String[] {};
 		caTest.run(args1, null, stdout);
 	}
-	
+
 	/**
 	 * tests the run method but missing args
 	 * 
@@ -150,12 +142,10 @@ public class CommApplicationTest {
 	 */
 	@Test(expected = CommException.class)
 	public void testRunStdinMissingArgs() throws CommException {
-		String contentStr = "PINEAPPLE" + NEW_LINE + "PEAR" + NEW_LINE
-				+ "MANGO";
-		InputStream inputStream = new java.io.ByteArrayInputStream(
-				contentStr.getBytes());
+		String contentStr = "PINEAPPLE" + NEW_LINE + "PEAR" + NEW_LINE + "MANGO";
+		InputStream inputStream = new java.io.ByteArrayInputStream(contentStr.getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-		String[] args1 = new String[]{};
+		String[] args1 = new String[] {};
 		caTest.run(args1, inputStream, stdout);
 	}
 }

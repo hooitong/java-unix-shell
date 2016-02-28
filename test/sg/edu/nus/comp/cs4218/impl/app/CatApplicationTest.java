@@ -1,4 +1,14 @@
 
+/**
+ * 
+ * References:
+ * 
+ * http://tutorials.jenkov.com/java-unit-testing/io-testing.html - io-testing
+ * http://junit.sourceforge.net/javadoc/org/junit/Assert.html - assertion
+ * https://docs.oracle.com/javase/tutorial/essential/io/pathOps.html -
+ * information on file path
+ * 
+ */
 package sg.edu.nus.comp.cs4218.impl.app;
 
 import static org.junit.Assert.*;
@@ -26,24 +36,23 @@ public class CatApplicationTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		cApp = new CatApplication();
 	}
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 
 	@Before
 	public void setUp() throws Exception {
-		filePath = "test/sg/edu/nus/comp/cs4218/impl/app/testdoc/";
+		filePath = "examples/";
 	}
 
 	/**
-	 * Case 0A: No output stream 
-	 * Input: valid args (contain one usable item),
+	 * Case 0A: No output stream Input: valid args (contain one usable item),
 	 * null inputstream, null output Output: throws CatException
 	 * 
 	 */
@@ -85,8 +94,7 @@ public class CatApplicationTest {
 	}
 
 	/**
-	 * Case 0D: has both input but no output
-	 * Output: throws CatException
+	 * Case 0D: has both input but no output Output: throws CatException
 	 * 
 	 */
 	@Test(expected = CatException.class)
@@ -105,9 +113,9 @@ public class CatApplicationTest {
 	// Case 1A: Run using stdin
 
 	@Test
-	public void runCAppWithStdin1A(){
+	public void runCAppWithStdin1A() {
 		try {
-			filePath += TEXT_INPUT_TXT; 
+			filePath += TEXT_INPUT_TXT;
 			input = new FileInputStream(filePath);
 			output = new ByteArrayOutputStream();
 			cApp.run(null, input, output);
@@ -115,104 +123,101 @@ public class CatApplicationTest {
 
 		} catch (IOException i) {
 			i.printStackTrace();
-		} catch (CatException c){
+		} catch (CatException c) {
 			c.printStackTrace();
 		}
 
 	}
-	
+
 	// Case 1B: Run using stdin
-	//	input: file is empty
+	// input: file is empty
 
-		@Test
-		public void runCAppWithStdin1B(){
-			try {
-				filePath += EMPTYFILE; 
-				input = new FileInputStream(filePath);
-			}catch(IOException i){
-				i.printStackTrace();
-			}
-			try{
-				output = new ByteArrayOutputStream();
-				cApp.run(null, input, output);
-				assertEquals(output.toString(), "");
+	@Test
+	public void runCAppWithStdin1B() {
+		try {
+			filePath += EMPTYFILE;
+			input = new FileInputStream(filePath);
+		} catch (IOException i) {
+			i.printStackTrace();
+		}
+		try {
+			output = new ByteArrayOutputStream();
+			cApp.run(null, input, output);
+			assertEquals(output.toString(), "");
 
-			} catch (CatException c){
-				c.printStackTrace();
-			}
-
+		} catch (CatException c) {
+			c.printStackTrace();
 		}
 
-	
+	}
 
 	/**
-	 * Case 2A: Run using args 
-	 * Input: args contain one file name, null stdin,
+	 * Case 2A: Run using args Input: args contain one file name, null stdin,
 	 * valid output
 	 * 
 	 * @throws CatException
 	 */
 	@Test
-	public void runCAppWithStdin2A(){
-	try{
-		args = new String[1];
-		args[0] = filePath + ONELINETXT;
-		output = new ByteArrayOutputStream();
-		cApp.run(args, null, output);
-		assertEquals(output.toString(), expectedOutput3());
-	}catch(CatException cat){
-		cat.printStackTrace();
-	}
+	public void runCAppWithStdin2A() {
+		try {
+			args = new String[1];
+			args[0] = filePath + ONELINETXT;
+			output = new ByteArrayOutputStream();
+			cApp.run(args, null, output);
+			assertEquals(output.toString(), expectedOutput3());
+		} catch (CatException cat) {
+			cat.printStackTrace();
+		}
 
 	}
-	
+
 	/**
 	 * Case 2B: 1 arg but empty
 	 *
 	 * @throws CatException
 	 */
-	@Test (expected = CatException.class)
-	public void runCAppWithStdin2B() throws CatException{
-		
-			args = new String[1];
-			args[0] = "";
-			output = new ByteArrayOutputStream();
-			cApp.run(args, null, output);
-		
+	@Test(expected = CatException.class)
+	public void runCAppWithStdin2B() throws CatException {
+
+		args = new String[1];
+		args[0] = "";
+		output = new ByteArrayOutputStream();
+		cApp.run(args, null, output);
+
 	}
-	
+
 	/**
 	 * Case 2B: 1 arg but filled with space
 	 *
 	 * @throws CatException
 	 */
-	@Test (expected = CatException.class)
-	public void runCAppWithStdin2C() throws CatException{
-		
-			args = new String[1];
-			args[0] = " ";
-			output = new ByteArrayOutputStream();
-			cApp.run(args, null, output);
-		
+	@Test(expected = CatException.class)
+	public void runCAppWithStdin2C() throws CatException {
+
+		args = new String[1];
+		args[0] = " ";
+		output = new ByteArrayOutputStream();
+		cApp.run(args, null, output);
+
 	}
-	
+
 	/**
-	 * Case 2D: 1 filename but empty 
+	 * Case 2D: 1 filename but empty
 	 *
 	 * @throws CatException
 	 */
-	@Test 
-	public void runCAppWithStdin2D(){
-		try{
+	@Test
+	public void runCAppWithStdin2D() {
+		try {
 			args = new String[1];
 			args[0] = filePath + EMPTYFILE;
 			output = new ByteArrayOutputStream();
 			cApp.run(args, null, output);
 			assertEquals(output.toString(), "");
-		}catch(CatException cat){
+		} catch (CatException cat) {
 			cat.printStackTrace();
 		}
-		
+
 	}
 
 	/**
@@ -221,14 +226,14 @@ public class CatApplicationTest {
 	 * @throws CatException
 	 */
 	@Test(expected = CatException.class)
-	public void runCAppWithStdin3A() throws CatException{
+	public void runCAppWithStdin3A() throws CatException {
 
 		args = new String[3];
 		output = System.out;
 		cApp.run(args, null, output);
 
 	}
-		
+
 	/**
 	 * Case 3B: Multiple filenames, all should work
 	 * 
@@ -253,17 +258,16 @@ public class CatApplicationTest {
 	 * @throws CatException
 	 */
 	@Test(expected = CatException.class)
-	public void runCAppWithStdin3C() throws CatException{
+	public void runCAppWithStdin3C() throws CatException {
 
-			args = new String[3];
-			args[0] = "filezzzz.txt";
-			args[1] = filePath + ONELINETXT;
-			args[2] = filePath + TEXT_INPUT2_TXT;
-			output = new ByteArrayOutputStream();
-			cApp.run(args, null, output);
-		
+		args = new String[3];
+		args[0] = "filezzzz.txt";
+		args[1] = filePath + ONELINETXT;
+		args[2] = filePath + TEXT_INPUT2_TXT;
+		output = new ByteArrayOutputStream();
+		cApp.run(args, null, output);
+
 	}
-
 
 	String expectedOutput1() {
 		return "Roses are red,\r\n" + "Violets are blue,\r\n" + "All of my base,\r\n" + "Are belong to you.\r\n"
@@ -278,11 +282,11 @@ public class CatApplicationTest {
 				+ "14 Violets are grey,\r\n" + "15 I'm color blind.\r\n"
 				+ "16 from http://uncyclopedia.wikia.com/wiki/Poetry";
 	}
-	
-	String expectedOutput3(){
+
+	String expectedOutput3() {
 		return "test test ";
 	}
-	
+
 	@After
 	public void tearDown() throws Exception {
 		filePath = null;
@@ -294,13 +298,3 @@ public class CatApplicationTest {
 		cApp = null;
 	}
 }
-/**
- * 
- * References:
- * 
- * http://tutorials.jenkov.com/java-unit-testing/io-testing.html - io-testing
- * http://junit.sourceforge.net/javadoc/org/junit/Assert.html - assertion
- * https://docs.oracle.com/javase/tutorial/essential/io/pathOps.html -
- * information on file path
- * 
- */
