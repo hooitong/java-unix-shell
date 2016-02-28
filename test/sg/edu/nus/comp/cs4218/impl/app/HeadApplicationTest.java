@@ -73,7 +73,7 @@ public class HeadApplicationTest {
 	// Case 1: empty text file
 	@Test
 	public void testMethodCheckIfFileIsReadable() throws HeadException {
-		// createFileForTesting();
+		
 		filePath += TEXTINPUT_EMPTY;
 		textFile = Paths.get(filePath);
 		assertTrue(hApp.checkIfFileIsReadable(textFile));
