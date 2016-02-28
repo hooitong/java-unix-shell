@@ -163,7 +163,8 @@ public class FmtApplication implements Application {
 		try {
 			wrapWidth = Integer.parseInt(wrapWidthString);
 		} catch (NumberFormatException e) {
-			throw new FmtException(e);
+			throw new FmtException(e,"Wrap width not a number");
+			
 		}
 		if (wrapWidth < 1) {
 			throw new FmtException("Wrap width should be at least 1");

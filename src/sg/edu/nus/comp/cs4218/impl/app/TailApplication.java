@@ -125,7 +125,7 @@ public class TailApplication implements Application {
 		try {
 			numLines = Integer.parseInt(numLinesString);
 		} catch (NumberFormatException nfe) {
-			throw new TailException(nfe);
+			throw new TailException(nfe,"Number of lines not a number");
 		}
 		if (numLines < 0) {
 			throw new TailException("Number of lines should be at least 0");

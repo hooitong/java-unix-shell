@@ -7,9 +7,12 @@ public class TailException extends AbstractApplicationException {
 	public TailException(String message) {
 		super("tail: " + message);
 	}
-	
-	public TailException(Exception excep) 
-	{
+
+	public TailException(Exception excep, String message) {
+		super("tail: " + message);
+	}
+
+	public TailException(Exception excep) {
 		super("tail: " + excep.getMessage());
 	}
 }

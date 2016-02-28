@@ -23,6 +23,7 @@ public class FmtApplicationTest
 	private static FmtApplication fmtApplication;
 	private static final String NEW_LINE = System.lineSeparator();
 	private static ByteArrayOutputStream baos;
+	private static ByteArrayInputStream bis;
 	private static String fileToRead = "sample.txt";
 	
 	@Rule
@@ -38,6 +39,7 @@ public class FmtApplicationTest
 	public void setUp() throws Exception 
 	{
 		baos = new ByteArrayOutputStream();
+		bis = new ByteArrayInputStream("This is a test string".getBytes());
 	}
 	
 	@Test
@@ -116,22 +118,22 @@ public class FmtApplicationTest
 		String expectedString = "Selon la préfecture, des engins explosifs avaient été";
 		assertEquals(expectedString,readString);
 	}
+	
+	@After
+	public void tearDown() throws Exception 
+	{
+		baos = null;
+		bis = null;
+	}
+	
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception 
+	{
+		fmtApplication = null;
+	}
 }
 
-/*
- * 
- * /*ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		String testString = "Hey man";
-		ByteArrayInputStream bis = new ByteArrayInputStream(testString.getBytes());
-		
-		String[] arguements = {"sample.txt"};
-		fmtApplication.wrapText("T, wrapValue)
-		String ss = new String(bos.toByteArray());
-		String[] splitSS = ss.split("\n");
-		String[] split2 = splitSS[0].split(" ");
-		assertEquals("terminated.",split2[split2.length-1]);
- */
-
+//References
 //How do you assert that a certain exception is thrown in JUnit 4 tests?
 //http://stackoverflow.com/questions/156503/how-do-you-assert-that-a-certain-exception-is-thrown-in-junit-4-tests
 //Qn By : http://stackoverflow.com/users/1666/scdf
