@@ -7,4 +7,24 @@ public class CatException extends AbstractApplicationException {
 	public CatException(String message) {
 		super("cat: " + message);
 	}
+	
+	/**
+	 * Overloaded constructor to wrap any exception into a CatException.
+	 * 
+	 * @param excep
+	 */
+	public CatException(Exception excep) {
+		super("cat: " + excep.getMessage());
+	}
+	
+	
+	/**
+	 * Ignore exception but print message instead.
+	 * 
+	 * @param excep
+	 */
+	public CatException(Exception excep, String message) {
+		super("cat: " + message);
+	}
+	
 }
