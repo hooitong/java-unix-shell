@@ -81,21 +81,11 @@ public class EchoApplicationTest {
 					args[0] = "";
 					op =  new ByteArrayOutputStream();
 					ea.run(args, null, op);
-					assertEquals(op.toString(), "\n");
+					assertEquals(op.toString(), "\n\n");
 				}	
 				
-				// Case 5: Test exception: expect null pointer exception thrown
-				@Test(expected = EchoException.class)
-				public void testRun5() throws EchoException{
-					
-					args = new String[2];
-					args[0] = "";
-					op = System.out;
-					ea.run(args, null, op);
-		
-				}	
 				
-				// Case 6: 
+				// Case 5: 
 				// Excepted output: This is a trap.
 				@Test
 				public void testRun6() throws EchoException{
@@ -108,7 +98,7 @@ public class EchoApplicationTest {
 
 				}	
 				
-				// Case 7: Proper run of the system
+				// Case 6: Proper run of the system
 				@Test
 				public void testRun7() throws EchoException{
 					String temp = "This is a trap";
@@ -117,6 +107,8 @@ public class EchoApplicationTest {
 					
 					ea.run(args, null, op);
 				}	
+				
+				
 				
 	/**
 	 * @throws java.lang.Exception
