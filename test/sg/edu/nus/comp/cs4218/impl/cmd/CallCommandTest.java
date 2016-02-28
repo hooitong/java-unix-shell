@@ -1,6 +1,7 @@
 package sg.edu.nus.comp.cs4218.impl.cmd;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.file.Paths;
 import java.util.Vector;
 
 import org.junit.Before;
@@ -172,7 +173,7 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testExtractInputRedir() throws Exception {
-		String stringToTest = "sort ­n < file1.txt > file2.txt";
+		String stringToTest = "sort -n < file1.txt > file2.txt";
 		Vector<String> cmdVector = new Vector<String>();
 		cmdVector.addElement("");
 		cmdVector.addElement("");
@@ -188,12 +189,72 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testExtractOutputRedir() throws Exception {
-		String stringToTest = "sort ­n < file1.txt > file2.txt";
+		String stringToTest = "sort -n < file1.txt > file2.txt";
 		Vector<String> cmdVector = new Vector<String>();
 		cmdVector.addElement("");
 		cmdVector.addElement("");
         stubCommand.extractOutputRedir(stringToTest, cmdVector, 20);
         assertEquals(cmdVector.get(1),"file2.txt");
+	}
+
+	/**
+	 * Test whether the method can process an array of valid arguments, evaluate globbing
+	 * and return the newly replaced arguments.
+	 *
+	 * @throws Exception
+     */
+	@Test
+	public void testValidEvaluateGlob() throws Exception {
+		String[] mockArgs = {"mock-filesystem/*.txt", "mock-filesystem/*/*/*.txt", "mock-filesystem/21-herb/*"};
+		String[] results = stubCommand.evaluateGlob(mockArgs);
+		String firstArgOne = Paths.get("mock-filesystem/quantum.txt").toAbsolutePath().toString();
+		String secondArgOne = Paths.get("mock-filesystem/21-herb/hola/Kappa.txt").toAbsolutePath().toString();
+		String thirdArgOne = Paths.get("mock-filesystem/21-herb/hola").toAbsolutePath().toString();
+		String thirdArgTwo = Paths.get("mock-filesystem/21-herb/sideload.txt").toAbsolutePath().toString();
+		assert(results.length == 4);
+		assert(firstArgOne.equals(results[0]));
+		assert(secondArgOne.equals(results[1]));
+		assert(thirdArgOne.equals(results[2]));
+		assert(thirdArgTwo.equals(results[3]));
+	}
+
+	/**
+	 * Test whether the method can process arguments that contains single and double quotes
+	 * and not evaluate globbing on them and return the original argument.
+	 *
+	 * @throws Exception
+     */
+	@Test
+	public void testQuotedEvaluateGlob() throws Exception {
+		String singleQuote = "'mock-filesystem/*.txt'";
+		String doubleQuote = "\"mock-filesystem/21-herb/hola\"";
+		String mixedQuotes = "'mock-filesystem/\"*.txt\"'";
+		String quotedFile = "mock-filesystem/tango/'.*";
+		String[] mockArgs = {singleQuote, doubleQuote, mixedQuotes, quotedFile};
+		String[] results = stubCommand.evaluateGlob(mockArgs);
+		String quotedFileResult = Paths.get("mock-filesystem/tango/'.json").toAbsolutePath().toString();
+		assert(results.length == 4);
+		assert(singleQuote.equals(results[0]));
+		assert(doubleQuote.equals(results[1]));
+		assert(mixedQuotes.equals(results[2]));
+		assert(quotedFileResult.equals(results[3]));
+	}
+
+
+	/**
+	 * Test whether the method can process arguments that contains asterisks but
+	 * cannot be matched or invalid syntax and return the original arguments.
+	 *
+	 * @throws Exception
+     */
+	@Test
+	public void testInvalidEvaluateGlob() throws Exception {
+		String invalidFile = "mock-filesystem/*.kat";
+		String noGlobArg = "mock-filesystem/quantum.txt";
+		String[] mockArgs = {invalidFile, noGlobArg};
+		String[] results = stubCommand.evaluateGlob(mockArgs);
+		assert(results.length == 1);
+		assert(noGlobArg.equals(results[0]));
 	}
 
 	/**

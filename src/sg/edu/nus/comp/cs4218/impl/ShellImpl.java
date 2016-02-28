@@ -1,30 +1,19 @@
 package sg.edu.nus.comp.cs4218.impl;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
-import sg.edu.nus.comp.cs4218.exception.PipeCommandException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.app.CatApplication;
-import sg.edu.nus.comp.cs4218.impl.app.EchoApplication;
-import sg.edu.nus.comp.cs4218.impl.app.HeadApplication;
-import sg.edu.nus.comp.cs4218.impl.app.SortApplication;
-import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
+import sg.edu.nus.comp.cs4218.impl.app.*;
 import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.PipeCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.SequenceCommand;
+
+import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A Shell is a command interpreter and forms the backbone of the entire
@@ -423,7 +412,7 @@ public class ShellImpl implements Shell {
 	 *
 	 * @param args
 	 *            arguments to be evaluated
-	 * @return empty string object
+	 * @return empty string object since if it does not match any file or directory
 	 */
 	@Override
 	public String globNoPaths(String[] args) {
@@ -441,7 +430,7 @@ public class ShellImpl implements Shell {
 	public String globOneFile(String[] args) {
 		String tempResult = "";
 		for (String arg : args) {
-			tempResult += arg + System.getProperty("line.separator");
+			tempResult += arg + NEW_LINE;
 		}
 		return tempResult;
 	}
@@ -451,7 +440,7 @@ public class ShellImpl implements Shell {
 	 *
 	 * @param args
 	 *            arguments to be evaluated
-	 * @return String that contains the evaluated arguments existing in the same
+	 * @return string that contains the evaluated arguments existing in the same
 	 *         directory.
 	 */
 	@Override
@@ -464,7 +453,7 @@ public class ShellImpl implements Shell {
 	 *
 	 * @param args
 	 *            arguments to be evaluated
-	 * @return String that contains the evaluated arguments existings multiple
+	 * @return string that contains the evaluated arguments existing in multiple
 	 *         levels down.
 	 */
 	@Override
@@ -478,12 +467,10 @@ public class ShellImpl implements Shell {
 		try {
 			String[] globResult = helper.evaluateGlob(args);
 			for (String result : globResult) {
-				tempResult += result + System.getProperty("line.separator");
+				tempResult += result + NEW_LINE;
 			}
 		} catch (ShellException e) {
-			for (String arg : args) {
-				tempResult += arg + System.getProperty("line.separator");
-			}
+			return e.getMessage();
 		}
 
 		return tempResult;

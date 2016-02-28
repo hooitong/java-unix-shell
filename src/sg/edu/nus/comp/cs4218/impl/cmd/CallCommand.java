@@ -337,25 +337,29 @@ public class CallCommand implements Command {
 	 */
 	public String[] evaluateGlob(String... args) throws ShellException {
 		List<String> tempList = new ArrayList<>();
+		Pattern singleQuote = Pattern.compile("['].*\\*.*[']");
+		Pattern doubleQuote = Pattern.compile("[\"].*\\*.*[\"]");
+
 		/* For each token, perform glob evaluation if any */
 		for (String arg : args) {
-			if (arg.contains("*") && !arg.matches("\"'")) {
+			Matcher singleMatcher = singleQuote.matcher(arg);
+			Matcher doubleMatcher = doubleQuote.matcher(arg);
+			if (arg.contains("*") && !singleMatcher.find() && !doubleMatcher.find()) {
 				/* Retrieve parent directory before wildcard */
 				int firstWildcard = arg.indexOf('*');
 
 				/* Find separator before this wildcard */
-				int beforeSeperator = arg.substring(0, firstWildcard).lastIndexOf('/');
+				int beforeSeperator = arg.substring(0, firstWildcard).lastIndexOf(File.separator);
 
-				Path parentPath;
 				/*
 				 * If there is no separators, it means that path to search is
 				 * relative path
 				 */
-				parentPath = beforeSeperator == -1 ? new File(arg.substring(0, beforeSeperator)).toPath()
-						: Paths.get("");
+				Path parentPath = beforeSeperator == -1 ? Paths.get("")
+						: Paths.get(arg.substring(0, beforeSeperator));
 
 				String pattern = arg.substring(beforeSeperator + 1);
-				GlobFinder finder = new GlobFinder(pattern);
+				GlobFinder finder = new GlobFinder(pattern, parentPath.toAbsolutePath().toString());
 
 				try {
 					Files.walkFileTree(parentPath.toAbsolutePath(), finder);

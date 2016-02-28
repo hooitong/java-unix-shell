@@ -1,5 +1,6 @@
 package sg.edu.nus.comp.cs4218.impl;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -16,14 +17,10 @@ public class GlobFinderTest {
 	public void setUp() {
 		String mockSinglePattern = "*.txt";
 		String mockMultiPattern = "*/*/*.txt";
-		singleFinder = new GlobFinder(mockSinglePattern);
-		nestedFinder = new GlobFinder(mockMultiPattern);
-		mockRootDirectory = Environment.currentDirectory + "mock-filesystem/";
+		mockRootDirectory = Environment.currentDirectory + "/mock-filesystem";
+		singleFinder = new GlobFinder(mockSinglePattern, mockRootDirectory);
+		nestedFinder = new GlobFinder(mockMultiPattern, mockRootDirectory);
 	}
-
-	/**
-	 * TODO: Need to test for unquoted asterisks
-	 */
 
     /**
      * Test a simple glob pattern (non-nested) on a valid file that should be matched.
@@ -32,7 +29,7 @@ public class GlobFinderTest {
      */
 	@Test
 	public void testValidGlobFind() throws Exception {
-		Path mockAbsolutePath = Paths.get(mockRootDirectory + "quantum.txt");
+		Path mockAbsolutePath = Paths.get(mockRootDirectory + "/quantum.txt");
 		singleFinder.globFind(mockAbsolutePath);
 		assert (!singleFinder.getResults().isEmpty());
 		assert (singleFinder.getResults().get(0).equals(mockAbsolutePath.toString()));
@@ -45,7 +42,7 @@ public class GlobFinderTest {
      */
 	@Test
 	public void testInvalidGlobFind() throws Exception {
-		Path mockAbsolutePath = Paths.get(mockRootDirectory + "tango/Kat.cpp");
+		Path mockAbsolutePath = Paths.get(mockRootDirectory + "/tango/Kat.cpp");
 		singleFinder.globFind(mockAbsolutePath);
 		assert (singleFinder.getResults().isEmpty());
 	}
@@ -57,9 +54,10 @@ public class GlobFinderTest {
      */
 	@Test
 	public void testValidNestedGlobFind() throws Exception {
-		Path mockAbsolutePath = Paths.get(mockRootDirectory + "21-herb/hola/kappa.txt");
+		Path mockAbsolutePath = Paths.get(mockRootDirectory + "/21-herb/hola/kappa.txt");
 		nestedFinder.globFind(mockAbsolutePath);
 		assert (!nestedFinder.getResults().isEmpty());
+		assert(nestedFinder.getResults().get(0).equals(mockAbsolutePath.toString()));
 	}
 
     /**
