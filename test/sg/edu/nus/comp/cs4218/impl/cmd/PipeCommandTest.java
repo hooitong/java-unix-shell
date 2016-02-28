@@ -58,7 +58,7 @@ public class PipeCommandTest {
 	 * command
 	 */
 	@Test
-	public void testPipleWithExceptionBehind() {
+	public void testPipeWithExceptionBehind() {
 		String expectedResult = "pipe: exception detected for one of the call commands";
 		String cmdLine = "sort file3.txt | head -j 2";
 		String actualResult = shell.pipeWithException(cmdLine.split(" "));
@@ -70,7 +70,7 @@ public class PipeCommandTest {
 	 * command
 	 */
 	@Test
-	public void testPipleWithExceptionInfront() {
+	public void testPipeWithExceptionInfront() {
 		String expectedResult = "pipe: exception detected for one of the call commands";
 		String cmdLine = "sort -j file3.txt | head";
 		String actualResult = shell.pipeWithException(cmdLine.split(" "));
