@@ -24,7 +24,7 @@ public class FmtApplicationTest
 	private static final String NEW_LINE = System.lineSeparator();
 	private static ByteArrayOutputStream baos;
 	private static ByteArrayInputStream bis;
-	private static String fileToRead = "sample.txt";
+	private static String fileToRead = "examples/sample.txt";
 	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
