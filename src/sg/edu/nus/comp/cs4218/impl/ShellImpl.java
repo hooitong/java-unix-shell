@@ -338,8 +338,13 @@ public class ShellImpl implements Shell {
 				possibleCommands[commandIndex].parse();
 				return possibleCommands[commandIndex];
 			} catch (ShellException e) {
-				if (++commandIndex == possibleCommands.length)
+				if (++commandIndex == possibleCommands.length){
 					throw e;
+				}
+				else if (e.getMessage().contains(SequenceCommand.MISSING_ARG)){
+					throw e;
+				}
+
 			}
 		}
 	}

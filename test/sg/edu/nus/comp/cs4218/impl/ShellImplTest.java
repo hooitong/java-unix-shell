@@ -64,37 +64,6 @@ public class ShellImplTest {
         ShellImpl.runApp("apple", null, null, null);
     }
 
-    /** EF2 - IO Redirection Tests */
-    @Test
-    public void testOpenInputRedir() throws Exception {
-        fail("To be written for EF2");
-    }
-
-    @Test
-    public void testOpenOutputRedir() throws Exception {
-        fail("To be written for EF2");
-    }
-
-    @Test
-    public void testCloseInputStream() throws Exception {
-        fail("To be written for EF2");
-    }
-
-    @Test
-    public void testCloseOutputStream() throws Exception {
-        fail("To be written for EF2");
-    }
-
-    @Test
-    public void testWriteToStdout() throws Exception {
-        fail("To be written for EF2");
-    }
-
-    @Test
-    public void testOutputStreamToInputStream() throws Exception {
-        fail("To be written for EF2");
-    }
-
     /**
      *  Test whether the application can properly parse a valid call
      *  command and return as a command object.
