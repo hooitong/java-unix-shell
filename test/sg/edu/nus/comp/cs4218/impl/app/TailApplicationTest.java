@@ -89,6 +89,16 @@ public class TailApplicationTest
 	}
 	
 	@Test
+	public void testNegativeNumLines() throws TailException
+	{
+		exception.expect(TailException.class);
+	    exception.expectMessage("Number of lines should be at least 0");
+	    
+		String[] arguments = {"-n","-5",fileToRead};
+		tailApplication.run(arguments, null, baos);
+	}
+	
+	@Test
 	public void testNullArg() throws TailException
 	{
 		exception.expect(TailException.class);
@@ -125,15 +135,6 @@ public class TailApplicationTest
 		assertEquals("Apartments frequently or motionless on reasonable projecting expression. Way mrs end gave tall walk fact bed.",resultLines[resultLines.length-1]);
 	}
 	
-	@Test
-	public void testNegativeNumLines() throws TailException
-	{
-		exception.expect(TailException.class);
-	    exception.expectMessage("Number of lines should be at least 0");
-	    
-		String[] arguments = {"-n","-5",fileToRead};
-		tailApplication.run(arguments, null, baos);
-	}
 	
 	@After
 	public void tearDown() throws Exception 

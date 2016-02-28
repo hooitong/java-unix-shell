@@ -43,6 +43,42 @@ public class FmtApplicationTest
 	}
 	
 	@Test
+	public void testFileReadWithNonExistantFile() throws FmtException
+	{
+		exception.expect(FmtException.class);
+	    exception.expectMessage("Could not read file");
+		fmtApplication.checkIfFileIsReadable(Paths.get("examples/sampleNonExistent.txt"));
+	}
+	
+	@Test
+	public void testFileReadWithDirectory() throws FmtException
+	{
+		exception.expect(FmtException.class);
+	    exception.expectMessage("This is a directory");
+		fmtApplication.checkIfFileIsReadable(Paths.get("examples/"));
+	}
+	
+	@Test
+	public void testReadFromStdin() throws FmtException
+	{
+		assertEquals(fmtApplication.readFromStdin(bis),"This is a test string");
+	}
+	
+	@Test
+	public void testReadFromStdinNull() throws FmtException
+	{
+		exception.expect(FmtException.class);
+	    exception.expectMessage("Null pointer exception - stdin is not defined");
+		assertEquals(fmtApplication.readFromStdin(null),"This is a test string");
+	}
+	
+	@Test
+	public void testFileRead() throws FmtException
+	{
+		assertTrue(fmtApplication.checkIfFileIsReadable(Paths.get("examples/sample.txt")));
+	}
+	
+	@Test
 	public final void testWrapText() throws FmtException 
 	{
 		int wrapValue = 11;
@@ -138,3 +174,8 @@ public class FmtApplicationTest
 //http://stackoverflow.com/questions/156503/how-do-you-assert-that-a-certain-exception-is-thrown-in-junit-4-tests
 //Qn By : http://stackoverflow.com/users/1666/scdf
 //Ans By : http://stackoverflow.com/users/21234/skaffman
+
+//Java/ JUnit - AssertTrue vs AssertFalse
+//http://stackoverflow.com/questions/3241105/java-junit-asserttrue-vs-assertfalse
+//Qn By : http://stackoverflow.com/users/270847/thomas
+//Ans By : http://stackoverflow.com/users/6198/matt-solnit
