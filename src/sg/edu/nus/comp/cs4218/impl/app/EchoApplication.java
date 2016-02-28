@@ -3,7 +3,6 @@ package sg.edu.nus.comp.cs4218.impl.app;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.exception.EchoException;
@@ -45,13 +44,13 @@ public class EchoApplication implements Application {
 				try{
 					writeIfArgsIsEmpty(stdout);
 				}catch(IOException i){
-					throw new EchoException("IOException" + i.getMessage());
+					throw new EchoException(i);
 				}
 			} else {
 				try{
 					writeWhenArgsIsNonEmpty(args, stdout);
 				}catch (IOException i){
-					throw new EchoException("IOException" + i.getMessage());
+					throw new EchoException(i);
 				}
 			}
 		
@@ -80,7 +79,11 @@ public class EchoApplication implements Application {
 	private void writeIfArgsIsEmpty(OutputStream stdout) throws IOException {
 			stdout.write("\n\n".getBytes());
 	}
-
+	
+	
+/*
+ * Create a clean list of words to echo by removing spaces and empty argument
+ */
 	private String[] createList(String...args ) {
 		int index = 0;
 		String[] cleanList = new String[args.length];
