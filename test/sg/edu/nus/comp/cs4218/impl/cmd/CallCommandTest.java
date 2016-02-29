@@ -165,6 +165,22 @@ public class CallCommandTest {
 	}
 
 	/**
+	 * Test whether the input redirection can be parsed from the given command (function wise)
+	 * line.
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testExtractInputRedirFunction() throws Exception {
+		String stringToTest = "sort -n < file1.txt > file2.txt";
+		Vector<String> cmdVector = new Vector<String>();
+		cmdVector.addElement("");
+		cmdVector.addElement("");
+		stubCommand.extractInputRedir(stringToTest, cmdVector, 8);
+		assertEquals(cmdVector.get(0), "file1.txt");
+	}
+	
+	/**
 	 * Test whether the input redirection can be parsed from the given command
 	 * line.
 	 *
@@ -172,12 +188,25 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testExtractInputRedir() throws Exception {
+		stubCommand.cmdline = " sort -n < file1.txt ";
+		stubCommand.parse();
+		assertEquals(stubCommand.inputStreamS,"file1.txt");
+	}
+
+	/**
+	 * Test whether the output redirection can be parsed from the given command (function wise)
+	 * line.
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testExtractOutputRedirFunction() throws Exception {
 		String stringToTest = "sort -n < file1.txt > file2.txt";
 		Vector<String> cmdVector = new Vector<String>();
 		cmdVector.addElement("");
 		cmdVector.addElement("");
-		stubCommand.extractInputRedir(stringToTest, cmdVector, 8);
-		assertEquals(cmdVector.get(0), "file1.txt");
+		stubCommand.extractOutputRedir(stringToTest, cmdVector, 20);
+		assertEquals(cmdVector.get(1), "file2.txt");
 	}
 
 	/**
@@ -188,14 +217,11 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testExtractOutputRedir() throws Exception {
-		String stringToTest = "sort -n < file1.txt > file2.txt";
-		Vector<String> cmdVector = new Vector<String>();
-		cmdVector.addElement("");
-		cmdVector.addElement("");
-		stubCommand.extractOutputRedir(stringToTest, cmdVector, 20);
-		assertEquals(cmdVector.get(1), "file2.txt");
+		stubCommand.cmdline = " sort -n > file1.txt ";
+		stubCommand.parse();
+		assertEquals(stubCommand.outputStreamS,"file1.txt");
 	}
-
+	
 	/**
 	 * Test whether the method can process an array of valid arguments, evaluate
 	 * globbing and return the newly replaced arguments.

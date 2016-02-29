@@ -266,7 +266,8 @@ public class CallCommand implements Command {
 					throw new ShellException(EXP_SYNTAX);
 				}
 				inputRedirS = inputRedirM.group(1);
-				cmdVector.set(cmdVectorIndex, inputRedirS.replace(String.valueOf((char) 160), " ").trim());
+				String extractedInput = inputRedirS.replace(String.valueOf((char) 160), " ").trim();
+				cmdVector.set(cmdVectorIndex, extractedInput);
 				newEndIdx = newEndIdx + inputRedirM.end() - 1;
 			} else {
 				break;
