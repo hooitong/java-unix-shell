@@ -23,33 +23,24 @@ public final class SortHelper {
 	 *            input array to be sorted
 	 * @return List<String> a sorted list of strings
 	 */
-	public static List<String> separateBasedOnType(int combinationType,
-			String... toSort) {
+	public static List<String> separateBasedOnType(int combinationType, String... toSort) {
 		int simpleCount = 0, capitalCount = 0, specialCount = 0, numberCount = 0;
 		List<String> resultList = new ArrayList<String>();
 		for (int i = 0; i < toSort.length; i++) {
 			String currentLine = toSort[i];
-			simpleCount = SortTypeSeparator
-					.getSimpleCharInLineCount(currentLine);
-			capitalCount = SortTypeSeparator
-					.getCapitalCharInLineCount(currentLine);
-			specialCount = SortTypeSeparator
-					.getSpecialCharInLineCount(currentLine);
-			numberCount = SortTypeSeparator
-					.getNumberCharInLineCount(currentLine);
+			simpleCount = SortTypeSeparator.getSimpleCharInLineCount(currentLine);
+			capitalCount = SortTypeSeparator.getCapitalCharInLineCount(currentLine);
+			specialCount = SortTypeSeparator.getSpecialCharInLineCount(currentLine);
+			numberCount = SortTypeSeparator.getNumberCharInLineCount(currentLine);
 
 			if (combinationType == ONE) {
-				separateFromOneType(simpleCount, capitalCount, specialCount,
-						numberCount, resultList, currentLine);
+				separateFromOneType(simpleCount, capitalCount, specialCount, numberCount, resultList, currentLine);
 			} else if (combinationType == TWO) {
-				separateFromTwoType(simpleCount, capitalCount, specialCount,
-						numberCount, resultList, currentLine);
+				separateFromTwoType(simpleCount, capitalCount, specialCount, numberCount, resultList, currentLine);
 			} else if (combinationType == THREE) {
-				separateFromThreeType(simpleCount, capitalCount, specialCount,
-						numberCount, resultList, currentLine);
+				separateFromThreeType(simpleCount, capitalCount, specialCount, numberCount, resultList, currentLine);
 			} else {
-				separateFromFourType(simpleCount, capitalCount, specialCount,
-						numberCount, resultList, currentLine);
+				separateFromFourType(simpleCount, capitalCount, specialCount, numberCount, resultList, currentLine);
 			}
 
 		}
@@ -73,15 +64,10 @@ public final class SortHelper {
 	 * @param currentLine
 	 *            input string
 	 */
-	private static void separateFromFourType(int simpleCount, int capitalCount,
-			int specialCount, int numberCount, List<String> resultList,
-			String currentLine) {
-		if (simpleCount != 0
-				&& capitalCount != 0
-				&& numberCount != 0
-				&& specialCount != 0
-				&& (simpleCount + capitalCount + numberCount + specialCount) == currentLine
-						.length()) {
+	private static void separateFromFourType(int simpleCount, int capitalCount, int specialCount, int numberCount,
+			List<String> resultList, String currentLine) {
+		if (simpleCount != 0 && capitalCount != 0 && numberCount != 0 && specialCount != 0
+				&& (simpleCount + capitalCount + numberCount + specialCount) == currentLine.length()) {
 			resultList.add(currentLine);
 		}
 	}
@@ -103,32 +89,19 @@ public final class SortHelper {
 	 * @param currentLine
 	 *            input string
 	 */
-	private static void separateFromThreeType(int simpleCount,
-			int capitalCount, int specialCount, int numberCount,
+	private static void separateFromThreeType(int simpleCount, int capitalCount, int specialCount, int numberCount,
 			List<String> resultList, String currentLine) {
-		if (simpleCount != 0
-				&& capitalCount != 0
-				&& numberCount != 0
-				&& (simpleCount + capitalCount + numberCount) == currentLine
-						.length()) {
+		if (simpleCount != 0 && capitalCount != 0 && numberCount != 0
+				&& (simpleCount + capitalCount + numberCount) == currentLine.length()) {
 			resultList.add(currentLine);
-		} else if (simpleCount != 0
-				&& capitalCount != 0
-				&& specialCount != 0
-				&& (simpleCount + capitalCount + specialCount) == currentLine
-						.length()) {
+		} else if (simpleCount != 0 && capitalCount != 0 && specialCount != 0
+				&& (simpleCount + capitalCount + specialCount) == currentLine.length()) {
 			resultList.add(currentLine);
-		} else if (simpleCount != 0
-				&& numberCount != 0
-				&& specialCount != 0
-				&& (simpleCount + numberCount + specialCount) == currentLine
-						.length()) {
+		} else if (simpleCount != 0 && numberCount != 0 && specialCount != 0
+				&& (simpleCount + numberCount + specialCount) == currentLine.length()) {
 			resultList.add(currentLine);
-		} else if (capitalCount != 0
-				&& numberCount != 0
-				&& specialCount != 0
-				&& (capitalCount + numberCount + specialCount) == currentLine
-						.length()) {
+		} else if (capitalCount != 0 && numberCount != 0 && specialCount != 0
+				&& (capitalCount + numberCount + specialCount) == currentLine.length()) {
 			resultList.add(currentLine);
 		}
 	}
@@ -150,26 +123,19 @@ public final class SortHelper {
 	 * @param currentLine
 	 *            input string
 	 */
-	private static void separateFromTwoType(int simpleCount, int capitalCount,
-			int specialCount, int numberCount, List<String> resultList,
-			String currentLine) {
-		if (simpleCount != 0 && capitalCount != 0
-				&& (simpleCount + capitalCount) == currentLine.length()) {
+	private static void separateFromTwoType(int simpleCount, int capitalCount, int specialCount, int numberCount,
+			List<String> resultList, String currentLine) {
+		if (simpleCount != 0 && capitalCount != 0 && (simpleCount + capitalCount) == currentLine.length()) {
 			resultList.add(currentLine);
-		} else if (simpleCount != 0 && numberCount != 0
-				&& (simpleCount + numberCount) == currentLine.length()) {
+		} else if (simpleCount != 0 && numberCount != 0 && (simpleCount + numberCount) == currentLine.length()) {
 			resultList.add(currentLine);
-		} else if (simpleCount != 0 && specialCount != 0
-				&& (simpleCount + specialCount) == currentLine.length()) {
+		} else if (simpleCount != 0 && specialCount != 0 && (simpleCount + specialCount) == currentLine.length()) {
 			resultList.add(currentLine);
-		} else if (capitalCount != 0 && numberCount != 0
-				&& (capitalCount + numberCount) == currentLine.length()) {
+		} else if (capitalCount != 0 && numberCount != 0 && (capitalCount + numberCount) == currentLine.length()) {
 			resultList.add(currentLine);
-		} else if (capitalCount != 0 && specialCount != 0
-				&& (capitalCount + specialCount) == currentLine.length()) {
+		} else if (capitalCount != 0 && specialCount != 0 && (capitalCount + specialCount) == currentLine.length()) {
 			resultList.add(currentLine);
-		} else if (numberCount != 0 && specialCount != 0
-				&& (numberCount + specialCount) == currentLine.length()) {
+		} else if (numberCount != 0 && specialCount != 0 && (numberCount + specialCount) == currentLine.length()) {
 			resultList.add(currentLine);
 		}
 	}
@@ -191,9 +157,8 @@ public final class SortHelper {
 	 * @param currentLine
 	 *            input string
 	 */
-	private static void separateFromOneType(int simpleCount, int capitalCount,
-			int specialCount, int numberCount, List<String> resultList,
-			String currentLine) {
+	private static void separateFromOneType(int simpleCount, int capitalCount, int specialCount, int numberCount,
+			List<String> resultList, String currentLine) {
 		if (simpleCount == currentLine.length()) {
 			resultList.add(currentLine);
 		} else if (capitalCount == currentLine.length()) {
@@ -215,10 +180,8 @@ public final class SortHelper {
 	 */
 	public static List<String> sortHelper(List<String> resultList) {
 		MergeSort mergeSort = new MergeSort(false);
-		ArrayList<String> ansList = new ArrayList<String>(
-				Arrays.asList(mergeSort.mergeSort(
-						resultList.toArray(new String[resultList.size()]),
-						ZERO, resultList.size() - 1)));
+		ArrayList<String> ansList = new ArrayList<String>(Arrays.asList(
+				mergeSort.mergeSort(resultList.toArray(new String[resultList.size()]), ZERO, resultList.size() - 1)));
 		return ansList;
 	}
 
@@ -232,10 +195,8 @@ public final class SortHelper {
 	 */
 	public static List<String> sortHelperWithNumFlag(List<String> resultList) {
 		MergeSort mergeSort = new MergeSort(true);
-		ArrayList<String> ansList = new ArrayList<String>(
-				Arrays.asList(mergeSort.mergeSort(
-						resultList.toArray(new String[resultList.size()]),
-						ZERO, resultList.size() - 1)));
+		ArrayList<String> ansList = new ArrayList<String>(Arrays.asList(
+				mergeSort.mergeSort(resultList.toArray(new String[resultList.size()]), ZERO, resultList.size() - 1)));
 		return ansList;
 	}
 }

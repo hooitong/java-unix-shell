@@ -1,11 +1,11 @@
 package sg.edu.nus.comp.cs4218.impl.app;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 public class BcApplicationTest {
 	/* As derived from Bash's bc application */

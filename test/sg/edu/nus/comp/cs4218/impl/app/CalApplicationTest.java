@@ -1,12 +1,12 @@
 package sg.edu.nus.comp.cs4218.impl.app;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 public class CalApplicationTest {
 	private final String MONTHS[] = { "January", "February", "March", "April", "May", "June", "July", "August",
@@ -108,8 +108,7 @@ public class CalApplicationTest {
 		String mockMonth = "March";
 		String mockYear = "2016";
 		String[] arguments = { mockMonth, mockYear };
-		String[] lineOutputs = testCal.printCalForMonthYearMondayFirst(arguments)
-				.split(System.lineSeparator());
+		String[] lineOutputs = testCal.printCalForMonthYearMondayFirst(arguments).split(System.lineSeparator());
 		assertTrue(lineOutputs[0].trim().equals(MONTHS[currentMonth] + " " + currentYear));
 		assertTrue(lineOutputs[1].trim().equals(START_MON));
 		assertTrue(lineOutputs[2].trim().startsWith("1"));

@@ -122,15 +122,13 @@ public interface Sort extends Application {
 	 * Returns an ordered list of lines containing lowercase, numbers and
 	 * special characters in asc order
 	 */
-	public List<String> sortSimpleNumbersSpecialCharsWithNumFlagOn(
-			String[] toSort);
+	public List<String> sortSimpleNumbersSpecialCharsWithNumFlagOn(String[] toSort);
 
 	/**
 	 * Returns an ordered list of lines containing uppercase, numbers and
 	 * special characters in asc order
 	 */
-	public List<String> sortCapitalNumbersSpecialCharsWithNumFlagOn(
-			String[] toSort);
+	public List<String> sortCapitalNumbersSpecialCharsWithNumFlagOn(String[] toSort);
 
 	/**
 	 * Returns an ordered list of lines containing lowercase, uppercase, numbers

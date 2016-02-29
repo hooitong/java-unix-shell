@@ -80,7 +80,7 @@ public class CallCommand implements Command {
 		OutputStream outputStream;
 
 		argsArray = ShellImpl.processBQ(argsArray);
-		//argsArray = evaluateGlob(argsArray);
+		// argsArray = evaluateGlob(argsArray);
 
 		if (("").equals(inputStreamS)) {// empty
 			inputStream = stdin;
@@ -252,8 +252,7 @@ public class CallCommand implements Command {
 		}
 
 		int newEndIdx = endIdx;
-		Pattern inputRedirP = Pattern
-				.compile("[\\s]*<[\\s]*(([^\\n\"`'<>]*))[\\s]");
+		Pattern inputRedirP = Pattern.compile("[\\s]*<[\\s]*(([^\\n\"`'<>]*))[\\s]");
 		Matcher inputRedirM;
 		String inputRedirS = "";
 		int cmdVectorIndex = cmdVector.size() - 2;
@@ -307,8 +306,7 @@ public class CallCommand implements Command {
 		}
 
 		int newEndIdx = endIdx;
-		Pattern inputRedirP = Pattern
-				.compile("[\\s]*>[\\s]*(([^\\n\"`'<>]*))[\\s]*");
+		Pattern inputRedirP = Pattern.compile("[\\s]*>[\\s]*(([^\\n\"`'<>]*))[\\s]*");
 		Matcher inputRedirM;
 		String inputRedirS = "";
 		int cmdVectorIdx = cmdVector.size() - 1;
@@ -355,8 +353,7 @@ public class CallCommand implements Command {
 				 * If there is no separators, it means that path to search is
 				 * relative path
 				 */
-				Path parentPath = beforeSeperator == -1 ? Paths.get("")
-						: Paths.get(arg.substring(0, beforeSeperator));
+				Path parentPath = beforeSeperator == -1 ? Paths.get("") : Paths.get(arg.substring(0, beforeSeperator));
 
 				String pattern = arg.substring(beforeSeperator + 1);
 				GlobFinder finder = new GlobFinder(pattern, parentPath.toAbsolutePath().toString());
@@ -392,7 +389,7 @@ public class CallCommand implements Command {
 
 }
 
-//strange white space
-//http://stackoverflow.com/questions/23974982/cant-trim-or-replaceall-a-strange-whitespace
-//Question by : http://stackoverflow.com/users/558559/crayl
-//Answer by : http://stackoverflow.com/users/558559/crayl
+// strange white space
+// http://stackoverflow.com/questions/23974982/cant-trim-or-replaceall-a-strange-whitespace
+// Question by : http://stackoverflow.com/users/558559/crayl
+// Answer by : http://stackoverflow.com/users/558559/crayl

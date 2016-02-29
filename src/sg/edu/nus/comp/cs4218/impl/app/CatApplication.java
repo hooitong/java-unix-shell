@@ -62,8 +62,7 @@ public class CatApplication implements Application {
 		ArrayList<Path> filePathArray = new ArrayList<Path>();
 		Path currentDir = Paths.get(Environment.currentDirectory);
 		boolean isFileReadable = false;
-		
-		
+
 		for (int i = 0; i < numOfFiles; i++) {
 			try {
 				String temp = args[i].trim();
@@ -116,7 +115,8 @@ public class CatApplication implements Application {
 	}
 
 	/*
-	 * Note: when reading from inputStream, no new line is added at the end of the file
+	 * Note: when reading from inputStream, no new line is added at the end of
+	 * the file
 	 */
 	private void readFromStdin(InputStream stdin, OutputStream stdout) throws CatException {
 		try {

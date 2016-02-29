@@ -1,21 +1,14 @@
 package sg.edu.nus.comp.cs4218.impl.app;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import javafx.scene.control.Tab;
-import sg.edu.nus.comp.cs4218.app.Comm;
-import sg.edu.nus.comp.cs4218.exception.CommException;
-import sg.edu.nus.comp.cs4218.Environment;
-import static org.junit.Assert.*;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import sg.edu.nus.comp.cs4218.exception.CommException;
 
 public class CommApplicationTest {
 
