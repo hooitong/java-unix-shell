@@ -10,11 +10,11 @@ public class SortException extends AbstractApplicationException {
 		super("sort: " + message);
 	}
 
-	public SortException(String message, IOException e) {
+	public SortException(String message, IOException exception) {
 		super("sort: " + message);
 	}
 
-	public SortException(String message, Exception e) {
+	public SortException(String message, Exception exception) {
 		super("sort: " + message);
 	}
 }

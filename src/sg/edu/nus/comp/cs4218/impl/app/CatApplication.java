@@ -44,7 +44,6 @@ public class CatApplication implements Application {
 	 */
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws CatException {
-
 		throwExceptionIfNoOutputStream(stdout);
 		throwExceptionIfNoInput(args, stdin);
 		if (fileIsSpecified(args)) {
@@ -56,12 +55,16 @@ public class CatApplication implements Application {
 	}
 
 	private void readFromArgs(String[] args, OutputStream stdout) throws CatException {
-		int numOfFiles = args.length;
+		ArrayList<Path> filePaths = new ArrayList<Path>();
+		resolveArguments(args, filePaths);
+		processFiles(filePaths, stdout);
+	}
 
-		Path filePath;
-		ArrayList<Path> filePathArray = new ArrayList<Path>();
-		Path currentDir = Paths.get(Environment.currentDirectory);
+	private void resolveArguments(String[] args, ArrayList<Path> filePaths) throws CatException {
 		boolean isFileReadable = false;
+		int numOfFiles = args.length;
+		Path filePath;
+		Path currentDir = Paths.get(Environment.currentDirectory);
 
 		for (int i = 0; i < numOfFiles; i++) {
 			try {
@@ -72,22 +75,24 @@ public class CatApplication implements Application {
 					filePath = currentDir.resolve(args[i]);
 					isFileReadable = checkIfFileIsReadable(filePath);
 					if (isFileReadable) {
-						filePathArray.add(filePath);
+						filePaths.add(filePath);
 					}
 				}
 			} catch (NullPointerException npe) {
 				throw new CatException(npe, "NullPointerException");
 			}
 		}
+	}
 
+	private void processFiles(ArrayList<Path> filePaths, OutputStream stdout) throws CatException {
 		// file could be read. perform cat command
-		if (filePathArray.isEmpty()) {
+		if (filePaths.isEmpty()) {
 			throw new CatException("Invalid filepath");
 		} else {
 
-			for (int j = 0; j < filePathArray.size() - 1; j++) {
+			for (int j = 0; j < filePaths.size() - 1; j++) {
 				try {
-					byte[] byteFileArray = Files.readAllBytes(filePathArray.get(j));
+					byte[] byteFileArray = Files.readAllBytes(filePaths.get(j));
 					if (byteFileArray.length <= 0) { // Empty file
 						continue;
 					}
@@ -99,9 +104,9 @@ public class CatApplication implements Application {
 					throw new CatException(e);
 				}
 			}
-			if (!filePathArray.isEmpty()) {
+			if (!filePaths.isEmpty()) {
 				try {
-					byte[] byteFileArray = Files.readAllBytes(filePathArray.get(filePathArray.size() - 1));
+					byte[] byteFileArray = Files.readAllBytes(filePaths.get(filePaths.size() - 1));
 
 					stdout.write(byteFileArray);
 					stdout.flush();
@@ -109,9 +114,7 @@ public class CatApplication implements Application {
 					throw new CatException(e1);
 				}
 			}
-
 		}
-
 	}
 
 	/*

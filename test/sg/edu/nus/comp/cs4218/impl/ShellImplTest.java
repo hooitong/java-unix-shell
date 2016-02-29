@@ -14,32 +14,6 @@ import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.SequenceCommand;
 
 public class ShellImplTest {
-	private Shell mockShell;
-
-	@Before
-	public void setUp() {
-		mockShell = new ShellImpl();
-	}
-
-	/**
-	 *
-	 * @throws Exception
-	 */
-	@Test
-	public void testProcessBQOnly() throws Exception {
-		fail("To be written for EF2");
-	}
-
-	@Test
-	public void testProcessBQNested() throws Exception {
-
-	}
-
-	@Test
-	public void testProcessBQInvalid() throws Exception {
-
-	}
-
 	/**
 	 * Test whether the application can handle a valid execution of running an
 	 * application.
