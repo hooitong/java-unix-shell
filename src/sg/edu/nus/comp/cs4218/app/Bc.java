@@ -11,8 +11,8 @@ public interface Bc extends Application {
 	public String number(String[] args);
 
 	/**
-	 * Returns resultant string with expression of the form -<expression>
-	 * evaluated
+	 * Returns resultant string with expression of the form -
+	 * <expression> evaluated
 	 */
 	public String negate(String[] args);
 
@@ -101,8 +101,8 @@ public interface Bc extends Application {
 	public String or(String[] args);
 
 	/**
-	 * Returns resultant string with expression of the form !<expression>
-	 * evaluated
+	 * Returns resultant string with expression of the form !
+	 * <expression> evaluated
 	 */
 	public String not(String[] args);
 }

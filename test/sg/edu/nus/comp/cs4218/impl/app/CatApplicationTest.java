@@ -1,13 +1,13 @@
 
 /**
- * 
+ *
  * References:
- * 
+ *
  * http://tutorials.jenkov.com/java-unit-testing/io-testing.html - io-testing
  * http://junit.sourceforge.net/javadoc/org/junit/Assert.html - assertion
  * https://docs.oracle.com/javase/tutorial/essential/io/pathOps.html -
  * information on file path
- * 
+ *
  */
 package sg.edu.nus.comp.cs4218.impl.app;
 
@@ -63,7 +63,7 @@ public class CatApplicationTest {
 	/**
 	 * Case 0A: No output stream Input: valid args (contain one usable item),
 	 * null inputstream, null output Output: throws CatException
-	 * 
+	 *
 	 */
 
 	@Test(expected = CatException.class)
@@ -77,7 +77,7 @@ public class CatApplicationTest {
 	/**
 	 * Case 0B: No output stream Input: null args, valid inputstream, nulloutput
 	 * Output: throws CatException
-	 * 
+	 *
 	 */
 	@Test(expected = CatException.class)
 	public void runCAppWithStdin0B() throws CatException {
@@ -94,7 +94,7 @@ public class CatApplicationTest {
 	/**
 	 * Case 0C: No output stream Input: null args, input stream, output stream
 	 * Output: throws CatException
-	 * 
+	 *
 	 */
 	@Test(expected = CatException.class)
 	public void runCAppWithStdin0C() throws CatException {
@@ -104,7 +104,7 @@ public class CatApplicationTest {
 
 	/**
 	 * Case 0D: has both input but no output Output: throws CatException
-	 * 
+	 *
 	 */
 	@Test(expected = CatException.class)
 	public void runCAppWithStdin0D() throws CatException {
@@ -163,7 +163,7 @@ public class CatApplicationTest {
 	/**
 	 * Case 2A: Run using args Input: args contain one file name, null stdin,
 	 * valid output
-	 * 
+	 *
 	 * @throws CatException
 	 */
 	@Test
@@ -231,7 +231,7 @@ public class CatApplicationTest {
 
 	/**
 	 * Case 3A: 0 arg
-	 * 
+	 *
 	 * @throws CatException
 	 */
 	@Test(expected = CatException.class)
@@ -245,7 +245,7 @@ public class CatApplicationTest {
 
 	/**
 	 * Case 3B: Multiple filenames, all should work
-	 * 
+	 *
 	 * @throws CatException
 	 */
 	@Test
@@ -263,7 +263,7 @@ public class CatApplicationTest {
 
 	/**
 	 * Case 3C: If a file is invalid, the other two files are not read
-	 * 
+	 *
 	 * @throws CatException
 	 */
 	@Test(expected = CatException.class)
@@ -279,17 +279,20 @@ public class CatApplicationTest {
 	}
 
 	String expectedOutput1() {
-		return "Roses are red,\r\n" + "Violets are blue,\r\n" + "All of my base,\r\n" + "Are belong to you.\r\n"
+		return "Roses are red," + System.lineSeparator() + "Violets are blue," + System.lineSeparator()
+				+ "All of my base," + System.lineSeparator() + "Are belong to you." + System.lineSeparator()
 				+ "//end of file";
 	}
 
 	String expectedOutput2() {
-		return "1 Roses are red,\r\n" + "2 Violets are blue,\r\n" + "3 All of my base,\r\n" + "4 Are belong to you.\r\n"
-				+ "5 Roses are red,\r\n" + "6 Violets are blue,\r\n" + "7 Some poems rhyme\r\n"
-				+ "8 But this one doesn't.\r\n" + "9 Roses are red,\r\n" + "10 Violets are blue,\r\n"
-				+ "11 Make me a sandwich,\r\n" + "12 Or I will kill you.\r\n" + "13 Roses are grey,\r\n"
-				+ "14 Violets are grey,\r\n" + "15 I'm color blind.\r\n"
-				+ "16 from http://uncyclopedia.wikia.com/wiki/Poetry";
+		return "1 Roses are red," + System.lineSeparator() + "2 Violets are blue," + System.lineSeparator()
+				+ "3 All of my base," + System.lineSeparator() + "4 Are belong to you." + System.lineSeparator()
+				+ "5 Roses are red," + System.lineSeparator() + "6 Violets are blue," + System.lineSeparator()
+				+ "7 Some poems rhyme" + System.lineSeparator() + "8 But this one doesn't." + System.lineSeparator()
+				+ "9 Roses are red," + System.lineSeparator() + "10 Violets are blue," + System.lineSeparator()
+				+ "11 Make me a sandwich," + System.lineSeparator() + "12 Or I will kill you." + System.lineSeparator()
+				+ "13 Roses are grey," + System.lineSeparator() + "14 Violets are grey," + System.lineSeparator()
+				+ "15 I'm color blind." + System.lineSeparator() + "16 from http://uncyclopedia.wikia.com/wiki/Poetry";
 	}
 
 	String expectedOutput3() {
