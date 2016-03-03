@@ -32,7 +32,6 @@ public class EchoApplication implements Application {
 	 *             If an I/O exception occurs.
 	 */
 
-
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws EchoException {
 		if (args == null) {
 			throw new EchoException("Null arguments");
@@ -40,20 +39,19 @@ public class EchoApplication implements Application {
 		if (stdout == null) {
 			throw new EchoException("OutputStream not provided");
 		}
-			if (args.length == 0) {
-				try{
-					writeIfArgsIsEmpty(stdout);
-				}catch(IOException i){
-					throw new EchoException(i);
-				}
-			} else {
-				try{
-					writeWhenArgsIsNonEmpty(args, stdout);
-				}catch (IOException i){
-					throw new EchoException(i);
-				}
+		if (args.length == 0) {
+			try {
+				writeIfArgsIsEmpty(stdout);
+			} catch (IOException i) {
+				throw new EchoException(i);
 			}
-		
+		} else {
+			try {
+				writeWhenArgsIsNonEmpty(args, stdout);
+			} catch (IOException i) {
+				throw new EchoException(i);
+			}
+		}
 
 	}
 
@@ -61,30 +59,29 @@ public class EchoApplication implements Application {
 		byte[] line;
 		String temp;
 		String[] cleanList = createList(args);
-		
-			for (int i = 0; i < cleanList.length - 1; i++) {
 
-				temp = cleanList[i] + " ";
-				line = temp.getBytes();
-				stdout.write(line);
-			}
-			if (cleanList.length >= 1) {
-				stdout.write(cleanList[cleanList.length - 1].getBytes());
-				stdout.write("\n".getBytes());
-			}
-		
-		} 
-	
+		for (int i = 0; i < cleanList.length - 1; i++) {
+
+			temp = cleanList[i] + " ";
+			line = temp.getBytes();
+			stdout.write(line);
+		}
+		if (cleanList.length >= 1) {
+			stdout.write(cleanList[cleanList.length - 1].getBytes());
+			stdout.write("\n".getBytes());
+		}
+
+	}
 
 	private void writeIfArgsIsEmpty(OutputStream stdout) throws IOException {
-			stdout.write("\n\n".getBytes());
+		stdout.write("\n\n".getBytes());
 	}
-	
-	
-/*
- * Create a clean list of words to echo by removing spaces and empty argument
- */
-	private String[] createList(String...args ) {
+
+	/*
+	 * Create a clean list of words to echo by removing spaces and empty
+	 * argument
+	 */
+	private String[] createList(String... args) {
 		int index = 0;
 		String[] cleanList = new String[args.length];
 		cleanList[index] = "\n";

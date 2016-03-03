@@ -4,13 +4,15 @@
  * 	1. a command e.g. -n
  * 	2. number of lines to read from a file
  * 	3. either filename from stdin or filename contain in the arg
- * 
+ *
  * This test different methods in the class and if the above function works.
  * Test case uses bottom up method
  */
 package sg.edu.nus.comp.cs4218.impl.app;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -59,15 +61,15 @@ public class HeadApplicationTest {
 	}
 
 	/******************************************************************************
-	 * 
+	 *
 	 * Part I: Test method checkIfFileIsReadable()
-	 * 
+	 *
 	 * Note: 1. A folder is also a file. Even though it does not contain text,
 	 * if it can be opened, system will return true if path to folder exist.
-	 * 
+	 *
 	 * 2. Files with password encryption/zipped can all be opened, hence will
 	 * all return true
-	 * 
+	 *
 	 ******************************************************************************/
 
 	// Case 1: empty text file
@@ -108,14 +110,14 @@ public class HeadApplicationTest {
 	}
 
 	/******************************************************************************
-	 * 
+	 *
 	 * Part II: Test method readFromFileAndWriteToStdout
-	 * 
+	 *
 	 * Input: Path Filepath : where data is read from Int x : number of lines to
 	 * read Outputstream op : Where data read is output to
-	 * 
+	 *
 	 * Note: This method is called by readFromArgsAndWriteToStdout
-	 * 
+	 *
 	 ******************************************************************************/
 
 	// Case 1: null in both stdout and file input path
@@ -206,10 +208,10 @@ public class HeadApplicationTest {
 	}
 
 	/******************************************************************************
-	 * 
+	 *
 	 * Part III: Test method checkNumberOfLinesInput
-	 * 
-	 * 
+	 *
+	 *
 	 ******************************************************************************/
 
 	// Case 1: A number
@@ -253,14 +255,14 @@ public class HeadApplicationTest {
 	}
 
 	/******************************************************************************
-	 * 
+	 *
 	 * Part IV: Test method readFromStdinAndWriteToStdout
-	 * 
+	 *
 	 * -Ignore checks on number of lines because it is checked in other methods
-	 * 
-	 * 
+	 *
+	 *
 	 * Reference: http://tutorials.jenkov.com/java-io/inputstream.html
-	 * 
+	 *
 	 ******************************************************************************/
 
 	// Case 1: null inputstream
@@ -368,15 +370,15 @@ public class HeadApplicationTest {
 	}
 
 	/******************************************************************************
-	 * 
+	 *
 	 * Part V: Test method readFromArgsAndWriteToStdout
-	 * 
+	 *
 	 * This series of tests are to check whether filenames from args are read
 	 * properly and if HeadExceptions are thrown when there is an error
-	 * 
+	 *
 	 * @throws HeadException
-	 * 
-	 * 
+	 *
+	 *
 	 ******************************************************************************/
 	// Case 1: one arg
 	@Test
@@ -499,14 +501,14 @@ public class HeadApplicationTest {
 	}
 
 	/******************************************************************************
-	 * 
+	 *
 	 * Part VI: Test main method run(String[] args, InputStream stdin,
 	 * OutputStream stdout)
-	 * 
-	 * @throws HeadException
-	 * 
 	 *
-	 * 
+	 * @throws HeadException
+	 *
+	 *
+	 *
 	 ******************************************************************************/
 	// Case 0: check for null cases
 	@Test(expected = HeadException.class)
@@ -751,28 +753,35 @@ public class HeadApplicationTest {
 	}
 
 	String expectedOutput1() {
-		return "Roses are red,\r\n" + "Violets are blue,\r\n" + "All of my base,\r\n" + "Are belong to you.\r\n"
-				+ "//end of file\r\n";
+		return "Roses are red," + System.lineSeparator() + "Violets are blue," + System.lineSeparator()
+				+ "All of my base," + System.lineSeparator() + "Are belong to you." + System.lineSeparator()
+				+ "//end of file" + System.lineSeparator();
 	}
 
 	String expectedOutput2() {
-		return "1 Roses are red,\r\n" + "2 Violets are blue,\r\n" + "3 All of my base,\r\n" + "4 Are belong to you.\r\n"
-				+ "5 Roses are red,\r\n";
+		return "1 Roses are red," + System.lineSeparator() + "2 Violets are blue," + System.lineSeparator()
+				+ "3 All of my base," + System.lineSeparator() + "4 Are belong to you." + System.lineSeparator()
+				+ "5 Roses are red," + System.lineSeparator();
 	}
 
 	String expectedOutput3() {
-		return "1 Roses are red,\r\n" + "2 Violets are blue,\r\n" + "3 All of my base,\r\n" + "4 Are belong to you.\r\n"
-				+ "5 Roses are red,\r\n" + "6 Violets are blue,\r\n" + "7 Some poems rhyme\r\n"
-				+ "8 But this one doesn't.\r\n" + "9 Roses are red,\r\n" + "10 Violets are blue,\r\n"
-				+ "11 Make me a sandwich,\r\n" + "12 Or I will kill you.\r\n" + "13 Roses are grey,\r\n"
-				+ "14 Violets are grey,\r\n" + "15 I'm color blind.\r\n"
-				+ "16 from http://uncyclopedia.wikia.com/wiki/Poetry\r\n";
+		return "1 Roses are red," + System.lineSeparator() + "2 Violets are blue," + System.lineSeparator()
+				+ "3 All of my base," + System.lineSeparator() + "4 Are belong to you." + System.lineSeparator()
+				+ "5 Roses are red," + System.lineSeparator() + "6 Violets are blue," + System.lineSeparator()
+				+ "7 Some poems rhyme" + System.lineSeparator() + "8 But this one doesn't." + System.lineSeparator()
+				+ "9 Roses are red," + System.lineSeparator() + "10 Violets are blue," + System.lineSeparator()
+				+ "11 Make me a sandwich," + System.lineSeparator() + "12 Or I will kill you." + System.lineSeparator()
+				+ "13 Roses are grey," + System.lineSeparator() + "14 Violets are grey," + System.lineSeparator()
+				+ "15 I'm color blind." + System.lineSeparator() + "16 from http://uncyclopedia.wikia.com/wiki/Poetry"
+				+ System.lineSeparator();
 	}
 
 	String expectedOutput4() {
-		return "1 Roses are red,\r\n" + "2 Violets are blue,\r\n" + "3 All of my base,\r\n" + "4 Are belong to you.\r\n"
-				+ "5 Roses are red,\r\n" + "6 Violets are blue,\r\n" + "7 Some poems rhyme\r\n"
-				+ "8 But this one doesn't.\r\n" + "9 Roses are red,\r\n" + "10 Violets are blue,\r\n";
+		return "1 Roses are red," + System.lineSeparator() + "2 Violets are blue," + System.lineSeparator()
+				+ "3 All of my base," + System.lineSeparator() + "4 Are belong to you." + System.lineSeparator()
+				+ "5 Roses are red," + System.lineSeparator() + "6 Violets are blue," + System.lineSeparator()
+				+ "7 Some poems rhyme" + System.lineSeparator() + "8 But this one doesn't." + System.lineSeparator()
+				+ "9 Roses are red," + System.lineSeparator() + "10 Violets are blue," + System.lineSeparator();
 	}
 
 	/**

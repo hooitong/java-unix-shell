@@ -10,14 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
-import com.sun.scenario.effect.Merge;
-
-import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.app.Sort;
 import sg.edu.nus.comp.cs4218.exception.SortException;
@@ -39,8 +33,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortStringsSimple(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(ONE, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(ONE, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -49,8 +42,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortStringsCapital(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(ONE, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(ONE, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -59,8 +51,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortNumbers(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(ONE, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(ONE, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -69,8 +60,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortNumbersWithNumFlagOn(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(ONE, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(ONE, toSort));
 		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
@@ -79,8 +69,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSpecialChars(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(ONE, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(ONE, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -88,8 +77,7 @@ public class SortApplication implements Sort {
 	 * Returns an ordered list of lines containing simple and capital letters
 	 */
 	public List<String> sortSimpleCapital(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(TWO, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(TWO, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -98,8 +86,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSimpleNumbers(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(TWO, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(TWO, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -109,8 +96,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSimpleNumbersWithNumFlagOn(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(TWO, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(TWO, toSort));
 		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
@@ -120,8 +106,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSimpleSpecialChars(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(TWO, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(TWO, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -130,8 +115,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortCapitalNumbers(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(TWO, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(TWO, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -141,8 +125,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortCapitalNumberswithNumFlagOn(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(TWO, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(TWO, toSort));
 		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
@@ -152,8 +135,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortCapitalSpecialChars(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(TWO, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(TWO, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -163,8 +145,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortNumbersSpecialChars(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(TWO, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(TWO, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -174,8 +155,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortNumbersSpecialCharsWithNumFlagOn(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(TWO, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(TWO, toSort));
 		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
@@ -185,8 +165,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSimpleCapitalNumber(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(THREE, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(THREE, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -196,8 +175,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSimpleCapitalNumberWithNumFlagOn(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(THREE, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(THREE, toSort));
 		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
@@ -207,8 +185,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSimpleCapitalSpecialChars(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(THREE, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(THREE, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -218,8 +195,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortSimpleNumbersSpecialChars(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(THREE, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(THREE, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -228,10 +204,8 @@ public class SortApplication implements Sort {
 	 * special characters in asc order
 	 */
 	@Override
-	public List<String> sortSimpleNumbersSpecialCharsWithNumFlagOn(
-			String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(THREE, toSort));
+	public List<String> sortSimpleNumbersSpecialCharsWithNumFlagOn(String... toSort) {
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(THREE, toSort));
 		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
@@ -241,8 +215,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortCapitalNumbersSpecialChars(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(THREE, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(THREE, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -251,10 +224,8 @@ public class SortApplication implements Sort {
 	 * special characters
 	 */
 	@Override
-	public List<String> sortCapitalNumbersSpecialCharsWithNumFlagOn(
-			String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(THREE, toSort));
+	public List<String> sortCapitalNumbersSpecialCharsWithNumFlagOn(String... toSort) {
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(THREE, toSort));
 		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
@@ -264,8 +235,7 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortAll(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(FOUR, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(FOUR, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
 
@@ -275,14 +245,12 @@ public class SortApplication implements Sort {
 	 */
 	@Override
 	public List<String> sortAllWithNumFlagOn(String... toSort) {
-		List<String> extractedList = new ArrayList<String>(
-				SortHelper.separateBasedOnType(FOUR, toSort));
+		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(FOUR, toSort));
 		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
 
 	@Override
-	public void run(String[] args, InputStream stdin, OutputStream stdout)
-			throws SortException {
+	public void run(String[] args, InputStream stdin, OutputStream stdout) throws SortException {
 		Path currentDir = Paths.get(Environment.currentDirectory);
 		int filePosition = ZERO;
 		String[] toSort = null;
@@ -321,8 +289,7 @@ public class SortApplication implements Sort {
 	 *            array sorted array
 	 * @throws SortException
 	 */
-	private void stdoutSortedArray(OutputStream stdout, String... toSort)
-			throws SortException {
+	private void stdoutSortedArray(OutputStream stdout, String... toSort) throws SortException {
 		for (int i = 0; i < toSort.length; i++) {
 			try {
 				stdout.write(toSort[i].getBytes(CHARSET_UTF_8));
@@ -343,14 +310,12 @@ public class SortApplication implements Sort {
 	 *             input and output streams.
 	 */
 
-	private String[] readFromStdinAndWriteToStringArray(InputStream stdin)
-			throws SortException {
+	private String[] readFromStdinAndWriteToStringArray(InputStream stdin) throws SortException {
 		List<String> resultList = new ArrayList<String>();
 		if (stdin == null) {
 			throw new SortException("Null Pointer Exception");
 		}
-		BufferedReader buffReader = new BufferedReader(new InputStreamReader(
-				stdin));
+		BufferedReader buffReader = new BufferedReader(new InputStreamReader(stdin));
 		String input = "";
 		try {
 			while ((input = buffReader.readLine()) != null) {
@@ -375,8 +340,7 @@ public class SortApplication implements Sort {
 	 * @throws SortException
 	 *             If the 'n' flag is missing in the command format
 	 */
-	private String[] getFileContents(String[] args, Path currentDir,
-			int filePosition) throws SortException {
+	private String[] getFileContents(String[] args, Path currentDir, int filePosition) throws SortException {
 		Path filePath = currentDir.resolve(args[filePosition]);
 		catchIfFileIsReadableException(filePath);
 		return readFromFileAndWriteToStringArray(filePath);
@@ -391,8 +355,7 @@ public class SortApplication implements Sort {
 	 * @throws SortException
 	 *             If the 'n' flag is missing in the command format
 	 */
-	private void catchMissingNumberCommandFormatException(String... args)
-			throws SortException {
+	private void catchMissingNumberCommandFormatException(String... args) throws SortException {
 		if (!isNumberCommandFormat(args)) {
 			throw new SortException("only -n command is allowed");
 		}
@@ -434,14 +397,11 @@ public class SortApplication implements Sort {
 	 * @throws SortException
 	 *             Exceptions caught when reading and writing from input file.
 	 */
-	String[] readFromFileAndWriteToStringArray(Path filePath)
-			throws SortException {
+	String[] readFromFileAndWriteToStringArray(Path filePath) throws SortException {
 		List<String> arrayList = new ArrayList<String>();
 		try {
-			FileInputStream fileInStream = new FileInputStream(
-					filePath.toString());
-			BufferedReader buffReader = new BufferedReader(
-					new InputStreamReader(fileInStream));
+			FileInputStream fileInStream = new FileInputStream(filePath.toString());
+			BufferedReader buffReader = new BufferedReader(new InputStreamReader(fileInStream));
 
 			String input = "";
 			while ((input = buffReader.readLine()) != null) {
