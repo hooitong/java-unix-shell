@@ -3,14 +3,27 @@ package sg.edu.nus.comp.cs4218.impl.app;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.util.Calendar;
 
 import sg.edu.nus.comp.cs4218.app.Cal;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.CalException;
+import sg.edu.nus.comp.cs4218.exception.CatException;
 
+/**
+ * The cal command prints the calendar of the month and can be adjusted
+ * via arguments to print different formats. This calendar is based
+ * on the gregorian calendar and only supports year 1-9999. Months allowed
+ * to be pass can be in the form of 1..12, Jan..Dec or January..December.
+ *
+ * <p>
+ * <b>Command format:</b> <code>cat [-m] [[month] [year]]</code>
+ * <dl>
+ * <dt>FILE</dt>
+ * <dd>the name of the file(s). If no files are specified, use stdin.</dd>
+ * </dl>
+ * </p>
+ */
 public class CalApplication implements Cal {
 	private static final String ERROR_NULL = "Arg given is null.";
 	private static final String ERROR_INVALID = "Invalid arguments provided.";
@@ -18,6 +31,7 @@ public class CalApplication implements Cal {
 	private static final String ERROR_YEAR = "Not a valid year provided.";
 	private static final String ERROR_FLAG = "Invalid flag provided.";
 
+	private static final String DATE_HEADER = "   %s %s";
 	private static final int INVALID_DATE = -1;
 	private static final int LAST_MONTH = 11;
 	private static final String WEEK_MON = "Mo Tu We Th Fr Sa Su";
@@ -27,36 +41,249 @@ public class CalApplication implements Cal {
 	private static final String[] MONTHS_SHORT = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
 	"Oct", "Nov", "Dec"};
 
+	/**
+	 * Returns the string to print the calendar of the current month
+	 *
+	 * @param args
+	 * @return
+     */
 	@Override
 	public String printCal(String[] args) {
-		return null;
+		/* Get current year and month */
+		Calendar c = Calendar.getInstance();
+		int month = c.get(Calendar.MONTH);
+		int year = c.get(Calendar.YEAR);
+
+		int firstDay = getDayOfDate(1, month, year);
+		int totalDays = getDaysOfMonth(month, year);
+
+		/* Print header output */
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format(DATE_HEADER, MONTHS_LONG[month], year));
+		sb.append(System.lineSeparator());
+		sb.append(WEEK_SUN);
+		sb.append(System.lineSeparator());
+
+		/* Print spacer to accommodate */
+		for (int i = 0; i < firstDay; i++) {
+			sb.append("   ");
+		}
+
+		/* Print the days by appending into bulider */
+		for(int day = 1; day <= totalDays;  day++) {
+			sb.append(String.format("%2d", day));
+			if((firstDay + day) % 7 == 0 || (day == totalDays)) sb.append(System.lineSeparator());
+		}
+
+		return sb.toString();
 	}
 
+	/**
+	 * Returns the string to print the calendar of the current month with Monday
+	 * as the first day of the week
+	 *
+	 * @param args
+	 * @return
+     */
 	@Override
 	public String printCalWithMondayFirst(String[] args) {
-		return null;
+		/* Get current year and month */
+		Calendar c = Calendar.getInstance();
+		int month = c.get(Calendar.MONTH);
+		int year = c.get(Calendar.YEAR);
+
+		int firstDay = (getDayOfDate(1, month, year) + 1) % 7;
+		int totalDays = getDaysOfMonth(month, year);
+
+		/* Print header output */
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format(DATE_HEADER, MONTHS_LONG[month], year));
+		sb.append(System.lineSeparator());
+		sb.append(WEEK_MON);
+		sb.append(System.lineSeparator());
+
+		/* Print spacer to accommodate */
+		for (int i = 0; i < firstDay; i++) {
+			sb.append("   ");
+		}
+
+		/* Print the days by appending into bulider */
+		for(int day = 1; day <= totalDays;  day++) {
+			sb.append(String.format("%2d", day));
+			if((firstDay + day) % 7 == 0 || (day == totalDays)) sb.append(System.lineSeparator());
+		}
+
+		return sb.toString();
 	}
 
+	/**
+	 * Returns the string to print the calendar for specified month and year
+	 *
+	 * @param args
+	 * @return
+     */
 	@Override
 	public String printCalForMonthYear(String[] args) {
-		return null;
+		int month = parseMonth(args[0]);
+		int year = parseYear(args[1]);
+
+		int firstDay = getDayOfDate(1, month, year);
+		int totalDays = getDaysOfMonth(month, year);
+
+		/* Print header output */
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format(DATE_HEADER, MONTHS_LONG[month], year));
+		sb.append(System.lineSeparator());
+		sb.append(WEEK_SUN);
+		sb.append(System.lineSeparator());
+
+		/* Print spacer to accommodate */
+		for (int i = 0; i < firstDay; i++) {
+			sb.append("   ");
+		}
+
+		/* Print the days by appending into bulider */
+		for(int day = 1; day <= totalDays;  day++) {
+			sb.append(String.format("%2d", day));
+			if((firstDay + day) % 7 == 0 || (day == totalDays)) sb.append(System.lineSeparator());
+		}
+
+		return sb.toString();
 	}
 
+	/**
+	 * Returns the string to print the calendar for specified year
+	 *
+	 * @param args
+	 * @return
+     */
 	@Override
 	public String printCalForYear(String[] args) {
-		return null;
+		int year = parseYear(args[0]);
+
+		/* Print all 12 months of the calendar */
+		String[][] yearCalendars = new String[12][];
+		for(int i = 0; i < yearCalendars.length; i++) {
+			yearCalendars[i] = printCalForMonthYear(new String[]{Integer.toString(i + 1), Integer.toString(year)})
+					.split(System.lineSeparator());
+		}
+
+		/* Combine all the strings together to form yearly calendar */
+		StringBuilder sb = new StringBuilder();
+		/* Append the year */
+		sb.append(year);
+		for (int i = 0; i < 4; i++) {
+			/* Append the months first */
+			sb.append(MONTHS_LONG[i*3] + MONTHS_LONG[i*3+1] + MONTHS_LONG[i*3+2]);
+			sb.append(System.lineSeparator());
+			sb.append(WEEK_SUN + "  " + WEEK_SUN + "  " + WEEK_SUN);
+			sb.append(System.lineSeparator());
+			for(int j = 0; j < 5; j++) {
+				if(yearCalendars[i*3].length > (j+2)) sb.append(yearCalendars[i*3][j+2] + "  ");
+				if(yearCalendars[i*3+1].length > (j+2)) sb.append(yearCalendars[i*3+1][j+2] + "  ");
+				if(yearCalendars[i*3+2].length > (j+2)) sb.append(yearCalendars[i*3+2][j+2] + "  ");
+				sb.append(System.lineSeparator());
+			}
+
+			sb.append(System.lineSeparator());
+		}
+
+		return sb.toString();
 	}
 
+	/**
+	 * Returns the string to print the calendar for specified month and year
+	 * with Monday as the first day of the week
+	 *
+	 * @param args
+	 * @return
+     */
 	@Override
 	public String printCalForMonthYearMondayFirst(String[] args) {
-		return null;
+		int month = parseMonth(args[1]);
+		int year = parseYear(args[2]);
+
+		int firstDay = (getDayOfDate(1, month, year) + 1) % 7;
+		int totalDays = getDaysOfMonth(month, year);
+
+		/* Print header output */
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format(DATE_HEADER, MONTHS_LONG[month], year));
+		sb.append(System.lineSeparator());
+		sb.append(WEEK_MON);
+		sb.append(System.lineSeparator());
+
+		/* Print spacer to accommodate */
+		for (int i = 0; i < firstDay; i++) {
+			sb.append("   ");
+		}
+
+		/* Print the days by appending into bulider */
+		for(int day = 1; day <= totalDays;  day++) {
+			sb.append(String.format("%2d", day));
+			if((firstDay + day) % 7 == 0 || (day == totalDays)) sb.append(System.lineSeparator());
+		}
+
+		return sb.toString();
 	}
 
+	/**
+	 * Returns the string to print the calendar for specified year with Monday
+	 * as the first day of the week
+	 *
+	 * @param args
+	 * @return
+     */
 	@Override
 	public String printCalForYearMondayFirst(String[] args) {
-		return null;
+		int year = parseYear(args[0]);
+
+		/* Print all 12 months of the calendar */
+		String[][] yearCalendars = new String[12][];
+		for(int i = 0; i < yearCalendars.length; i++) {
+			yearCalendars[i] = printCalForMonthYearMondayFirst(new String[]{Integer.toString(i + 1), Integer.toString(year)})
+					.split(System.lineSeparator());
+		}
+
+		/* Combine all the strings together to form yearly calendar */
+		StringBuilder sb = new StringBuilder();
+		/* Append the year */
+		sb.append(year);
+		for (int i = 0; i < 4; i++) {
+			/* Append the months first */
+			sb.append(MONTHS_LONG[i*3] + MONTHS_LONG[i*3+1] + MONTHS_LONG[i*3+2]);
+			sb.append(System.lineSeparator());
+			sb.append(WEEK_MON + "  " + WEEK_MON + "  " + WEEK_MON);
+			sb.append(System.lineSeparator());
+			for(int j = 0; j < 5; j++) {
+				if(yearCalendars[i*3].length > (j+2)) sb.append(yearCalendars[i*3][j+2] + "  ");
+				if(yearCalendars[i*3+1].length > (j+2)) sb.append(yearCalendars[i*3+1][j+2] + "  ");
+				if(yearCalendars[i*3+2].length > (j+2)) sb.append(yearCalendars[i*3+2][j+2] + "  ");
+				sb.append(System.lineSeparator());
+			}
+
+			sb.append(System.lineSeparator());
+		}
+
+		return sb.toString();
 	}
 
+	/**
+	 * Runs the cat application with the specified arguments.
+	 *
+	 * @param args
+	 *            Array of arguments for the application. Each array element is
+	 *            the path to a file. If no files are specified stdin is used.
+	 * @param stdin
+	 *            An InputStream. The input for the command is read from this
+	 *            InputStream if no files are specified.
+	 * @param stdout
+	 *            An OutputStream. The output of the command is written to this
+	 *            OutputStream.
+	 *
+	 * @throws CatException
+	 *             If the file(s) specified do not exist or are unreadable.
+	 */
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
 		if (args == null) {
@@ -67,23 +294,29 @@ public class CalApplication implements Cal {
 		writeToOutput(output, stdout);
 	}
 
+	/**
+	 *
+	 * @param args
+	 * @return
+	 * @throws CalException
+     */
 	private String processArgument(String[] args) throws CalException{
 		if (args.length == 0) { /* Print current month */
-			printCal(null);
+			return printCal(null);
 		} else if (args.length == 1) { /* either -m, year or invalid */
-			if("-m".equals(args[0].trim())) printCalWithMondayFirst(null);
-			else if(parseYear(args[0].trim()) != INVALID_DATE) printCalForYear(args);
+			if("-m".equals(args[0].trim())) return printCalWithMondayFirst(null);
+			else if(parseYear(args[0].trim()) != INVALID_DATE) return printCalForYear(args);
 			else throw new CalException(ERROR_INVALID);
 		} else if (args.length == 2) { /* either -m year, month year or invalid */
 			if("-m".equals(args[0].trim()) && parseYear(args[1].trim()) != INVALID_DATE) {
-				printCalForYearMondayFirst(args);
+				return printCalForYearMondayFirst(args);
 			} else if (parseMonth(args[0].trim()) != INVALID_DATE && parseYear(args[0].trim()) != INVALID_DATE) {
-				printCalForMonthYear(args);
+				return printCalForMonthYear(args);
 			} else throw new CalException(ERROR_INVALID);
 		} else if (args.length == 3) { /* -m month year */
 			if("-m".equals(args[0].trim()) && parseMonth(args[1].trim()) != INVALID_DATE &&
 					parseYear(args[2].trim()) != INVALID_DATE) {
-				printCalForMonthYearMondayFirst(args);
+				return printCalForMonthYearMondayFirst(args);
 			} else {
 				throw new CalException(ERROR_INVALID);
 			}
