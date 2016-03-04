@@ -18,7 +18,7 @@ public class SortApplicationTest {
 	private static final String NEW_LINE = System.lineSeparator();
 	private static SortApplication sortApplication;
 	private static String[] args, inputArr1, inputArr2, inputArr3, inputArr4,
-			inputArr5, inputArr6, inputArr7, inputArr8, inputArr9, inputArr10;
+			inputArr5, inputArr6, inputArr7, inputArr8, inputArr9, inputArr10, toSort;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -40,6 +40,7 @@ public class SortApplicationTest {
 		inputArr9 = new String[] { "ap1E", "aPp1e", "6p3aR", "6Pear", "p3Ar" };
 		inputArr10 = new String[] { "8FE", "1APP1E", "100APP13", "25DAA",
 				"30F3B" };
+		toSort = new String[] {"1\\n", "2\\t", "10\\r", "20\\n"};
 	}
 
 	/**
@@ -399,7 +400,7 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testRunArgsOnly() throws SortException {
-		String[] argsArr = new String[] { "-n", "examples/sort.txt" };
+		String[] argsArr = new String[] {"examples/sort.txt" };
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		sortApplication.run(argsArr, null, stdout);
 		String expectedResult = "arthur" + NEW_LINE + "benny" + NEW_LINE
