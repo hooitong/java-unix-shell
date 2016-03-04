@@ -31,11 +31,13 @@ public class CalApplication implements Cal {
 	private static final String ERROR_YEAR = "Not a valid year provided.";
 	private static final String ERROR_FLAG = "Invalid flag provided.";
 
-	private static final String DATE_HEADER = "   %s %s";
+	private static final int WIDTH_YEAR = 64;
+	private static final int WIDTH_MONTH = 20;
+	private static final String DATE_HEADER = "%s %s";
 	private static final int INVALID_DATE = -1;
 	private static final int LAST_MONTH = 11;
 	private static final String WEEK_MON = "Mo Tu We Th Fr Sa Su";
-	private static final String WEEK_SUN = "Su Mo Tu We Th Fr Sa Su";
+	private static final String WEEK_SUN = "Su Mo Tu We Th Fr Sa";
 	private static final String[] MONTHS_LONG = {"January", "February", "March", "April", "May", "June", "July",
 			"August", "September", "October", "November", "December"};
 	private static final String[] MONTHS_SHORT = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
@@ -54,12 +56,12 @@ public class CalApplication implements Cal {
 		int month = c.get(Calendar.MONTH);
 		int year = c.get(Calendar.YEAR);
 
-		int firstDay = getDayOfDate(1, month, year);
+		int firstDay = (getDayOfDate(1, month, year) + 1) % 7;
 		int totalDays = getDaysOfMonth(month, year);
 
 		/* Print header output */
 		StringBuilder sb = new StringBuilder();
-		sb.append(String.format(DATE_HEADER, MONTHS_LONG[month], year));
+		sb.append(centerHeader(String.format(DATE_HEADER, MONTHS_LONG[month], year)));
 		sb.append(System.lineSeparator());
 		sb.append(WEEK_SUN);
 		sb.append(System.lineSeparator());
@@ -73,6 +75,7 @@ public class CalApplication implements Cal {
 		for(int day = 1; day <= totalDays;  day++) {
 			sb.append(String.format("%2d", day));
 			if((firstDay + day) % 7 == 0 || (day == totalDays)) sb.append(System.lineSeparator());
+			else sb.append(" ");
 		}
 
 		return sb.toString();
@@ -92,12 +95,12 @@ public class CalApplication implements Cal {
 		int month = c.get(Calendar.MONTH);
 		int year = c.get(Calendar.YEAR);
 
-		int firstDay = (getDayOfDate(1, month, year) + 1) % 7;
+		int firstDay = (getDayOfDate(1, month, year) - 1) % 7;
 		int totalDays = getDaysOfMonth(month, year);
 
 		/* Print header output */
 		StringBuilder sb = new StringBuilder();
-		sb.append(String.format(DATE_HEADER, MONTHS_LONG[month], year));
+		sb.append(centerHeader(String.format(DATE_HEADER, MONTHS_LONG[month], year)));
 		sb.append(System.lineSeparator());
 		sb.append(WEEK_MON);
 		sb.append(System.lineSeparator());
@@ -110,7 +113,9 @@ public class CalApplication implements Cal {
 		/* Print the days by appending into bulider */
 		for(int day = 1; day <= totalDays;  day++) {
 			sb.append(String.format("%2d", day));
+
 			if((firstDay + day) % 7 == 0 || (day == totalDays)) sb.append(System.lineSeparator());
+			else sb.append(" ");
 		}
 
 		return sb.toString();
@@ -129,10 +134,9 @@ public class CalApplication implements Cal {
 
 		int firstDay = getDayOfDate(1, month, year);
 		int totalDays = getDaysOfMonth(month, year);
-
 		/* Print header output */
 		StringBuilder sb = new StringBuilder();
-		sb.append(String.format(DATE_HEADER, MONTHS_LONG[month], year));
+		sb.append(centerHeader(String.format(DATE_HEADER, MONTHS_LONG[month], year)));
 		sb.append(System.lineSeparator());
 		sb.append(WEEK_SUN);
 		sb.append(System.lineSeparator());
@@ -146,6 +150,44 @@ public class CalApplication implements Cal {
 		for(int day = 1; day <= totalDays;  day++) {
 			sb.append(String.format("%2d", day));
 			if((firstDay + day) % 7 == 0 || (day == totalDays)) sb.append(System.lineSeparator());
+			else sb.append(" ");
+		}
+
+		return sb.toString();
+	}
+
+	/**
+	 * Returns the string to print the calendar for specified month and year
+	 * with Monday as the first day of the week
+	 *
+	 * @param args
+	 * @return
+	 */
+	@Override
+	public String printCalForMonthYearMondayFirst(String[] args) {
+		int month = parseMonth(args[1]);
+		int year = parseYear(args[2]);
+
+		int firstDay = (getDayOfDate(1, month, year) - 1) % 7;
+		int totalDays = getDaysOfMonth(month, year);
+
+		/* Print header output */
+		StringBuilder sb = new StringBuilder();
+		sb.append(centerHeader(String.format(DATE_HEADER, MONTHS_LONG[month], year)));
+		sb.append(System.lineSeparator());
+		sb.append(WEEK_MON);
+		sb.append(System.lineSeparator());
+
+		/* Print spacer to accommodate */
+		for (int i = 0; i < firstDay; i++) {
+			sb.append("   ");
+		}
+
+		/* Print the days by appending into bulider */
+		for(int day = 1; day <= totalDays;  day++) {
+			sb.append(String.format("%2d", day));
+			if((firstDay + day) % 7 == 0 || (day == totalDays)) sb.append(System.lineSeparator());
+			else sb.append(" ");
 		}
 
 		return sb.toString();
@@ -164,64 +206,36 @@ public class CalApplication implements Cal {
 		/* Print all 12 months of the calendar */
 		String[][] yearCalendars = new String[12][];
 		for(int i = 0; i < yearCalendars.length; i++) {
-			yearCalendars[i] = printCalForMonthYear(new String[]{Integer.toString(i + 1), Integer.toString(year)})
+			yearCalendars[i] = printCalForMonthYear(new String[]{Integer.toString(i+1), Integer.toString(year)})
 					.split(System.lineSeparator());
 		}
 
 		/* Combine all the strings together to form yearly calendar */
 		StringBuilder sb = new StringBuilder();
 		/* Append the year */
-		sb.append(year);
+		sb.append(centerYear(Integer.toString(year)));
+		sb.append(System.lineSeparator());
+
 		for (int i = 0; i < 4; i++) {
 			/* Append the months first */
-			sb.append(MONTHS_LONG[i*3] + MONTHS_LONG[i*3+1] + MONTHS_LONG[i*3+2]);
+			sb.append(centerHeader(MONTHS_LONG[i*3]) + "  " + centerHeader(MONTHS_LONG[i*3+1]) + "  " + centerHeader(MONTHS_LONG[i*3+2]));
 			sb.append(System.lineSeparator());
 			sb.append(WEEK_SUN + "  " + WEEK_SUN + "  " + WEEK_SUN);
 			sb.append(System.lineSeparator());
-			for(int j = 0; j < 5; j++) {
-				if(yearCalendars[i*3].length > (j+2)) sb.append(yearCalendars[i*3][j+2] + "  ");
-				if(yearCalendars[i*3+1].length > (j+2)) sb.append(yearCalendars[i*3+1][j+2] + "  ");
-				if(yearCalendars[i*3+2].length > (j+2)) sb.append(yearCalendars[i*3+2][j+2] + "  ");
+			for(int j = 0; j < 6; j++) {
+				if(yearCalendars[i*3].length > (j+2)) sb.append(padDaysToWidth(yearCalendars[i*3][j+2]));
+				else sb.append(padDaysToWidth(""));
+				sb.append("  ");
+
+				if(yearCalendars[i*3+1].length > (j+2)) sb.append(padDaysToWidth(yearCalendars[i*3+1][j+2]));
+				else sb.append(padDaysToWidth(""));
+				sb.append("  ");
+
+				if(yearCalendars[i*3+2].length > (j+2)) sb.append(padDaysToWidth(yearCalendars[i*3+2][j+2]));
+				else sb.append(padDaysToWidth(""));
+
 				sb.append(System.lineSeparator());
 			}
-
-			sb.append(System.lineSeparator());
-		}
-
-		return sb.toString();
-	}
-
-	/**
-	 * Returns the string to print the calendar for specified month and year
-	 * with Monday as the first day of the week
-	 *
-	 * @param args
-	 * @return
-     */
-	@Override
-	public String printCalForMonthYearMondayFirst(String[] args) {
-		int month = parseMonth(args[1]);
-		int year = parseYear(args[2]);
-
-		int firstDay = (getDayOfDate(1, month, year) + 1) % 7;
-		int totalDays = getDaysOfMonth(month, year);
-
-		/* Print header output */
-		StringBuilder sb = new StringBuilder();
-		sb.append(String.format(DATE_HEADER, MONTHS_LONG[month], year));
-		sb.append(System.lineSeparator());
-		sb.append(WEEK_MON);
-		sb.append(System.lineSeparator());
-
-		/* Print spacer to accommodate */
-		for (int i = 0; i < firstDay; i++) {
-			sb.append("   ");
-		}
-
-		/* Print the days by appending into bulider */
-		for(int day = 1; day <= totalDays;  day++) {
-			sb.append(String.format("%2d", day));
-			if((firstDay + day) % 7 == 0 || (day == totalDays)) sb.append(System.lineSeparator());
 		}
 
 		return sb.toString();
@@ -236,33 +250,41 @@ public class CalApplication implements Cal {
      */
 	@Override
 	public String printCalForYearMondayFirst(String[] args) {
-		int year = parseYear(args[0]);
+		int year = parseYear(args[1]);
 
 		/* Print all 12 months of the calendar */
 		String[][] yearCalendars = new String[12][];
 		for(int i = 0; i < yearCalendars.length; i++) {
-			yearCalendars[i] = printCalForMonthYearMondayFirst(new String[]{Integer.toString(i + 1), Integer.toString(year)})
+			yearCalendars[i] = printCalForMonthYearMondayFirst(new String[]{"", Integer.toString(i+1), Integer.toString(year)})
 					.split(System.lineSeparator());
 		}
 
 		/* Combine all the strings together to form yearly calendar */
 		StringBuilder sb = new StringBuilder();
 		/* Append the year */
-		sb.append(year);
+		sb.append(centerYear(Integer.toString(year)));
+		sb.append(System.lineSeparator());
+
 		for (int i = 0; i < 4; i++) {
 			/* Append the months first */
-			sb.append(MONTHS_LONG[i*3] + MONTHS_LONG[i*3+1] + MONTHS_LONG[i*3+2]);
+			sb.append(centerHeader(MONTHS_LONG[i*3]) + "  " + centerHeader(MONTHS_LONG[i*3+1]) + "  " + centerHeader(MONTHS_LONG[i*3+2]));
 			sb.append(System.lineSeparator());
 			sb.append(WEEK_MON + "  " + WEEK_MON + "  " + WEEK_MON);
 			sb.append(System.lineSeparator());
-			for(int j = 0; j < 5; j++) {
-				if(yearCalendars[i*3].length > (j+2)) sb.append(yearCalendars[i*3][j+2] + "  ");
-				if(yearCalendars[i*3+1].length > (j+2)) sb.append(yearCalendars[i*3+1][j+2] + "  ");
-				if(yearCalendars[i*3+2].length > (j+2)) sb.append(yearCalendars[i*3+2][j+2] + "  ");
+			for(int j = 0; j < 6; j++) {
+				if(yearCalendars[i*3].length > (j+2)) sb.append(padDaysToWidth(yearCalendars[i*3][j+2]));
+				else sb.append(padDaysToWidth(""));
+				sb.append("  ");
+
+				if(yearCalendars[i*3+1].length > (j+2)) sb.append(padDaysToWidth(yearCalendars[i*3+1][j+2]));
+				else sb.append(padDaysToWidth(""));
+				sb.append("  ");
+
+				if(yearCalendars[i*3+2].length > (j+2)) sb.append(padDaysToWidth(yearCalendars[i*3+2][j+2]));
+				else sb.append(padDaysToWidth(""));
+
 				sb.append(System.lineSeparator());
 			}
-
-			sb.append(System.lineSeparator());
 		}
 
 		return sb.toString();
@@ -293,6 +315,7 @@ public class CalApplication implements Cal {
 		String output = processArgument(args);
 		writeToOutput(output, stdout);
 	}
+
 
 	/**
 	 *
@@ -357,7 +380,7 @@ public class CalApplication implements Cal {
 	private int parseMonth(String month) {
 		/* Match against both long and short form of the months */
 		for(int i = 0; i <= LAST_MONTH; i++) {
-			if(MONTHS_LONG[0].equalsIgnoreCase(month) || MONTHS_SHORT[0].equalsIgnoreCase(month)) {
+			if(MONTHS_LONG[i].equalsIgnoreCase(month) || MONTHS_SHORT[i].equalsIgnoreCase(month)) {
 				return i;
 			}
 		}
@@ -365,7 +388,7 @@ public class CalApplication implements Cal {
 		/* If short and long month cannot be parsed */
 		try {
 			int parsedMonth = Integer.parseInt(month);
-			if(0 < parsedMonth && parsedMonth < 12) return parsedMonth - 1;
+			if(0 < parsedMonth && parsedMonth < 13) return parsedMonth - 1;
 			else return INVALID_DATE;
 		} catch (NumberFormatException e) {
 			return INVALID_DATE;
@@ -380,7 +403,7 @@ public class CalApplication implements Cal {
 	 * @return the number of days in the month
      */
 	private int getDaysOfMonth(int month, int year) {
-		if(isLeapYear(year) && month == 2) return 29;
+		if( ++month == 2 && isLeapYear(year)) return 29;
 		return (int)(28 + (month + Math.floor(month/8)) % 2 + 2 % month + 2 * Math.floor(1/month));
 	}
 
@@ -402,9 +425,42 @@ public class CalApplication implements Cal {
      * @return integer value where 0 represents sunday, 1 represents monday, etc
      */
 	private int getDayOfDate(int day, int month, int year){
-		int yearBlock = year - (14 - month) / 12;
-		int centuryBlock = year + year / 4 - year / 100 + year / 400;
+		int yearBlock = year - (14 - ++month) / 12;
+		int centuryBlock = yearBlock + yearBlock / 4 - yearBlock / 100 + yearBlock / 400;
 		int monthBlock = month + 12 * ((14 - month) / 12) - 2;
-		return (day + centuryBlock + (31 * month) / 12) % 7;
+		return (day + centuryBlock + (31 * monthBlock) / 12) % 7;
+	}
+
+	private String centerHeader(String header) {
+		return center(header, WIDTH_MONTH);
+	}
+
+	private String centerYear(String header) {
+		return center(header, WIDTH_YEAR);
+	}
+
+	private String center(String header, int length) {
+		int headerLength = header.length();
+		int missingLength = (length - headerLength) / 2;
+		int extraLength = (length - headerLength) % 2;
+		StringBuilder padder = new StringBuilder();
+		for(int i = 0; i < missingLength; i++) {
+			padder.append(" ");
+		}
+		padder.append(header);
+		for(int i = 0; i < (missingLength + extraLength); i++) {
+			padder.append(" ");
+		}
+		return padder.toString();
+	}
+
+	private String padDaysToWidth(String content) {
+		int headerLength = content.length();
+		int missingLength = (WIDTH_MONTH - headerLength);
+		StringBuilder padder = new StringBuilder(content);
+		for(int i = 0; i < missingLength; i++) {
+			padder.append(" ");
+		}
+		return padder.toString();
 	}
 }
