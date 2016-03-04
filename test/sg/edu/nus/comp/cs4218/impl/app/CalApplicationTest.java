@@ -2,11 +2,13 @@ package sg.edu.nus.comp.cs4218.impl.app;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.junit.Before;
 import org.junit.Test;
+import sg.edu.nus.comp.cs4218.exception.CalException;
 
 public class CalApplicationTest {
 	private final String MONTHS[] = { "January", "February", "March", "April", "May", "June", "July", "August",
@@ -72,7 +74,7 @@ public class CalApplicationTest {
 		String mockYear = "1998";
 		String[] arguments = { mockMonth, mockYear };
 		String[] lineOutputs = testCal.printCalForMonthYear(arguments).split(System.lineSeparator());
-		assertTrue(lineOutputs[0].trim().equals(MONTHS[currentMonth] + " " + currentYear));
+		assertTrue(lineOutputs[0].trim().equals(mockMonth + " " + mockYear));
 		assertTrue(lineOutputs[1].trim().equals(START_SUN));
 		assertTrue(lineOutputs[2].trim().startsWith("1"));
 		assertTrue(lineOutputs[lineOutputs.length - 1].trim().endsWith("30"));
@@ -107,7 +109,7 @@ public class CalApplicationTest {
 	public void testPrintCalForMonthYearMondayFirst() throws Exception {
 		String mockMonth = "March";
 		String mockYear = "2016";
-		String[] arguments = { mockMonth, mockYear };
+		String[] arguments = {"-m", mockMonth, mockYear };
 		String[] lineOutputs = testCal.printCalForMonthYearMondayFirst(arguments).split(System.lineSeparator());
 		assertTrue(lineOutputs[0].trim().equals(MONTHS[currentMonth] + " " + currentYear));
 		assertTrue(lineOutputs[1].trim().equals(START_MON));
@@ -124,8 +126,9 @@ public class CalApplicationTest {
 	@Test
 	public void testPrintCalForYearMondayFirst() throws Exception {
 		String mockYear = "2011";
-		String[] arguments = { mockYear };
+		String[] arguments = {"-m", mockYear};
 		String rawOutput = testCal.printCalForYearMondayFirst(arguments);
+		System.out.println(rawOutput);
 		assertTrue(rawOutput.contains(mockYear));
 		for (String month : MONTHS) {
 			assertTrue(rawOutput.contains(month));
@@ -140,12 +143,12 @@ public class CalApplicationTest {
 	 *
 	 * @throws Exception
 	 */
-	@Test
+	@Test (expected=CalException.class)
 	public void testInvalidRunWithMonthOnly() throws Exception {
 		String mockMonth = "March";
 		String[] arguments = { mockMonth };
-		String rawOutput = testCal.printCalForMonthYear(arguments);
-		assertTrue(String.format(ERROR_YEAR, mockMonth).equals(rawOutput));
+		ByteArrayOutputStream rawOutput = new ByteArrayOutputStream();
+		testCal.run(arguments, null, rawOutput);
 	}
 
 	/**
@@ -154,12 +157,12 @@ public class CalApplicationTest {
 	 *
 	 * @throws Exception
 	 */
-	@Test
+	@Test (expected=CalException.class)
 	public void testInvalidRunWithMonth() throws Exception {
 		String mockMonth = "Test";
 		String mockYear = "2011";
 		String[] arguments = { mockMonth, mockYear };
-		String rawOutput = testCal.printCalForMonthYear(arguments);
-		assertTrue(String.format(ERROR_MONTH, mockMonth).equals(rawOutput));
+		ByteArrayOutputStream rawOutput = new ByteArrayOutputStream();
+		testCal.run(arguments, null, rawOutput);
 	}
 }
