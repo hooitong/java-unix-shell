@@ -1,19 +1,33 @@
 package sg.edu.nus.comp.cs4218.impl;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.app.*;
+import sg.edu.nus.comp.cs4218.impl.app.CatApplication;
+import sg.edu.nus.comp.cs4218.impl.app.EchoApplication;
+import sg.edu.nus.comp.cs4218.impl.app.HeadApplication;
+import sg.edu.nus.comp.cs4218.impl.app.SortApplication;
+import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
 import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.PipeCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.SequenceCommand;
-
-import java.io.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A Shell is a command interpreter and forms the backbone of the entire
@@ -32,8 +46,7 @@ public class ShellImpl implements Shell {
 	public static final String EXP_SYNTAX = "Invalid syntax encountered.";
 	public static final String EXP_REDIR_PIPE = "File output redirection and "
 			+ "pipe operator cannot be used side by side.";
-	public static final String EXP_SAME_REDIR = "Input redirection file same "
-			+ "as output redirection file.";
+	public static final String EXP_SAME_REDIR = "Input redirection file same " + "as output redirection file.";
 	public static final String EXP_STDOUT = "Error writing to stdout.";
 	public static final String EXP_NOT_SUPPORTED = " not supported yet";
 	public static final String NEW_LINE = System.lineSeparator();
@@ -61,8 +74,7 @@ public class ShellImpl implements Shell {
 	 *             If an exception happens while processing the content in the
 	 *             back quotes.
 	 */
-	public static String[] processBQ(String... argsArray)
-			throws AbstractApplicationException, ShellException {
+	public static String[] processBQ(String... argsArray) throws AbstractApplicationException, ShellException {
 		// echo "this is space `echo "nbsp"`"
 		// echo "this is space `echo "nbsp"` and `echo "2nd space"`"
 		// Back quoted: any char except \n,`
@@ -84,12 +96,10 @@ public class ShellImpl implements Shell {
 
 				ByteArrayOutputStream outByte = (ByteArrayOutputStream) bqOutputStream;
 				byte[] byteArray = outByte.toByteArray();
-				String bqResult = new String(byteArray).replace("\n", "")
-						.replace("\r", "");
+				String bqResult = new String(byteArray).replace("\n", "").replace("\r", "");
 
 				// replace substring of back quote with result
-				String replacedStr = argsArray[i].replace("`" + bqStr + "`",
-						bqResult);
+				String replacedStr = argsArray[i].replace("`" + bqStr + "`", bqResult);
 				resultArr[i] = replacedStr;
 			}
 		}
@@ -118,8 +128,7 @@ public class ShellImpl implements Shell {
 	 * @throws ShellException
 	 *             If an unsupported or invalid application command is detected.
 	 */
-	public static void runApp(String app, String[] argsArray,
-			InputStream inputStream, OutputStream outputStream)
+	public static void runApp(String app, String[] argsArray, InputStream inputStream, OutputStream outputStream)
 			throws AbstractApplicationException, ShellException {
 		Application absApp = null;
 		if (("cat").equals(app)) {// cat [FILE]...
@@ -150,8 +159,7 @@ public class ShellImpl implements Shell {
 	 * @throws ShellException
 	 *             If file is not found.
 	 */
-	public static InputStream openInputRedir(String inputStreamS)
-			throws ShellException {
+	public static InputStream openInputRedir(String inputStreamS) throws ShellException {
 		File inputFile = new File(inputStreamS);
 		FileInputStream fInputStream = null;
 		try {
@@ -174,8 +182,7 @@ public class ShellImpl implements Shell {
 	 * @throws ShellException
 	 *             If file destination cannot be opened or inaccessible.
 	 */
-	public static OutputStream openOutputRedir(String outputStreamS)
-			throws ShellException {
+	public static OutputStream openOutputRedir(String outputStreamS) throws ShellException {
 		File outputFile = new File(outputStreamS);
 		FileOutputStream fOutputStream = null;
 		try {
@@ -195,8 +202,7 @@ public class ShellImpl implements Shell {
 	 * @throws ShellException
 	 *             If inputStream cannot be closed successfully.
 	 */
-	public static void closeInputStream(InputStream inputStream)
-			throws ShellException {
+	public static void closeInputStream(InputStream inputStream) throws ShellException {
 		if (inputStream != System.in && inputStream != null) {
 			try {
 				inputStream.close();
@@ -216,8 +222,7 @@ public class ShellImpl implements Shell {
 	 * @throws ShellException
 	 *             If outputStream cannot be closed successfully.
 	 */
-	public static void closeOutputStream(OutputStream outputStream)
-			throws ShellException {
+	public static void closeOutputStream(OutputStream outputStream) throws ShellException {
 		if (outputStream != System.out && outputStream != null) {
 			try {
 				outputStream.close();
@@ -238,8 +243,7 @@ public class ShellImpl implements Shell {
 	 * @throws ShellException
 	 *             If exception is thrown during writing.
 	 */
-	public static void writeToStdout(OutputStream outputStream,
-			OutputStream stdout) throws ShellException {
+	public static void writeToStdout(OutputStream outputStream, OutputStream stdout) throws ShellException {
 		if (outputStream instanceof FileOutputStream) {
 			return;
 		}
@@ -262,10 +266,8 @@ public class ShellImpl implements Shell {
 	 * @throws ShellException
 	 *             If exception is thrown during piping.
 	 */
-	public static InputStream outputStreamToInputStream(
-			OutputStream outputStream) throws ShellException {
-		return new ByteArrayInputStream(
-				((ByteArrayOutputStream) outputStream).toByteArray());
+	public static InputStream outputStreamToInputStream(OutputStream outputStream) throws ShellException {
+		return new ByteArrayInputStream(((ByteArrayOutputStream) outputStream).toByteArray());
 	}
 
 	/**
@@ -278,8 +280,7 @@ public class ShellImpl implements Shell {
 	public static void main(String... args) {
 		ShellImpl shell = new ShellImpl();
 
-		BufferedReader bReader = new BufferedReader(new InputStreamReader(
-				System.in));
+		BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
 		String readLine = null;
 		String currentDir;
 
@@ -338,10 +339,9 @@ public class ShellImpl implements Shell {
 				possibleCommands[commandIndex].parse();
 				return possibleCommands[commandIndex];
 			} catch (ShellException e) {
-				if (++commandIndex == possibleCommands.length){
+				if (++commandIndex == possibleCommands.length) {
 					throw e;
-				}
-				else if (e.getMessage().contains(SequenceCommand.MISSING_ARG)){
+				} else if (e.getMessage().contains(SequenceCommand.MISSING_ARG)) {
 					throw e;
 				}
 
@@ -380,9 +380,9 @@ public class ShellImpl implements Shell {
 	 * 
 	 * @param args
 	 * 
-	 * @return string the string could return an exception message (
-	 *         "pipe: exception detected for one of the call commands") or the
-	 *         actual result
+	 * @return string the string could return an exception message ( "pipe:
+	 *         exception detected for one of the call commands") or the actual
+	 *         result
 	 */
 	@Override
 	public String pipeWithException(String... args) {
@@ -417,7 +417,8 @@ public class ShellImpl implements Shell {
 	 *
 	 * @param args
 	 *            arguments to be evaluated
-	 * @return empty string object since if it does not match any file or directory
+	 * @return empty string object since if it does not match any file or
+	 *         directory
 	 */
 	@Override
 	public String globNoPaths(String[] args) {

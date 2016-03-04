@@ -23,8 +23,7 @@ public class MergeSort {
 	 *            set true to enable alphanum ordering
 	 * @return an sorted array
 	 */
-	public  String[] mergeSort(String[] toSort, int pos1, int pos2
-			 ) {
+	public String[] mergeSort(String[] toSort, int pos1, int pos2) {
 		int front = pos1;
 		int mid = 0;
 		int back = pos2;
@@ -55,8 +54,7 @@ public class MergeSort {
 	 *            set true to enable alphanum ordering
 	 * @return an sorted array
 	 */
-	public  void merge(String[] toSort, int front, int mid, int back
-			 ) {
+	public void merge(String[] toSort, int front, int mid, int back) {
 		int rightOfMid = mid + 1;
 		int left = front;
 		int iterate = 0;
@@ -98,7 +96,7 @@ public class MergeSort {
 	 *            input string
 	 * @return a string
 	 */
-	public  String extractFirstNumberWordFromLine(String line) {
+	public String extractFirstNumberWordFromLine(String line) {
 		String result = "";
 		result = checkIfStringIsDigit(line);
 		result = checkIfWordIsDigitLastResort(line, result);
@@ -115,8 +113,7 @@ public class MergeSort {
 	 *            an empty string if the input line does not consists of numbers
 	 * @return the first word of a string that is a number
 	 */
-	private  String checkIfWordIsDigitLastResort(String line,
-			String result) {
+	private String checkIfWordIsDigitLastResort(String line, String result) {
 		String assumedNumberWord = "";
 		StringBuilder stringBuilder = new StringBuilder("");
 		if (result.isEmpty()) {
@@ -140,7 +137,7 @@ public class MergeSort {
 	 *            input string
 	 * @return the orginal string
 	 */
-	private  String checkIfStringIsDigit(String line) {
+	private String checkIfStringIsDigit(String line) {
 		String result = "";
 		int count = 0;
 		for (int i = 0; i < line.length(); i++) {
@@ -163,7 +160,7 @@ public class MergeSort {
 	 *            second input string
 	 * @return int
 	 */
-	public  int compareIncludeNumOrder(String str1, String str2) {
+	public int compareIncludeNumOrder(String str1, String str2) {
 		if (str1.isEmpty() && !str2.isEmpty()) {
 			return -1;
 		} else if (!str1.isEmpty() && str2.isEmpty()) {
@@ -179,7 +176,7 @@ public class MergeSort {
 	 * @param str2
 	 * @return int
 	 */
-	private  int checkOnlyAtFirstNumWord(String str1, String str2) {
+	private int checkOnlyAtFirstNumWord(String str1, String str2) {
 		String assumedNumStr1;
 		String assumedNumStr2;
 		assumedNumStr1 = extractFirstNumberWordFromLine(str1);
@@ -189,8 +186,7 @@ public class MergeSort {
 			if (assumedNumStr1.compareTo(assumedNumStr2) == 0) {
 				return str1.compareTo(str2);
 			} else {
-				return Integer.parseInt(assumedNumStr1)
-						- Integer.parseInt(assumedNumStr2);
+				return Integer.parseInt(assumedNumStr1) - Integer.parseInt(assumedNumStr2);
 			}
 		} else {
 			return str1.compareTo(str2);

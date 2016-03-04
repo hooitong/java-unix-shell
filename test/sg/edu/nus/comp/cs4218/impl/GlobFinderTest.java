@@ -1,8 +1,7 @@
 package sg.edu.nus.comp.cs4218.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 

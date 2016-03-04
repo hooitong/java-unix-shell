@@ -15,8 +15,7 @@ public final class SortTypeSeparator {
 		int count = 0;
 		for (int j = 0; j < currentLine.length(); j++) {
 			int currentChar = currentLine.charAt(j);
-			if (Character.isLetter(currentChar)
-					&& Character.isLowerCase(currentChar)) {
+			if (Character.isLetter(currentChar) && Character.isLowerCase(currentChar)) {
 				count++;
 			}
 		}
@@ -35,8 +34,7 @@ public final class SortTypeSeparator {
 		int count = 0;
 		for (int j = 0; j < currentLine.length(); j++) {
 			char currentChar = (char) currentLine.charAt(j);
-			if (Character.isLetter(currentChar)
-					&& Character.isUpperCase(currentChar)) {
+			if (Character.isLetter(currentChar) && Character.isUpperCase(currentChar)) {
 				count++;
 			}
 		}
@@ -74,8 +72,7 @@ public final class SortTypeSeparator {
 		int count = 0;
 		for (int j = 0; j < currentLine.length(); j++) {
 			char currentChar = (char) currentLine.charAt(j);
-			if (!Character.isDigit(currentChar)
-					&& !Character.isLetter(currentChar)) {
+			if (!Character.isDigit(currentChar) && !Character.isLetter(currentChar)) {
 				count++;
 			}
 		}

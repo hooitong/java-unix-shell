@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.exception.FmtException;
@@ -163,8 +164,8 @@ public class FmtApplication implements Application {
 		try {
 			wrapWidth = Integer.parseInt(wrapWidthString);
 		} catch (NumberFormatException e) {
-			throw new FmtException(e,"Wrap width not a number");
-			
+			throw new FmtException(e, "Wrap width not a number");
+
 		}
 		if (wrapWidth < 1) {
 			throw new FmtException("Wrap width should be at least 1");

@@ -1,13 +1,12 @@
 package sg.edu.nus.comp.cs4218.impl.cmd;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import sg.edu.nus.comp.cs4218.Command;
-import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.ShellImpl;
-
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class SequenceCommand implements Command {
 	public static final String EXP_SYNTAX = "Invalid syntax encountered.";
@@ -49,7 +48,7 @@ public class SequenceCommand implements Command {
 		boolean dblArgMissing = doubleCommands.length == 2 && doubleCommands[1].isEmpty();
 		boolean sinArgMissing = singleCommands.length == 2 && singleCommands[1].isEmpty();
 
-		if(dblNotFound || sinNotFound) {
+		if (dblNotFound || sinNotFound) {
 			throw new ShellException(EXP_SYNTAX);
 		} else if (dblArgMissing && sinArgMissing) {
 			throw new ShellException(MISSING_ARG);

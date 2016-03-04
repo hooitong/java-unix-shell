@@ -6,7 +6,7 @@ package sg.edu.nus.comp.cs4218.impl.app;
  * Then present in the output stream.
  */
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -99,6 +99,7 @@ public class EchoApplicationTest {
 	public void tearDown() throws Exception {
 		args = null;
 	}
+
 	/**
 	 * @throws java.lang.Exception
 	 */
