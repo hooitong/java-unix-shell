@@ -55,9 +55,9 @@ public class CalApplication implements Cal {
 	@Override
 	public String printCal(String[] args) {
 		/* Get current year and month */
-		Calendar c = Calendar.getInstance();
-		int month = c.get(Calendar.MONTH);
-		int year = c.get(Calendar.YEAR);
+		Calendar cal = Calendar.getInstance();
+		int month = cal.get(Calendar.MONTH);
+		int year = cal.get(Calendar.YEAR);
 
 		/* Pass into monthly printer for calendar output */
 		return monthPrint(false, month, year);
@@ -73,13 +73,14 @@ public class CalApplication implements Cal {
 	 */
 	@Override
 	public String printCalWithMondayFirst(String[] args) {
-		if (!validateMonFlag(args))
+		if (!validateMonFlag(args)) {
 			return ERROR_FLAG;
+		}
 
 		/* Get current year and month */
-		Calendar c = Calendar.getInstance();
-		int month = c.get(Calendar.MONTH);
-		int year = c.get(Calendar.YEAR);
+		Calendar cal = Calendar.getInstance();
+		int month = cal.get(Calendar.MONTH);
+		int year = cal.get(Calendar.YEAR);
 
 		/* Pass into monthly printer for calendar output */
 		return monthPrint(true, month, year);
@@ -112,8 +113,9 @@ public class CalApplication implements Cal {
 	 */
 	@Override
 	public String printCalForMonthYearMondayFirst(String[] args) {
-		if (!validateMonFlag(args))
+		if (!validateMonFlag(args)) {
 			return ERROR_FLAG;
+		}
 
 		/* Get the month and year from the arguments */
 		int month = parseMonth(args[1]);
@@ -149,8 +151,9 @@ public class CalApplication implements Cal {
 	 */
 	@Override
 	public String printCalForYearMondayFirst(String[] args) {
-		if (!validateMonFlag(args))
+		if (!validateMonFlag(args)) {
 			return ERROR_FLAG;
+		}
 
 		/* Get the year from the arguments */
 		int year = parseYear(args[1]);
@@ -205,20 +208,20 @@ public class CalApplication implements Cal {
 		} else if (args.length == 1) { /* either -m, year or invalid */
 			if (validateMonFlag(args)) {
 				return printCalWithMondayFirst(args);
-			} else if (parseYear(args[0].trim()) != INVALID_DATE) {
-				return printCalForYear(args);
-			} else {
+			} else if (parseYear(args[0].trim()) == INVALID_DATE) {
 				throw new CalException(ERROR_INVALID);
+			} else {
+				return printCalForYear(args);
 			}
 		} else if (args.length == 2) { /*
 										 * either -m year, month year or invalid
 										 */
 			if (validateMonFlag(args) && parseYear(args[1].trim()) != INVALID_DATE) {
 				return printCalForYearMondayFirst(args);
-			} else if (parseMonth(args[0].trim()) != INVALID_DATE && parseYear(args[1].trim()) != INVALID_DATE) {
-				return printCalForMonthYear(args);
-			} else {
+			} else if (parseMonth(args[0].trim()) == INVALID_DATE || parseYear(args[1].trim()) == INVALID_DATE) {
 				throw new CalException(ERROR_INVALID);
+			} else {
+				return printCalForMonthYear(args);
 			}
 		} else if (args.length == 3) { /* -m month year */
 			if (validateMonFlag(args) && parseMonth(args[1].trim()) != INVALID_DATE
@@ -259,10 +262,11 @@ public class CalApplication implements Cal {
 	private int parseYear(String year) {
 		try {
 			int parsedYear = Integer.parseInt(year);
-			if (0 < parsedYear && parsedYear < 10000)
+			if (0 < parsedYear && parsedYear < 10000) {
 				return parsedYear;
-			else
+			} else {
 				return INVALID_DATE;
+			}
 		} catch (NumberFormatException e) {
 			return INVALID_DATE;
 		}
@@ -288,10 +292,11 @@ public class CalApplication implements Cal {
 		/* If short and long month cannot be parsed */
 		try {
 			int parsedMonth = Integer.parseInt(month);
-			if (0 < parsedMonth && parsedMonth < 13)
+			if (0 < parsedMonth && parsedMonth < 13) {
 				return parsedMonth - 1;
-			else
+			} else {
 				return INVALID_DATE;
+			}
 		} catch (NumberFormatException e) {
 			return INVALID_DATE;
 		}
@@ -306,9 +311,12 @@ public class CalApplication implements Cal {
 	 * @return the number of days in the month
 	 */
 	private int getDaysOfMonth(int month, int year) {
-		if (++month == 2 && isLeapYear(year))
+		int literalMonth = month + 1;
+		if (literalMonth == 2 && isLeapYear(year)) {
 			return 29;
-		return (int) (28 + (month + Math.floor(month / 8)) % 2 + 2 % month + 2 * Math.floor(1 / month));
+		}
+		return (int) (28 + (literalMonth + Math.floor(literalMonth / 8)) % 2 + 2 % literalMonth
+				+ 2 * Math.floor(1 / literalMonth));
 	}
 
 	/**
@@ -334,9 +342,10 @@ public class CalApplication implements Cal {
 	 * @return integer value where 0 represents sunday, 1 represents monday, etc
 	 */
 	private int getDayOfDate(int day, int month, int year) {
-		int yearBlock = year - (14 - ++month) / 12;
+		int literalMonth = month + 1;
+		int yearBlock = year - (14 - literalMonth) / 12;
 		int centuryBlock = yearBlock + yearBlock / 4 - yearBlock / 100 + yearBlock / 400;
-		int monthBlock = month + 12 * ((14 - month) / 12) - 2;
+		int monthBlock = literalMonth + 12 * ((14 - literalMonth) / 12) - 2;
 		return (day + centuryBlock + (31 * monthBlock) / 12) % 7;
 	}
 
@@ -377,11 +386,11 @@ public class CalApplication implements Cal {
 		int extraLength = (length - headerLength) % 2;
 		StringBuilder padder = new StringBuilder();
 		for (int i = 0; i < missingLength; i++) {
-			padder.append(" ");
+			padder.append(' ');
 		}
 		padder.append(header);
 		for (int i = 0; i < (missingLength + extraLength); i++) {
-			padder.append(" ");
+			padder.append(' ');
 		}
 		return padder.toString();
 	}
@@ -398,7 +407,7 @@ public class CalApplication implements Cal {
 		int missingLength = (WIDTH_MONTH - headerLength);
 		StringBuilder padder = new StringBuilder(content);
 		for (int i = 0; i < missingLength; i++) {
-			padder.append(" ");
+			padder.append(' ');
 		}
 		return padder.toString();
 	}
@@ -420,27 +429,26 @@ public class CalApplication implements Cal {
 		int totalDays = getDaysOfMonth(month, year);
 
 		/* Print header output */
-		StringBuilder sb = new StringBuilder();
-		sb.append(centerHeader(MONTHS_LONG[month] + " " + year));
-		sb.append(System.lineSeparator());
-		sb.append(isMon ? WEEK_MON : WEEK_SUN);
-		sb.append(System.lineSeparator());
+		StringBuilder builder = new StringBuilder();
+		builder.append(centerHeader(MONTHS_LONG[month] + " " + year)).append(System.lineSeparator())
+				.append(isMon ? WEEK_MON : WEEK_SUN).append(System.lineSeparator());
 
 		/* Print spacer to accommodate */
 		for (int i = 0; i < firstDay; i++) {
-			sb.append("   ");
+			builder.append("   ");
 		}
 
 		/* Print the days by appending into bulider */
 		for (int day = 1; day <= totalDays; day++) {
-			sb.append(String.format("%2d", day));
-			if ((firstDay + day) % 7 == 0 || (day == totalDays))
-				sb.append(System.lineSeparator());
-			else
-				sb.append(" ");
+			builder.append(String.format("%2d", day));
+			if ((firstDay + day) % 7 == 0 || (day == totalDays)) {
+				builder.append(System.lineSeparator());
+			} else {
+				builder.append(' ');
+			}
 		}
 
-		return sb.toString();
+		return builder.toString();
 	}
 
 	/**
@@ -462,11 +470,11 @@ public class CalApplication implements Cal {
 		}
 
 		/* Combine all the strings together to form yearly calendar */
-		StringBuilder sb = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 
 		/* Append the year */
-		sb.append(centerYear(Integer.toString(year)));
-		sb.append(System.lineSeparator());
+		builder.append(centerYear(Integer.toString(year)))
+	    .append(System.lineSeparator());
 
 		/* Select the correct format based on flag isMon */
 		String weekFormat = isMon ? WEEK_MON : WEEK_SUN;
@@ -474,39 +482,42 @@ public class CalApplication implements Cal {
 		/* Merge all 12 calendars with 3 calendar in a single row */
 		for (int i = 0; i < 4; i++) {
 			/* Append the months first */
-			sb.append(centerHeader(MONTHS_LONG[i * 3]) + "  ");
-			sb.append(centerHeader(MONTHS_LONG[i * 3 + 1]) + "  ");
-			sb.append(centerHeader(MONTHS_LONG[i * 3 + 2]));
-			sb.append(System.lineSeparator());
+			builder.append(centerHeader(MONTHS_LONG[i * 3]) + "  ");
+			builder.append(centerHeader(MONTHS_LONG[i * 3 + 1]) + "  ");
+			builder.append(centerHeader(MONTHS_LONG[i * 3 + 2]));
+			builder.append(System.lineSeparator());
 
 			/* Append the format of the week for 3 calendars */
-			sb.append(weekFormat + "  " + weekFormat + "  " + weekFormat);
-			sb.append(System.lineSeparator());
+			builder.append(weekFormat + "  " + weekFormat + "  " + weekFormat);
+			builder.append(System.lineSeparator());
 
 			/* Merge all the 3 calendars together */
 			for (int j = 2; j < 8; j++) {
-				if (yearCalendars[i * 3].length > j)
-					sb.append(padDaysToWidth(yearCalendars[i * 3][j]));
-				else
-					sb.append(padDaysToWidth(""));
-				sb.append("  ");
+				if (yearCalendars[i * 3].length > j) {
+					builder.append(padDaysToWidth(yearCalendars[i * 3][j]));
+				} else {
+					builder.append(padDaysToWidth(""));
+				}
+				builder.append("  ");
 
-				if (yearCalendars[i * 3 + 1].length > j)
-					sb.append(padDaysToWidth(yearCalendars[i * 3 + 1][j]));
-				else
-					sb.append(padDaysToWidth(""));
-				sb.append("  ");
+				if (yearCalendars[i * 3 + 1].length > j) {
+					builder.append(padDaysToWidth(yearCalendars[i * 3 + 1][j]));
+				} else {
+					builder.append(padDaysToWidth(""));
+				}
+				builder.append("  ");
 
-				if (yearCalendars[i * 3 + 2].length > j)
-					sb.append(padDaysToWidth(yearCalendars[i * 3 + 2][j]));
-				else
-					sb.append(padDaysToWidth(""));
+				if (yearCalendars[i * 3 + 2].length > j) {
+					builder.append(padDaysToWidth(yearCalendars[i * 3 + 2][j]));
+				} else {
+					builder.append(padDaysToWidth(""));
+				}
 
-				sb.append(System.lineSeparator());
+				builder.append(System.lineSeparator());
 			}
 		}
 
-		return sb.toString();
+		return builder.toString();
 	}
 
 	/**
