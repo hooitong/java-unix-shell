@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import sg.edu.nus.comp.cs4218.exception.CalException;
 
 public class CalApplicationTest {
@@ -15,8 +16,6 @@ public class CalApplicationTest {
 			"September", "October", "November", "December" };
 	private static final String START_SUN = "Su Mo Tu We Th Fr Sa";
 	private static final String START_MON = "Mo Tu We Th Fr Sa Su";
-	private static final String ERROR_YEAR = "cal: not a valid year %s";
-	private static final String ERROR_MONTH = "cal: %s is neither a month number (1..12) nor a name";
 
 	private CalApplication testCal;
 	private int currentMonth, currentYear;
@@ -53,7 +52,7 @@ public class CalApplicationTest {
 	 */
 	@Test
 	public void testPrintCalWithMondayFirst() throws Exception {
-		String[] arguments = new String[0];
+		String[] arguments = new String[] { "-m" };
 		String[] lineOutputs = testCal.printCalWithMondayFirst(arguments).split(System.lineSeparator());
 		int numberOfDays = new GregorianCalendar(currentYear, currentMonth, 1).getActualMaximum(Calendar.DAY_OF_MONTH);
 		assertTrue(lineOutputs[0].trim().equals(MONTHS[currentMonth] + " " + currentYear));
@@ -109,7 +108,7 @@ public class CalApplicationTest {
 	public void testPrintCalForMonthYearMondayFirst() throws Exception {
 		String mockMonth = "March";
 		String mockYear = "2016";
-		String[] arguments = {"-m", mockMonth, mockYear };
+		String[] arguments = { "-m", mockMonth, mockYear };
 		String[] lineOutputs = testCal.printCalForMonthYearMondayFirst(arguments).split(System.lineSeparator());
 		assertTrue(lineOutputs[0].trim().equals(MONTHS[currentMonth] + " " + currentYear));
 		assertTrue(lineOutputs[1].trim().equals(START_MON));
@@ -126,9 +125,8 @@ public class CalApplicationTest {
 	@Test
 	public void testPrintCalForYearMondayFirst() throws Exception {
 		String mockYear = "2011";
-		String[] arguments = {"-m", mockYear};
+		String[] arguments = { "-m", mockYear };
 		String rawOutput = testCal.printCalForYearMondayFirst(arguments);
-		System.out.println(rawOutput);
 		assertTrue(rawOutput.contains(mockYear));
 		for (String month : MONTHS) {
 			assertTrue(rawOutput.contains(month));
@@ -143,7 +141,7 @@ public class CalApplicationTest {
 	 *
 	 * @throws Exception
 	 */
-	@Test (expected=CalException.class)
+	@Test(expected = CalException.class)
 	public void testInvalidRunWithMonthOnly() throws Exception {
 		String mockMonth = "March";
 		String[] arguments = { mockMonth };
@@ -157,7 +155,7 @@ public class CalApplicationTest {
 	 *
 	 * @throws Exception
 	 */
-	@Test (expected=CalException.class)
+	@Test(expected = CalException.class)
 	public void testInvalidRunWithMonth() throws Exception {
 		String mockMonth = "Test";
 		String mockYear = "2011";
