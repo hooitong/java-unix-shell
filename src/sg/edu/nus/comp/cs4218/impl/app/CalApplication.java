@@ -473,8 +473,7 @@ public class CalApplication implements Cal {
 		StringBuilder builder = new StringBuilder();
 
 		/* Append the year */
-		builder.append(centerYear(Integer.toString(year)))
-	    .append(System.lineSeparator());
+		builder.append(centerYear(Integer.toString(year))).append(System.lineSeparator());
 
 		/* Select the correct format based on flag isMon */
 		String weekFormat = isMon ? WEEK_MON : WEEK_SUN;
