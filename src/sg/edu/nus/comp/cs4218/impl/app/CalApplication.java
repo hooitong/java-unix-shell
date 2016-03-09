@@ -177,9 +177,10 @@ public class CalApplication implements Cal {
 	 *
 	 * @throws CatException
 	 *             If the file(s) specified do not exist or are unreadable.
+	 * @throws CalException
 	 */
 	@Override
-	public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
+	public void run(String[] args, InputStream stdin, OutputStream stdout) throws CalException {
 		if (args == null) {
 			throw new CalException(ERROR_NULL);
 		}
@@ -321,7 +322,7 @@ public class CalApplication implements Cal {
 
 	/**
 	 * Returns a boolean whether the year given is a leap year.
-	 * 
+	 *
 	 * @param year
 	 * @return true if it is a leap year
 	 */

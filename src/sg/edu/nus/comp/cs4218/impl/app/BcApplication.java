@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import sg.edu.nus.comp.cs4218.app.Bc;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
+import sg.edu.nus.comp.cs4218.exception.BcException;
 import sg.edu.nus.comp.cs4218.misc.ExpressionEvaluator;
 
 public class BcApplication implements Bc {
@@ -113,7 +114,7 @@ public class BcApplication implements Bc {
 	}
 
 	@Override
-	public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
+	public void run(String[] args, InputStream stdin, OutputStream stdout) throws BcException {
 		String expresssion = args[0];
 		String leftResult = "", rightResult = "", finalResult = "";
 		ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator();
@@ -126,7 +127,7 @@ public class BcApplication implements Bc {
 		expressionEvaluator.separateExpressions(expresssion);
 		Vector<String> vVector1 = expressionEvaluator.infixToPostfix(expressionEvaluator.leftExp);
 		finalResult = leftResult = expressionEvaluator.computeResult(vVector1);
-		
+
 		if(!expressionEvaluator.rightExp.isEmpty()){
 			Vector<String> vVector2 = expressionEvaluator.infixToPostfix(expressionEvaluator.rightExp);
 			rightResult = expressionEvaluator.computeResult(vVector2);
@@ -151,7 +152,7 @@ public class BcApplication implements Bc {
 				finalResult = expressionEvaluator.or(leftResult, rightResult) ? "1" : "0";
 			}
 		}
-		
+
 		System.out.println(finalResult);
 	}
 }
