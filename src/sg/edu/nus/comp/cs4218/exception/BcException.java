@@ -8,7 +8,7 @@ public class BcException extends AbstractApplicationException {
 		super("bc: " + message);
 	}
 
-	public BcException(Exception exception) {
-		super("bc: " + exception.getMessage());
+	public BcException(String message, Exception exception) {
+		super("bc: " + message);
 	}
 }

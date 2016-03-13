@@ -8,101 +8,103 @@ public interface Bc extends Application {
 	 * Returns resultant string with expression of the form <number>, where
 	 * number can by any natural number or floating point number, evaluated
 	 */
-	public String number(String[] args);
+	public String number(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form - <expression>
 	 * evaluated
 	 */
-	public String negate(String[] args);
+	public String negate(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form <expression> +
 	 * <expression> evaluated
 	 */
-	public String add(String[] args);
+	public String add(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form <expression> -
 	 * <expression> evaluated
 	 */
-	public String subtract(String[] args);
+	public String subtract(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form <expression> *
 	 * <expression> evaluated
 	 */
-	public String multiply(String[] args);
+	public String multiply(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form <expression> /
 	 * <expression> evaluated
 	 */
-	public String divide(String[] args);
+	public String divide(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form <expression> ^
 	 * <expression> evaluated
 	 */
-	public String pow(String[] args);
+	public String pow(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form (<expression>)
 	 * evaluated
 	 */
-	public String bracket(String[] args);
+	public String bracket(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form <expression> >
 	 * <expression> evaluated
 	 */
-	public String greaterThan(String[] args);
+	public String greaterThan(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form <expression> >=
 	 * <expression> evaluated
 	 */
-	public String greaterThanOrEqual(String[] args);
+	public String greaterThanOrEqual(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form <expression> <
 	 * <expression> evaluated
 	 */
-	public String lessThan(String[] args);
+	public String lessThan(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form <expression> <=
 	 * <expression> evaluated
 	 */
-	public String lessThanOrEqual(String[] args);
+	public String lessThanOrEqual(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form <expression> ==
 	 * <expression> evaluated
 	 */
-	public String equalEqual(String[] args);
+	public String equalEqual(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form <expression> !=
 	 * <expression> evaluated
 	 */
-	public String notEqual(String[] args);
+	public String notEqual(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form <expression> &&
 	 * <expression> evaluated
 	 */
-	public String and(String[] args);
+	public String and(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form <expression> ||
 	 * <expression> evaluated
 	 */
-	public String or(String[] args);
+	public String orMethod(String... args);
 
 	/**
 	 * Returns resultant string with expression of the form ! <expression>
 	 * evaluated
 	 */
-	public String not(String[] args);
+	public String not(String... args);
+
+
 }

@@ -1,14 +1,17 @@
 package sg.edu.nus.comp.cs4218.misc;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Stack;
 import java.util.Vector;
 
-public class ExpressionEvaluator {
+public final class ExpressionEvaluator {
 	private String[] argArr;
 	public String leftExp;
 	public String rightExp;
 	public boolean isEqualPresent;
-	public boolean isEqualEqualPresent;
+	public boolean isTwoEqualPresent;
 	public boolean isNotPresent;
 	public boolean isAndPresent;
 	public boolean isOrPresent;
@@ -16,51 +19,46 @@ public class ExpressionEvaluator {
 	public boolean isLesserPresent;
 
 	public final static String NEGATE = "-";
-	public final static String EQUALSTR = "=";
-	public final static String NOTEQUALSTR = "!=";
-	public final static String GREATERSTR = ">";
-	public final static String LESSSTR = "<";
-	public final static String NOTSTR = "!";
-	public final static String ANDSTR = "&&";
-	public final static String ORSTR = "||";
-	public final static char EQUAL = '=';
-	public final static char GREATER = '>';
-	public final static char LESS = '<';
-	public final static char PLUS = '+';
-	public final static char MINUS = '-';
-	public final static char DIVIDE = '/';
-	public final static char TIMES = '*';
-	public final static char POW = '^';
+	public final static String NOT_EQUAL = "!=";
+	public final static String AND_SIGN = "&&";
+	public final static String OR_SIGN = "||";
+	public final static String EQUAL = "=";
+	public final static String EQUAL_EQUAL_SIGN = "==";
+	public final static String GREATER = ">";
+	public final static String GREATER_EQUAL = ">=";
+	public final static String LESS = "<";
+	public final static String LESS_EQUAL = "<=";
+	public final static String PLUS = "+";
+	public final static String MINUS = "-";
+	public final static String DIVIDE = "/";
+	public final static String TIMES = "*";
+	public final static String NOT = "!";
+	public final static String POW = "^";
+	public final static String DOT = ".";
+	public final static char DOT_CHAR = '.';
 	public final static char OPENBRAC = '(';
-	public final static char CLOSEBRAC = ')';
+	public final static char CLOSEBRACE = ')';
 	public final static int ZERO = 0;
 	public final static int ONE = 1;
 	public final static int TWO = 2;
+	public final static String ZERO_STRING = "0";
 	public final static int MAX_VALUE = 1000000000;
 
-	public ExpressionEvaluator() {
-		this.leftExp = "";
-		this.rightExp = "";
-		this.isEqualPresent = false;
-		this.isEqualEqualPresent = false;
-		this.isGreaterPresent = false;
-		this.isLesserPresent = false;
+	private ExpressionEvaluator() {
 	}
 
-	// private breakExpression() {
-	//
-	// }
-
-	public Vector<String> infixToPostfix(String exp) {
+	public static Vector<String> infixToPostfix(String exp) {
 		Stack<String> tStack = new Stack<String>();
 		Vector<String> splittedString = splitSeparateStrings(exp);
 		Vector<String> resultVector = new Vector<String>();
+		StringBuilder stringBuilder = new StringBuilder("");
 
 		for (int i = 0; i < splittedString.size(); i++) {
 			String cString = splittedString.get(i);
+
 			if (cString.charAt(ZERO) == OPENBRAC) {
 				tStack.push(String.valueOf(cString));
-			} else if (cString.charAt(ZERO) == CLOSEBRAC) {
+			} else if (cString.charAt(ZERO) == CLOSEBRACE) {
 				while (!tStack.empty()
 						&& tStack.peek().charAt(ZERO) != OPENBRAC) {
 					resultVector.add(tStack.pop());
@@ -68,20 +66,29 @@ public class ExpressionEvaluator {
 				tStack.pop();
 			}
 
-			if (isAlphabet(cString) || isNumeric(cString)) {
+			if (SignChecker.isAlphabet(cString)
+					|| SignChecker.isNumeric(cString)) {
 				resultVector.add(String.valueOf(cString));
 			}
-			if (isOperator(cString.charAt(ZERO))) {
+			if (SignChecker.isOperator(cString.charAt(ZERO))) {
 				if (tStack.isEmpty()) {
 					tStack.push(String.valueOf(cString));
 				} else {
 					while (!tStack.empty()
-							&& (getPrecedence(cString.charAt(0)) <= getPrecedence(tStack
-									.peek().charAt(ZERO)))) {
+							&& (getPrecedence(cString) <= getPrecedence(tStack
+									.peek()))) {
 						resultVector.add(tStack.pop());
 					}
 					tStack.push(String.valueOf(cString));
 				}
+			}
+			if (SignChecker.isRelationCondtional(cString.charAt(ZERO))) {
+				while (!tStack.empty()
+						&& (getPrecedence(cString) <= getPrecedence(tStack
+								.peek()))) {
+					resultVector.add(tStack.pop());
+				}
+				tStack.push(String.valueOf(cString));
 			}
 		}
 		while (!tStack.isEmpty()) {
@@ -90,76 +97,133 @@ public class ExpressionEvaluator {
 		return resultVector;
 	}
 
-	private boolean isOperator(char currChar) {
-		boolean result = false;
-		if (currChar == PLUS || currChar == MINUS || currChar == DIVIDE
-				|| currChar == TIMES || currChar == POW) {
-			result = true;
-		}
-		return result;
-	}
-
-	private int getPrecedence(char currChar) {
+	private static int getPrecedence(String currChar) {
 		int result = -1;
-		if (currChar == POW) {
+		if (currChar.compareTo(POW) == 0) {
+			result = 9;
+		} else if (currChar.compareTo(DIVIDE) == 0
+				|| currChar.compareTo(TIMES) == 0) {
+			result = 8;
+		} else if (currChar.compareTo(PLUS) == 0
+				|| currChar.compareTo(MINUS) == 0) {
+			result = 7;
+		} else if (currChar.compareTo(NOT_EQUAL) == 0
+				|| currChar.contains(EQUAL_EQUAL_SIGN)) {
+			result = 6;
+		} else if (currChar.compareTo(LESS) == 0
+				|| currChar.contains(LESS_EQUAL) || currChar.contains(GREATER)
+				|| currChar.contains(GREATER_EQUAL)) {
+			result = 5;
+		} else if (currChar.compareTo(NOT) == 0) {
+			result = 4;
+		} else if (currChar.compareTo(AND_SIGN) == 0) {
 			result = 3;
-		} else if (currChar == DIVIDE || currChar == TIMES) {
+		} else if (currChar.compareTo(OR_SIGN) == 0) {
 			result = 2;
-		} else if (currChar == PLUS || currChar == MINUS) {
-			result = 1;
 		}
 		return result;
 	}
 
-	public boolean isBracCountSame(String input) {
-		int openBracCount = 0, closeBracCount = 0;
+	public static boolean isBracketCountSame(String input) {
+		int openBraceCount = 0, closeBraceCount = 0;
 		boolean result = false;
 		for (int i = 0; i < input.length(); i++) {
 			if (input.charAt(i) == OPENBRAC) {
-				openBracCount++;
+				openBraceCount++;
 			}
-			if (input.charAt(i) == CLOSEBRAC) {
-				closeBracCount++;
+			if (input.charAt(i) == CLOSEBRACE) {
+				closeBraceCount++;
 			}
 		}
-		if (openBracCount == closeBracCount) {
+		if (openBraceCount == closeBraceCount) {
 			result = true;
 		}
 		return result;
 	}
 
-	public String computeResult(Vector<String> postfixVector) {
+	public static String computeResult(Vector<String> postfixVector) {
 		Stack<String> tStack = new Stack<String>();
 		for (int i = 0; i < postfixVector.size(); i++) {
 			String cString = postfixVector.get(i);
-			if (isAlphabet(cString) || isNumeric(cString)) {
+			if (SignChecker.isAlphabet(cString)
+					|| SignChecker.isNumeric(cString)) {
 				tStack.add(String.valueOf(cString));
 			} else {
-				tStack.push(Integer.toString(calculate(tStack.pop(),
-						tStack.pop(), cString.charAt(ZERO))));
+				if (cString.compareTo(NOT) == 0) {
+					tStack.push(calculateRelation(tStack.pop(), ZERO_STRING, cString));
+				} else if(SignChecker.isOperator(cString.charAt(ZERO))){
+					tStack.push(calculateArithmetic(tStack.pop(), tStack.pop(), cString));
+				}else{
+					tStack.push(calculateRelation(tStack.pop(), tStack.pop(), cString));
+				}
+
 			}
 		}
 		return tStack.pop();
 	}
 
-	private int calculate(String numStr2, String numStr1, char operator) {
-		int result = 1000000000;
+	public static String calculateArithmetic(String numStr2, String numStr1,
+			String operator) {
+		String result = "";
+		BigDecimal bdNum1 = new BigDecimal(numStr1);
+		BigDecimal bdNum2 = new BigDecimal(numStr2);
 		switch (operator) {
 		case PLUS:
-			result = Integer.parseInt(numStr1) + Integer.parseInt(numStr2);
+			result = bdNum1.add(bdNum2).toString();
 			break;
 		case MINUS:
-			result = Integer.parseInt(numStr1) - Integer.parseInt(numStr2);
+			result = bdNum1.subtract(bdNum2).toString();
 			break;
 		case DIVIDE:
-			result = Integer.parseInt(numStr1) / Integer.parseInt(numStr2);
+			result = bdNum1.divide(bdNum2, 0, RoundingMode.HALF_UP).toString();
 			break;
 		case TIMES:
-			result = Integer.parseInt(numStr1) * Integer.parseInt(numStr2);
+			result = bdNum1.multiply(bdNum2).toString();
 			break;
 		case POW:
-			result = (int) Math.pow(Integer.parseInt(numStr1),
-					Integer.parseInt(numStr2));
+			bdNum1 = bdNum1.pow(bdNum2.intValueExact());
+			result = bdNum1.setScale(ONE, RoundingMode.HALF_UP).toString();
+			break;
+		default:
+			break;
+		}
+			return result;
+	}
+
+	public static String calculateRelation(String numStr2, String numStr1,
+			String operator) {
+		String result = "";
+		BigDecimal bdNum1 = new BigDecimal(numStr1);
+		BigDecimal bdNum2 = new BigDecimal(numStr2);
+		switch (operator) {
+		case EQUAL_EQUAL_SIGN:
+			result = bdNum1.compareTo(bdNum2) == ZERO ? "1" : "0";
+			break;
+		case GREATER_EQUAL:
+			result = bdNum1.compareTo(bdNum2) >= ZERO ? "1" : "0";
+			break;
+		case GREATER:
+			result = bdNum1.compareTo(bdNum2) > ZERO ? "1" : "0";
+			break;
+		case LESS:
+			result = bdNum1.compareTo(bdNum2) < ZERO ? "1" : "0";
+			break;
+		case LESS_EQUAL:
+			result = bdNum1.compareTo(bdNum2) <= ZERO ? "1" : "0";
+			break;
+		case NOT_EQUAL:
+			result = bdNum1.compareTo(bdNum2) == ZERO ? "0" : "1";
+			break;
+		case NOT:
+			result = bdNum2.compareTo(BigDecimal.ZERO) > ZERO ? "0" : "1";
+			break;
+		case AND_SIGN:
+			result = bdNum1.compareTo(BigDecimal.ZERO) > ZERO
+					&& bdNum2.compareTo(BigDecimal.ZERO) > ZERO ? "1" : "0";
+			break;
+		case OR_SIGN:
+			result = bdNum1.compareTo(BigDecimal.ZERO) > ZERO
+					|| bdNum2.compareTo(BigDecimal.ZERO) > ZERO ? "1" : "0";
 			break;
 		default:
 			break;
@@ -167,147 +231,42 @@ public class ExpressionEvaluator {
 		return result;
 	}
 
-	public Vector<String> splitSeparateStrings(String input) {
+	public static Vector<String> splitSeparateStrings(String input) {
 		StringBuilder stringBuilder = new StringBuilder("");
+		StringBuilder stringBuilderR = new StringBuilder("");
 		Vector<String> resultVector = new Vector<String>();
 		for (int i = 0; i < input.length(); i++) {
 			char currChar = input.charAt(i);
-			if (Character.isAlphabetic(currChar) || Character.isDigit(currChar)) {
+			if (Character.isDigit(currChar) || currChar == DOT_CHAR) {
 				stringBuilder.append(currChar);
-			} else if (isOperator(currChar) || currChar == OPENBRAC
-					|| currChar == CLOSEBRAC) {
-				if (stringBuilder.length() > 0) {
+				if (stringBuilderR.length() != ZERO) {
+					resultVector.add(stringBuilderR.toString());
+					stringBuilderR.setLength(0);
+				}
+			} else if (SignChecker.isOperator(currChar) || currChar == OPENBRAC
+					|| currChar == CLOSEBRACE) {
+				if ((currChar == CLOSEBRACE || currChar == OPENBRAC)
+						&& stringBuilderR.length() != ZERO) {
+					resultVector.add(stringBuilderR.toString());
+					stringBuilderR.setLength(0);
+				}
+				if (stringBuilder.length() != ZERO) {
 					resultVector.add(stringBuilder.toString());
 					stringBuilder.setLength(0);
 				}
 				resultVector.add(String.valueOf(currChar));
-			} else {
-				//
+			} else if (SignChecker.isRelationCondtional(currChar)) {
+				stringBuilderR.append(currChar);
+				if (stringBuilder.length() != ZERO) {
+					resultVector.add(stringBuilder.toString());
+					stringBuilder.setLength(0);
+				}
 			}
 		}
-		if (stringBuilder.length() > 0) {
+		if (stringBuilder.length() != ZERO) {
 			resultVector.add(stringBuilder.toString());
 		}
 		return resultVector;
-	}
-
-	public void separateExpressions(String input) {
-		String delimiters = "\\|\\| | <= | < | >= | > | != | == | &&";
-		String[] arr = input.split(delimiters);
-		this.leftExp = arr[ZERO];
-		if (arr.length == 2) {
-			this.rightExp = arr[ONE];
-		}
-	}
-
-	public boolean isNumeric(String input) {
-		boolean result = true;
-		for (int i = 0; i < input.length(); i++) {
-			if (!Character.isDigit(input.charAt(i))) {
-				result = false;
-			}
-		}
-		return result;
-	}
-
-	public boolean isAlphabet(String input) {
-		boolean result = true;
-		for (int i = 0; i < input.length(); i++) {
-			if (!Character.isAlphabetic(input.charAt(i))) {
-				result = false;
-			}
-		}
-		return result;
-	}
-
-	public String negation(String input) {
-		StringBuilder stringBuilder = new StringBuilder("");
-		if (input.charAt(ZERO) == MINUS) {
-			stringBuilder.append(input.substring(ONE, input.length()));
-		} else {
-			stringBuilder.append("-").append(input);
-		}
-		return stringBuilder.toString();
-	}
-
-	public boolean isGreaterThanEqual(String exp1, String exp2) {
-		return Integer.parseInt(exp1) >= Integer.parseInt(exp2);
-	}
-
-	public boolean isGreaterThan(String exp1, String exp2) {
-		return Integer.parseInt(exp1) > Integer.parseInt(exp2);
-	}
-
-	public boolean isLessThanEqual(String exp1, String exp2) {
-		return Integer.parseInt(exp1) <= Integer.parseInt(exp2);
-	}
-
-	public boolean isLessThan(String exp1, String exp2) {
-		return Integer.parseInt(exp1) < Integer.parseInt(exp2);
-	}
-
-	public boolean isEqualEqual(String exp1, String exp2) {
-		return Integer.parseInt(exp1) == Integer.parseInt(exp2);
-	}
-
-	public boolean isNotEqual(String exp1, String exp2) {
-		return Integer.parseInt(exp1) != Integer.parseInt(exp2);
-	}
-
-	public boolean not(String exp1) {
-		return !Boolean.parseBoolean(exp1);
-	}
-
-	public boolean or(String exp1, String exp2) {
-		return Integer.parseInt(exp1) > 0 || Integer.parseInt(exp2) > 0;
-	}
-
-	public boolean and(String exp1, String exp2) {
-		return Integer.parseInt(exp1) > 0 && Integer.parseInt(exp2) > 0;
-	}
-
-	public void checkEqualSign(String expresssion) {
-		int count = 0;
-		for (int i = 0; i < expresssion.length(); i++) {
-			if (expresssion.charAt(i) == EQUAL) {
-				count++;
-			}
-		}
-		if (count == 1) {
-			this.isEqualPresent = true;
-		} else if (count == 2) {
-			this.isEqualEqualPresent = true;
-		}
-	}
-
-	public void checkIsLesserSign(String expresssion) {
-		if (expresssion.contains(LESSSTR)) {
-			this.isLesserPresent = true;
-		}
-	}
-
-	public void checkIsGreaterSign(String expresssion) {
-		if (expresssion.contains(GREATERSTR)) {
-			this.isGreaterPresent = true;
-		}
-	}
-
-	public void checkIsNotSign(String expresssion) {
-		if (expresssion.contains(NOTEQUALSTR)) {
-			this.isGreaterPresent = true;
-		}
-	}
-
-	public void checkIsAndSign(String expresssion) {
-		if (expresssion.contains(ANDSTR)) {
-			this.isAndPresent = true;
-		}
-	}
-
-	public void checkIsOrSign(String expresssion) {
-		if (expresssion.contains(ORSTR)) {
-			this.isOrPresent = true;
-		}
 	}
 
 }
