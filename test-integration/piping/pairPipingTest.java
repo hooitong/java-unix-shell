@@ -10,6 +10,7 @@ import sg.edu.nus.comp.cs4218.impl.ShellImpl;
 import sg.edu.nus.comp.cs4218.impl.cmd.PipeCommand;
 
 import java.io.*;
+import java.nio.channels.Pipe;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -200,7 +201,24 @@ public class PairPipingTest {
      */
     @Test
     public void pipeDateComm() throws Exception {
-        String testInput = "";
+        String testInput = "date | comm " + RESOURCE_ROOT + "date-comm.txt";
+        mockShell.parseAndEvaluate(testInput, mockOutputStream);
+        String output = new String(mockOutputStream.toByteArray(), "UTF-8");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+        String expectedOutput = sdf.format(new Date()) + "\t\t" + System.lineSeparator()
+                + "\tcake5\t" + System.lineSeparator()
+                + "\ttest2\t";
+        assertEquals(expectedOutput, output);
+    }
+
+    /**
+     * Tests the piping evaluation from Fmt (restricted to 10 char using w) to Tail (last 2 lines using -n).
+     *
+     * @throws Exception
+     */
+    @Test
+    public void pipeFmtTail() throws Exception {
+        String testInput = "fmt -w 10 " + RESOURCE_ROOT + "fmt-tail.txt | tail -n 2";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
         String output = new String(mockOutputStream.toByteArray(), "UTF-8");
         String expectedOutput = "";
@@ -208,115 +226,161 @@ public class PairPipingTest {
     }
 
     /**
-     * Tests the piping evaluation 
+     * Tests the piping evaluation from Fmt to Bc.
      *
      * @throws Exception
      */
     @Test
-    public void pipeFmtTail() throws Exception {
-        String testInput = "";
-        mockShell.parseAndEvaluate(testInput, mockOutputStream);
-        String output = new String(mockOutputStream.toByteArray(), "UTF-8");
-        String expectedOutput = "";
-        assertEquals(expectedOutput, output);
-    }
-
-    @Test
     public void pipeFmtBc() throws Exception {
-        String testInput = "";
+        String testInput = "fmt " + RESOURCE_ROOT + "fmt-bc.txt | bc";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
         String output = new String(mockOutputStream.toByteArray(), "UTF-8");
-        String expectedOutput = "";
+        String expectedOutput = "500" + System.lineSeparator();
         assertEquals(expectedOutput, output);
     }
 
+    /**
+     * Tests the pipe evaluation from Sort (numbered with -n) to Comm.
+     *
+     * @throws Exception
+     */
     @Test
     public void pipeSortComm() throws Exception {
-        String testInput = "";
+        String testInput = "sort " + RESOURCE_ROOT + "sort-comm-1.txt | comm " + RESOURCE_ROOT + "sort-comm-2.txt";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
         String output = new String(mockOutputStream.toByteArray(), "UTF-8");
-        String expectedOutput = "";
+        String expectedOutput = "\t\t000\t0x0000\tNone\tNone\tBag Unknown pocket icon.png\tUnknown pocket" + System.lineSeparator()
+                + "\t\t001\t0x0001\tMaster Ball\tMaster Ball\tBag Items pocket icon.png\tItems pocket" + System.lineSeparator()
+                + "\t\t002\t0x0002\tUltra Ball\tUltra Ball\tBag Items pocket icon.png\tItems pocket" + System.lineSeparator()
+                + "\t\t003\t0x0003\tGreat Ball\tGreat Ball\tBag Items pocket icon.png\tItems pocket" + System.lineSeparator()
+                + "\t\t004\t0x0004\tPoké Ball\tPoké Ball\tBag Items pocket icon.png\tItems pocket" + System.lineSeparator()
+                + "\t\t005\t0x0005\tSafari Ball\tSafari Ball\tBag Items pocket icon.png\tItems pocket" + System.lineSeparator()
+                + "\t\t006\t0x0006\tNet Ball\tNet Ball\tBag Items pocket icon.png\tItems pocket";
         assertEquals(expectedOutput, output);
     }
 
+    /**
+     * Tests the pipe evaluation from Sort to Echo.
+     *
+     * @throws Exception
+     */
     @Test
     public void pipeSortEcho() throws Exception {
-        String testInput = "";
+        String testInput = "sort " + RESOURCE_ROOT + "sort-echo.txt | echo a";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
         String output = new String(mockOutputStream.toByteArray(), "UTF-8");
-        String expectedOutput = "";
+        String expectedOutput = "a" + System.lineSeparator();
         assertEquals(expectedOutput, output);
     }
 
+    /**
+     * Tests the pipe evaluation from Comm to Head (4 lines with -n).
+     *
+     * @throws Exception
+     */
     @Test
     public void pipeCommHead() throws Exception {
-        String testInput = "";
+        String testInput = "comm " + RESOURCE_ROOT + "comm-head-1.txt " + RESOURCE_ROOT + "comm-head-2.txt | head -n 4";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
         String output = new String(mockOutputStream.toByteArray(), "UTF-8");
-        String expectedOutput = "";
+        String expectedOutput = "\t\tapple" + System.lineSeparator()
+                + "\t\tbanana" + System.lineSeparator()
+                + "\tbanana\t" + System.lineSeparator()
+                + "eggplant\t\t" + System.lineSeparator();
         assertEquals(expectedOutput, output);
     }
 
-    @Test
+    /**
+     * Invalid call command on the other side of the pipe.
+     *
+     * @throws Exception
+     */
+    @Test (expected = PipeCommandException.class)
     public void pipeCommNegative() throws Exception {
-        String testInput = "";
+        String testInput = "comm " + RESOURCE_ROOT + "comm-negative-1.txt " + RESOURCE_ROOT + "comm-negative-2.txt | ILL EAGLE";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
-        String output = new String(mockOutputStream.toByteArray(), "UTF-8");
-        String expectedOutput = "";
-        assertEquals(expectedOutput, output);
     }
 
+    /**
+     * Tests the pipe evaluation from Bc (complex expression) to Sort.
+     *
+     * @throws Exception
+     */
     @Test
     public void pipeBcSort() throws Exception {
-        String testInput = "";
+        String testInput = "bc \"(1 + 3) * 5 + 5 ^ 2 >= 55\" | sort";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
         String output = new String(mockOutputStream.toByteArray(), "UTF-8");
-        String expectedOutput = "";
+        String expectedOutput = "0" + System.lineSeparator();
         assertEquals(expectedOutput, output);
     }
 
+    /**
+     * Tests the pipe evaluation from Bc (simple expression) to Date.
+     *
+     * @throws Exception
+     */
     @Test
     public void pipeBcDate() throws Exception {
-        String testInput = "";
+        String testInput = "bc '9 + 20 * 5' | date";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
         String output = new String(mockOutputStream.toByteArray(), "UTF-8");
-        String expectedOutput = "";
-        assertEquals(expectedOutput, output);
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+        assertEquals(sdf.format(new Date()), output);
     }
 
+    /**
+     * Tests the pipe evaluation from Cal (year) to Head.
+     *
+     * @throws Exception
+     */
     @Test
     public void pipeCalHead() throws Exception {
-        String testInput = "";
+        String testInput = "cal 2015 | head -n 8";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
         String output = new String(mockOutputStream.toByteArray(), "UTF-8");
-        String expectedOutput = "";
+        String expectedOutput =
+                  "                              2015                              " + System.lineSeparator()
+                + "      January               February               March        " + System.lineSeparator()
+                + "Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa" + System.lineSeparator()
+                + "             1  2  3   1  2  3  4  5  6  7   1  2  3  4  5  6  7" + System.lineSeparator()
+                + " 4  5  6  7  8  9 10   8  9 10 11 12 13 14   8  9 10 11 12 13 14" + System.lineSeparator()
+                + "11 12 13 14 15 16 17  15 16 17 18 19 20 21  15 16 17 18 19 20 21" + System.lineSeparator()
+                + "18 19 20 21 22 23 24  22 23 24 25 26 27 28  22 23 24 25 26 27 28" + System.lineSeparator()
+                + "25 26 27 28 29 30 31                        29 30 31            " + System.lineSeparator();
         assertEquals(expectedOutput, output);
     }
 
-    @Test
+    /**
+     * Pipe output of Cal to Comm with no arguments (error - no second file)
+     *
+     * @throws Exception
+     */
+    @Test (expected = PipeCommandException.class)
     public void pipeCalNegative() throws Exception {
-        String testInput = "";
+        String testInput = "cal december 2014 | comm";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
-        String output = new String(mockOutputStream.toByteArray(), "UTF-8");
-        String expectedOutput = "";
-        assertEquals(expectedOutput, output);
     }
 
-    @Test
+    /**
+     * Invalid call command on the left side of the pipe.
+     *
+     * @throws Exception
+     */
+    @Test (expected = PipeCommandException.class)
     public void pipeNegativeTail() throws Exception {
-        String testInput = "";
+        String testInput = "hat 25 | date";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
-        String output = new String(mockOutputStream.toByteArray(), "UTF-8");
-        String expectedOutput = "";
-        assertEquals(expectedOutput, output);
     }
 
-    @Test
+    /**
+     * Cat throws exception with lack of file before piping into date.
+     *
+     * @throws Exception
+     */
+    @Test (expected = PipeCommandException.class)
     public void pipeNegativeDate() throws Exception {
-        String testInput = "";
+        String testInput = "cal -n | date";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
-        String output = new String(mockOutputStream.toByteArray(), "UTF-8");
-        String expectedOutput = "";
-        assertEquals(expectedOutput, output);
     }
 }
