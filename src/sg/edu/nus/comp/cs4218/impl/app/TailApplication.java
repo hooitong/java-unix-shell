@@ -62,7 +62,7 @@ public class TailApplication implements Application {
 	 */
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws TailException {
-		int numLinesToRead = 15;
+		int numLinesToRead = 10;
 		int filePosition = -1;
 		if (args != null) {
 			switch (args.length) {
