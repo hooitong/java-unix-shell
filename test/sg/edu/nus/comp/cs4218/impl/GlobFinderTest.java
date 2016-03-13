@@ -18,7 +18,7 @@ public class GlobFinderTest {
 	public void setUp() {
 		String mockSinglePattern = "*.txt";
 		String mockMultiPattern = "*/*/*.txt";
-		mockRootDirectory = Environment.currentDirectory + "/mock-filesystem";
+		mockRootDirectory = Environment.currentDirectory + "/mock-glob-fs";
 		singleFinder = new GlobFinder(mockSinglePattern, mockRootDirectory);
 		nestedFinder = new GlobFinder(mockMultiPattern, mockRootDirectory);
 	}

@@ -206,12 +206,12 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testValidEvaluateGlob() throws Exception {
-		String[] mockArgs = { "mock-filesystem/*.txt", "mock-filesystem/*/*/*.txt", "mock-filesystem/21-herb/*" };
+		String[] mockArgs = { "mock-glob-fs/*.txt", "mock-glob-fs/*/*/*.txt", "mock-glob-fs/21-herb/*" };
 		String[] results = stubCommand.evaluateGlob(mockArgs);
-		String firstArgOne = Paths.get("mock-filesystem/quantum.txt").toAbsolutePath().toString();
-		String secondArgOne = Paths.get("mock-filesystem/21-herb/hola/Kappa.txt").toAbsolutePath().toString();
-		String thirdArgOne = Paths.get("mock-filesystem/21-herb/hola").toAbsolutePath().toString();
-		String thirdArgTwo = Paths.get("mock-filesystem/21-herb/sideload.txt").toAbsolutePath().toString();
+		String firstArgOne = Paths.get("mock-glob-fs/quantum.txt").toAbsolutePath().toString();
+		String secondArgOne = Paths.get("mock-glob-fs/21-herb/hola/Kappa.txt").toAbsolutePath().toString();
+		String thirdArgOne = Paths.get("mock-glob-fs/21-herb/hola").toAbsolutePath().toString();
+		String thirdArgTwo = Paths.get("mock-glob-fs/21-herb/sideload.txt").toAbsolutePath().toString();
 		assertTrue(results.length == 4);
 		assertTrue(firstArgOne.equals(results[0]));
 		assertTrue(secondArgOne.equals(results[1]));
@@ -228,13 +228,13 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testQuotedEvaluateGlob() throws Exception {
-		String singleQuote = "'mock-filesystem/*.txt'";
-		String doubleQuote = "\"mock-filesystem/21-herb/hola\"";
-		String mixedQuotes = "'mock-filesystem/\"*.txt\"'";
-		String quotedFile = "mock-filesystem/tango/'.*";
+		String singleQuote = "'mock-glob-fs/*.txt'";
+		String doubleQuote = "\"mock-glob-fs/21-herb/hola\"";
+		String mixedQuotes = "'mock-glob-fs/\"*.txt\"'";
+		String quotedFile = "mock-glob-fs/tango/'.*";
 		String[] mockArgs = { singleQuote, doubleQuote, mixedQuotes, quotedFile };
 		String[] results = stubCommand.evaluateGlob(mockArgs);
-		String quotedFileResult = Paths.get("mock-filesystem/tango/'.json").toAbsolutePath().toString();
+		String quotedFileResult = Paths.get("mock-glob-fs/tango/'.json").toAbsolutePath().toString();
 		assertTrue(results.length == 4);
 		assertTrue(singleQuote.equals(results[0]));
 		assertTrue(doubleQuote.equals(results[1]));
@@ -250,8 +250,8 @@ public class CallCommandTest {
 	 */
 	@Test
 	public void testInvalidEvaluateGlob() throws Exception {
-		String invalidFile = "mock-filesystem/*.kat";
-		String noGlobArg = "mock-filesystem/quantum.txt";
+		String invalidFile = "mock-glob-fs/*.kat";
+		String noGlobArg = "mock-glob-fs/quantum.txt";
 		String[] mockArgs = { invalidFile, noGlobArg };
 		String[] results = stubCommand.evaluateGlob(mockArgs);
 		assertTrue(results.length == 1);
