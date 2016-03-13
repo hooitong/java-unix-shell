@@ -1,0 +1,4 @@
+The sort command orders the lines of the specified file or input and prints the same lines but in
+sorted order. Compares each line character by character. A special character (e.g., +) comes before
+numbers. A number comes before capital letters. A capital letter comes before small letters, etc.
+Within each character class, the characters are sorted according to their ​ASCII​ value.

@@ -162,12 +162,10 @@ public class CatApplication implements Application {
 	}
 
 	private void throwExceptionIfNoInput(String[] args, InputStream stdin) throws CatException {
-		if (args == null) {
-			if (stdin == null) {
-				throw new CatException("No input");
-			}
-		} else {
-			if (args.length == 0) {
+		if (args == null && stdin == null) {
+			throw new CatException("No input");
+		} else if(args != null) {
+			if (args.length == 0 && stdin == null) {
 				throw new CatException("No input");
 			}
 		}

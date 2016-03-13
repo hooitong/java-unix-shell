@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import sg.edu.nus.comp.cs4218.Application;
@@ -57,7 +58,7 @@ public class DateApplication implements Application {
 	 */
 	String generateDate(String dateFormat) {
 		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
-		return sdf.toString();
+		return sdf.format(new Date());
 	}
 }
 

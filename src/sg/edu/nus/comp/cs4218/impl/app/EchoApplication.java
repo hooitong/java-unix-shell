@@ -68,13 +68,14 @@ public class EchoApplication implements Application {
 		}
 		if (cleanList.length >= 1) {
 			stdout.write(cleanList[cleanList.length - 1].getBytes());
-			stdout.write("\n".getBytes());
+			stdout.write(System.lineSeparator().getBytes());
 		}
 
 	}
 
 	private void writeIfArgsIsEmpty(OutputStream stdout) throws IOException {
-		stdout.write("\n\n".getBytes());
+		stdout.write(System.lineSeparator().getBytes());
+		stdout.write(System.lineSeparator().getBytes());
 	}
 
 	/*

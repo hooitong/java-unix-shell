@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import org.junit.After;
@@ -41,7 +42,7 @@ public class DateApplicationTest {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
 		dateApplication.run(null, bis, baos);
 		String output = new String(baos.toByteArray());
-		assertEquals(simpleDateFormat.toString(), output);
+		assertEquals(simpleDateFormat.format(new Date()), output);
 	}
 
 	@After
