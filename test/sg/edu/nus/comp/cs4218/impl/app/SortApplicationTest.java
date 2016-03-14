@@ -75,6 +75,7 @@ public class SortApplicationTest {
 		assertEquals("5", arrayList.get(4));
 	}
 
+	
 	/**
 	 * Sorts strings that consists of digits in ascending order
 	 */
@@ -134,9 +135,10 @@ public class SortApplicationTest {
 	/**
 	 * Sorts strings that consists of a combination of lowercase and digit
 	 * characters
+	 * @throws SortException 
 	 */
 	@Test
-	public void testSortSimpleNumbersWithNumFlagOn() {
+	public void testSortSimpleNumbersWithNumFlagOn() throws SortException {
 		List<String> arrayList = sortApplication.sortSimpleNumbersWithNumFlagOn(inputArr6);
 		assertEquals("1oranges", arrayList.get(0));
 		assertEquals("22pears", arrayList.get(1));
@@ -158,6 +160,7 @@ public class SortApplicationTest {
 		assertEquals("a^pples", arrayList.get(2));
 		assertEquals("feb%", arrayList.get(3));
 		assertEquals("feb*", arrayList.get(4));
+	
 	}
 
 	/**

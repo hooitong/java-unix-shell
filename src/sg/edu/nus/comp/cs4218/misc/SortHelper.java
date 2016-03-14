@@ -1,8 +1,15 @@
 package sg.edu.nus.comp.cs4218.misc;
 
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import sg.edu.nus.comp.cs4218.Environment;
+import sg.edu.nus.comp.cs4218.exception.SortException;
+import sg.edu.nus.comp.cs4218.impl.app.SortApplication;
 
 public final class SortHelper {
 	private static final int ONE = 1;
@@ -198,5 +205,36 @@ public final class SortHelper {
 		ArrayList<String> ansList = new ArrayList<String>(Arrays.asList(
 				mergeSort.mergeSort(resultList.toArray(new String[resultList.size()]), ZERO, resultList.size() - 1)));
 		return ansList;
+	}
+	
+	public static String[] sortProcess(String[] args, InputStream stdin)
+			throws SortException {
+		Path currentDir = Paths.get(Environment.currentDirectory);
+		int filePosition = ZERO;
+		String[] toSort = null;
+		boolean numFlag = false;
+
+		if (args == null || args.length == ZERO) {
+			toSort = SortApplication.readFromStdinAndWriteToStringArray(stdin);
+		} else if (args.length == ONE) {
+			filePosition = ZERO;
+			if (SortApplication.isNumberCommandFormat(args)) {
+				numFlag = true;
+				toSort = SortApplication.readFromStdinAndWriteToStringArray(stdin);
+			} else {
+				toSort = SortApplication.getFileContents(args, currentDir, filePosition);
+			}
+		} else if (args.length >= SortApplication.MAX_LENGTH) {
+			//catchMissingNumberCommandFormatException(args);
+			if (SortApplication.isNumberCommandFormat(args)) {
+				numFlag = true;
+				filePosition = ONE;
+			}
+			toSort = SortApplication.getFileContents(args, currentDir, filePosition);
+
+		} 
+		MergeSort mergeSort = new MergeSort(numFlag);
+		mergeSort.mergeSort(toSort, ZERO, toSort.length - 1);
+		return toSort;
 	}
 }

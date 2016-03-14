@@ -1,0 +1,10 @@
+watch
+car
+mouse
+headset
+wallet
+key
+ruler
+spectacles
+pen
+desktop

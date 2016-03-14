@@ -14,13 +14,14 @@ import java.util.List;
 
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.app.Sort;
+import sg.edu.nus.comp.cs4218.exception.FmtException;
 import sg.edu.nus.comp.cs4218.exception.SortException;
 import sg.edu.nus.comp.cs4218.misc.MergeSort;
 import sg.edu.nus.comp.cs4218.misc.SortHelper;
 
 public class SortApplication implements Sort {
 
-	private static final int MAX_LENGTH = 2;
+	public static final int MAX_LENGTH = 2;
 	private static final int ONE = 1;
 	private static final int ZERO = 0;
 	private static final int TWO = 2;
@@ -251,34 +252,11 @@ public class SortApplication implements Sort {
 
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws SortException {
-		Path currentDir = Paths.get(Environment.currentDirectory);
-		int filePosition = ZERO;
-		String[] toSort = null;
-		boolean numFlag = false;
-
-		if (args == null || args.length == ZERO) {
-			toSort = readFromStdinAndWriteToStringArray(stdin);
-		} else if (args.length == ONE) {
-			filePosition = ZERO;
-			if (isNumberCommandFormat(args)) {
-				numFlag = true;
-				toSort = readFromStdinAndWriteToStringArray(stdin);
-			} else {
-				toSort = getFileContents(args, currentDir, filePosition);
-			}
-		} else if (args.length == MAX_LENGTH) {
-			catchMissingNumberCommandFormatException(args);
-			numFlag = true;
-			filePosition = ONE;
-			toSort = getFileContents(args, currentDir, filePosition);
-
-		} else {
-			throw new SortException("Arguments cannot be greater than 2");
-		}
-		MergeSort mergeSort = new MergeSort(numFlag);
-		mergeSort.mergeSort(toSort, ZERO, toSort.length - 1);
+		String[] toSort = SortHelper.sortProcess(args, stdin);
 		stdoutSortedArray(stdout, toSort);
 	}
+
+	
 
 	/**
 	 * write the sorted array to the outstream
@@ -290,6 +268,9 @@ public class SortApplication implements Sort {
 	 * @throws SortException
 	 */
 	private void stdoutSortedArray(OutputStream stdout, String... toSort) throws SortException {
+		if (stdout == null) {
+			throw new SortException("stdout is not present");
+		}
 		for (int i = 0; i < toSort.length; i++) {
 			try {
 				stdout.write(toSort[i].getBytes(CHARSET_UTF_8));
@@ -310,7 +291,7 @@ public class SortApplication implements Sort {
 	 *             input and output streams.
 	 */
 
-	private String[] readFromStdinAndWriteToStringArray(InputStream stdin) throws SortException {
+	public static String[] readFromStdinAndWriteToStringArray(InputStream stdin) throws SortException {
 		List<String> resultList = new ArrayList<String>();
 		if (stdin == null) {
 			throw new SortException("Null Pointer Exception");
@@ -340,25 +321,14 @@ public class SortApplication implements Sort {
 	 * @throws SortException
 	 *             If the 'n' flag is missing in the command format
 	 */
-	private String[] getFileContents(String[] args, Path currentDir, int filePosition) throws SortException {
-		Path filePath = currentDir.resolve(args[filePosition]);
-		catchIfFileIsReadableException(filePath);
-		return readFromFileAndWriteToStringArray(filePath);
-	}
-
-	/**
-	 * Catch the missing 'n' flag when the argument length is of 2
-	 * 
-	 * @param args
-	 *            arguments present in the command
-	 * @return void
-	 * @throws SortException
-	 *             If the 'n' flag is missing in the command format
-	 */
-	private void catchMissingNumberCommandFormatException(String... args) throws SortException {
-		if (!isNumberCommandFormat(args)) {
-			throw new SortException("only -n command is allowed");
+	public static String[] getFileContents(String[] args, Path currentDir, int filePosition) throws SortException {
+		ArrayList<Path> filePathList = new ArrayList<Path>();
+		for (int i = filePosition; i < args.length; i++) {
+			Path filePath = currentDir.resolve(args[i]);
+			catchIfFileIsReadableException(filePath);
+			filePathList.add(filePath);
 		}
+		return readFromFileAndWriteToStringArray(filePathList);
 	}
 
 	/**
@@ -370,7 +340,7 @@ public class SortApplication implements Sort {
 	 * @throws SortException
 	 *             If the file is not readable
 	 */
-	private boolean isNumberCommandFormat(String... args) {
+	public static boolean isNumberCommandFormat(String... args) {
 		return args[ZERO].equals("-n");
 	}
 
@@ -383,7 +353,7 @@ public class SortApplication implements Sort {
 	 * @throws SortException
 	 *             If the file is not readable
 	 */
-	void catchIfFileIsReadableException(Path filePath) throws SortException {
+	static void catchIfFileIsReadableException(Path filePath) throws SortException {
 		if (!Files.exists(filePath) && !Files.isReadable(filePath)) {
 			throw new SortException("Could not read file");
 		}
@@ -397,21 +367,24 @@ public class SortApplication implements Sort {
 	 * @throws SortException
 	 *             Exceptions caught when reading and writing from input file.
 	 */
-	String[] readFromFileAndWriteToStringArray(Path filePath) throws SortException {
+	static String[] readFromFileAndWriteToStringArray(ArrayList<Path> filePathList) throws SortException {
 		List<String> arrayList = new ArrayList<String>();
-		try {
-			FileInputStream fileInStream = new FileInputStream(filePath.toString());
-			BufferedReader buffReader = new BufferedReader(new InputStreamReader(fileInStream));
+		for (int i = 0; i < filePathList.size(); i++) {
+			try {
+				FileInputStream fileInStream = new FileInputStream(filePathList.get(i).toString());
+				BufferedReader buffReader = new BufferedReader(new InputStreamReader(fileInStream));
 
-			String input = "";
-			while ((input = buffReader.readLine()) != null) {
-				arrayList.add(input);
+				String input = "";
+				while ((input = buffReader.readLine()) != null) {
+					arrayList.add(input);
+				}
+				buffReader.close();
+
+			} catch (IOException e) {
+				throw new SortException("IOException", e);
 			}
-			buffReader.close();
-
-		} catch (IOException e) {
-			throw new SortException("IOException", e);
 		}
+		
 		return arrayList.toArray(new String[arrayList.size()]);
 	}
 }
