@@ -2,6 +2,16 @@ package sg.edu.nus.comp.cs4218.misc;
 
 public class MergeSort {
 	private static final int ZERO = 0;
+	private static final int ONE = 1;
+	private static final int TWO = 2;
+	private static final int THREE = 3;
+	private static final int FOUR = 4;
+	private static final int DIGIT_START = 48;
+	private static final int DIGIT_END = 57;
+	private static final int CAPITAL_START = 65;
+	private static final int CAPITAL_END = 90;
+	private static final int LOWER_START = 97;
+	private static final int LOWER_END = 122;
 	private static final int WHITESPACE = 32;
 	private final boolean numFlag;
 
@@ -68,7 +78,7 @@ public class MergeSort {
 					tempArr[iterate++] = toSort[rightOfMid++];
 				}
 			} else {// natural sort
-				if (toSort[left].compareTo(toSort[rightOfMid]) <= 0) {
+				if (customCompare(toSort[left], toSort[rightOfMid]) <= 0) {
 					tempArr[iterate++] = toSort[left++];
 				} else {
 					tempArr[iterate++] = toSort[rightOfMid++];
@@ -184,12 +194,47 @@ public class MergeSort {
 
 		if (assumedNumStr1.length() > 0 && assumedNumStr2.length() > 0) {
 			if (assumedNumStr1.compareTo(assumedNumStr2) == 0) {
-				return str1.compareTo(str2);
+				return customCompare(str1, str2);
 			} else {
 				return Integer.parseInt(assumedNumStr1) - Integer.parseInt(assumedNumStr2);
 			}
 		} else {
-			return str1.compareTo(str2);
+			return customCompare(str1, str2);
 		}
+	}
+	public int customCompare(String str1, String str2){
+		int shortLength = str1.length() >= str2.length() ?str2.length():str1.length();
+		int result = str1.length() < str2.length()?-1:1;
+		if(str1.equals(str2)){
+			return 0;
+		}
+		for (int i = 0; i < shortLength; i++) {
+			if(getRank(str1.charAt(i)) < getRank(str2.charAt(i))){
+				return 1;
+			}else if(getRank(str1.charAt(i)) > getRank(str2.charAt(i))){
+				return -1;
+			}else{
+				 if((int)str1.charAt(i) - (int) str2.charAt(i) == 0){
+					 continue;
+				 }else{
+					return (int)str1.charAt(i) - (int) str2.charAt(i); 
+				 }
+			}
+		}
+		return result;
+	}
+	public int getRank(char currChar){
+		int asciiNum = (int) currChar;
+		int result = -1;
+		if(asciiNum >= CAPITAL_START && asciiNum <= CAPITAL_END){
+			result = 2;
+		}else if(asciiNum >= LOWER_START && asciiNum <= LOWER_END){
+			result = 1;
+		}else if(asciiNum >= DIGIT_START && asciiNum <= DIGIT_END){
+			result = 3;
+		}else{
+			result = 4;//special characters
+		}
+		return result;
 	}
 }

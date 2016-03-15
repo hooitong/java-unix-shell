@@ -1,269 +1,400 @@
-import static org.junit.Assert.assertTrue;
+package sg.edu.nus.comp.cs4218.impl.app;
 
-import java.util.Random;
+import static org.junit.Assert.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BcApplicationTest {
-	/* As derived from Bash's bc application */
-	private static final String DEFAULT_ERROR = "0";
-	private static final int RANDOM_LENGTH = 10000;
+import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
+import sg.edu.nus.comp.cs4218.exception.BcException;
+import sg.edu.nus.comp.cs4218.exception.ShellException;
+import sg.edu.nus.comp.cs4218.impl.ShellImpl;
 
-	private BcApplication testBc;
-	private String mockNumberLeft;
-	private String mockNumberRight;
+public class BcApplicationTest {
+	private BcApplication bcApp;
+	private OutputStream outStream;
+	public final static String NEW_LINE = System.lineSeparator();
 
 	@Before
-	public void setUp() {
-		Random random = new Random();
-		testBc = new BcApplication();
-		mockNumberLeft = Float.toString(random.nextFloat());
-		mockNumberRight = Integer.toString(random.nextInt(RANDOM_LENGTH) + 1);
+	public void setUp() throws Exception {
+		bcApp = new BcApplication();
+		outStream = new ByteArrayOutputStream();
 	}
 
-	/**
-	 * Tests whether the app can parse a randomized natural number expression.
-	 *
-	 * @throws Exception
-	 */
-	@Test
-	public void testNaturalNumber() throws Exception {
-		String result = testBc.number(new String[] { mockNumberRight });
-		assertTrue(mockNumberRight.equals(result));
+	@After
+	public void tearDown() throws Exception {
+		outStream.close();
 	}
 
-	/**
-	 * Tests whether the app can parse a randomized floating number expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testFloatNumber() throws Exception {
-		String result = testBc.number(new String[] { mockNumberLeft });
-		assertTrue(mockNumberLeft.equals(result));
+	public void testRunAddition() throws BcException {
+		String[] args = { "1+2" };
+		bcApp.run(args, null, outStream);
+		String expected = "3" + NEW_LINE;
+		assertEquals(expected, outStream.toString());
 	}
 
-	/**
-	 * Tests whether the app can handle invalid number expressions and return
-	 * expected invalid output of 0.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testInvalidNumber() throws Exception {
-		String mockFalseNumber = "999,999";
-		String result = testBc.number(new String[] { mockFalseNumber });
-		assertTrue(DEFAULT_ERROR.equals(result));
+	public void testRunUnnestedBrackets() throws BcException {
+		String[] args = { "1+(2+3)" };
+		bcApp.run(args, null, outStream);
+		String expected = "6" + NEW_LINE;
+		assertEquals(expected, outStream.toString());
 	}
 
-	/**
-	 * Tests whether the app can handle a negation expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testNegate() throws Exception {
-		String unaryOpr = "-";
-		String result = testBc.negate(new String[] { unaryOpr, mockNumberLeft });
-		assertTrue((unaryOpr + mockNumberLeft).equals(result));
+	public void testRunNestedBrackets() throws BcException {
+		String[] args = { "5*(1+(2+3))" };
+		bcApp.run(args, null, outStream);
+		String expected = "30" + NEW_LINE;
+		assertEquals(expected, outStream.toString());
 	}
 
-	/**
-	 * Tests whether the app can handle a addition expression.
-	 *
-	 * @throws Exception
-	 */
-	@Test
-	public void testAdd() throws Exception {
-		String binOpr = "+";
-		String expectedResult = Float.toString(Float.parseFloat(mockNumberLeft) + Integer.parseInt(mockNumberRight));
-		String result = testBc.add(new String[] { mockNumberLeft, binOpr, mockNumberRight });
-		assertTrue(expectedResult.equals(result));
+	@Test(expected = BcException.class)
+	public void testRunInvalidExpressions() throws BcException {
+		String[] args = { "4*(5/(3+2)" };
+		bcApp.run(args, null, outStream);
+
 	}
 
-	/**
-	 * Tests whether the app can handle a subtraction expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testSubtract() throws Exception {
-		String binOpr = "-";
-		String expectedResult = Float.toString(Float.parseFloat(mockNumberLeft) - Integer.parseInt(mockNumberRight));
-		String result = testBc.subtract(new String[] { mockNumberLeft, binOpr, mockNumberRight });
-		assertTrue(expectedResult.equals(result));
+	public void testFloatNumber() {
+		String[] args = { "1.285613898" };
+		String result = bcApp.number(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
 	}
 
-	/**
-	 * Tests whether the app can handle a multiplication expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testMultiply() throws Exception {
-		String binOpr = "*";
-		String expectedResult = Float.toString(Float.parseFloat(mockNumberLeft) * Integer.parseInt(mockNumberRight));
-		String result = testBc.multiply(new String[] { mockNumberLeft, binOpr, mockNumberRight });
-		assertTrue(expectedResult.equals(result));
+	public void testNumber() {
+		String[] args = { "10000" };
+		String result = bcApp.number(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
 	}
 
-	/**
-	 * Tests whether the app can handle a division expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testDivide() throws Exception {
-		String binOpr = "/";
-		String expectedResult = Float.toString(Float.parseFloat(mockNumberLeft) / Integer.parseInt(mockNumberRight));
-		String result = testBc.divide(new String[] { mockNumberLeft, binOpr, mockNumberRight });
-		assertTrue(expectedResult.equals(result));
+	public void testString() {
+		String[] args = { "abc" };
+		String result = bcApp.number(args);
+		String expected = "0";
+
+		assertEquals(expected, result);
 	}
 
-	/**
-	 * Tests whether the app can handle a power expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testPow() throws Exception {
-		String binOpr = "^";
-		String expectedResult = Double
-				.toString(Math.pow(Float.parseFloat(mockNumberLeft), Integer.parseInt(mockNumberRight)));
-		String result = testBc.pow(new String[] { mockNumberLeft, binOpr, mockNumberRight });
-		assertTrue(expectedResult.equals(result));
+	public void testNegatePositive() {
+		String[] args = { "1234" };
+		String result = bcApp.negate(args);
+		String expected = "-1234";
+
+		assertEquals(expected, result);
 	}
 
-	/**
-	 * Tests whether the app can handle a bracketed expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testBracket() throws Exception {
-		String bracketOpen = "(";
-		String bracketClose = ")";
-		String result = testBc.bracket(new String[] { bracketOpen, mockNumberRight, bracketClose });
-		assertTrue(mockNumberRight.equals(result));
+	public void testNegateNegative() {
+		String[] args = { "-1235" };
+		String result = bcApp.negate(args);
+		String expected = "1235";
+
+		assertEquals(expected, result);
 	}
 
-	/**
-	 * Tests whether the app can handle a greater than expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testGreaterThan() throws Exception {
-		String binOpr = ">";
-		String expectedResult = Float.parseFloat(mockNumberLeft) > Integer.parseInt(mockNumberRight) ? "1" : "0";
-		String result = testBc.greaterThan(new String[] { mockNumberLeft, binOpr, mockNumberRight });
-		assertTrue(expectedResult.equals(result));
+	public void testAdd() {
+		String[] args = { "1+2" };
+		String result = bcApp.add(args);
+		String expected = "3";
+
+		assertEquals(expected, result);
 	}
 
-	/**
-	 * Tests whether the app can handle a greater than or equal expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testGreaterThanOrEqual() throws Exception {
-		String binOpr = ">=";
-		String expectedResult = Float.parseFloat(mockNumberLeft) >= Integer.parseInt(mockNumberRight) ? "1" : "0";
-		String result = testBc.greaterThanOrEqual(new String[] { mockNumberLeft, binOpr, mockNumberRight });
-		assertTrue(expectedResult.equals(result));
+	public void testSubtract() {
+		String[] args = { "1-12" };
+		String result = bcApp.subtract(args);
+		String expected = "-11";
+
+		assertEquals(expected, result);
 	}
 
-	/**
-	 * Tests whether the app can handle a less than expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testLessThan() throws Exception {
-		String binOpr = "<";
-		String expectedResult = Float.parseFloat(mockNumberLeft) < Integer.parseInt(mockNumberRight) ? "1" : "0";
-		String result = testBc.lessThan(new String[] { mockNumberLeft, binOpr, mockNumberRight });
-		assertTrue(expectedResult.equals(result));
+	public void testMultiply() {
+		String[] args = { "1*22.2" };
+		String result = bcApp.multiply(args);
+		String expected = "22.2";
+
+		assertEquals(expected, result);
 	}
 
-	/**
-	 * Tests whether the app can handle a less than or equal expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testLessThanOrEqual() throws Exception {
-		String binOpr = "<=";
-		String expectedResult = Float.parseFloat(mockNumberLeft) <= Integer.parseInt(mockNumberRight) ? "1" : "0";
-		String result = testBc.lessThanOrEqual(new String[] { mockNumberLeft, binOpr, mockNumberRight });
-		assertTrue(expectedResult.equals(result));
+	public void testDivide() {
+		String[] args = { "53/52" };
+		String result = bcApp.divide(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
 	}
 
-	/**
-	 * Tests whether the app can handle an equal comparison expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testEqualEqual() throws Exception {
-		String binOpr = "==";
-		String expectedResult = Float.parseFloat(mockNumberLeft) == Integer.parseInt(mockNumberRight) ? "1" : "0";
-		String result = testBc.equalEqual(new String[] { mockNumberLeft, binOpr, mockNumberRight });
-		assertTrue(expectedResult.equals(result));
+	public void testPow() {
+		String[] args = { "3.3^3" };
+		String result = bcApp.pow(args);
+		String expected = "35.9";
+		System.out.println("--- " + result);
+		assertEquals(expected, result);
 	}
 
-	/**
-	 * Tests whether the app can handle a not equal comparison expression.
-	 * 
-	 * @throws Exception
-	 */
 	@Test
-	public void testNotEqual() throws Exception {
-		String binOpr = "!=";
-		String expectedResult = Float.parseFloat(mockNumberLeft) == Integer.parseInt(mockNumberRight) ? "0" : "1";
-		String result = testBc.notEqual(new String[] { mockNumberLeft, binOpr, mockNumberRight });
-		assertTrue(expectedResult.equals(result));
+	public void testBracket() {
+		String[] args = { "(1)" };
+		String result = bcApp.bracket(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
 	}
 
-	/**
-	 * Tests whether the app can handle an AND logical expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testAnd() throws Exception {
-		String binOpr = "&&";
-		String expectedResult = (Float.parseFloat(mockNumberLeft) == 0) || (Integer.parseInt(mockNumberRight) == 0)
-				? "0" : "1";
-		String result = testBc.and(new String[] { mockNumberLeft, binOpr, mockNumberRight });
-		assertTrue(expectedResult.equals(result));
+	public void testGreaterThanTrue() {
+		String[] args = { "2 > 1" };
+		String result = bcApp.greaterThan(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
 	}
 
-	/**
-	 * Tests whether the app can handle an OR logical expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testOr() throws Exception {
-		String binOpr = "||";
-		String expectedResult = (Float.parseFloat(mockNumberLeft) == 0) && (Integer.parseInt(mockNumberRight) == 0)
-				? "0" : "1";
-		String result = testBc.or(new String[] { mockNumberLeft, binOpr, mockNumberRight });
-		assertTrue(expectedResult.equals(result));
+	public void testGreaterThanTFalse() {
+		String[] args = { "1  > 2" };
+		String result = bcApp.greaterThan(args);
+		String expected = "0";
+
+		assertEquals(expected, result);
 	}
 
-	/**
-	 * Tests whether the app can handle a NOT logical expression.
-	 *
-	 * @throws Exception
-	 */
 	@Test
-	public void testNot() throws Exception {
-		String unaryOpr = "!";
-		String expectedResult = Integer.parseInt(mockNumberRight) == 0 ? "1" : "0";
-		String result = testBc.not(new String[] { unaryOpr, mockNumberRight });
-		assertTrue(expectedResult.equals(result));
+	public void testGreaterThanOrEqualTrue1() {
+		String[] args = { "2 >= 1" };
+		String result = bcApp.greaterThanOrEqual(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testGreaterThanOrEqualTrue2() {
+		String[] args = { "1 >= 1" };
+		String result = bcApp.greaterThanOrEqual(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testGreaterThanOrEqualFalse() {
+		String[] args = { "1 >= 222" };
+		String result = bcApp.greaterThanOrEqual(args);
+		String expected = "0";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testLessThanTrue() {
+		String[] args = { "1 < 142" };
+		String result = bcApp.lessThan(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testLessThanFalse() {
+		String[] args = { "2 < 1" };
+		String result = bcApp.lessThan(args);
+		String expected = "0";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testLessThanOrEqualTrue1() {
+		String[] args = { "1 <= 42" };
+		String result = bcApp.lessThanOrEqual(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testLessThanOrEqualTrue2() {
+		String[] args = { "1 <= 1" };
+		String result = bcApp.lessThanOrEqual(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testLessThanOrEqualFalse() {
+		String[] args = { "2 <= 1" };
+		String result = bcApp.lessThanOrEqual(args);
+		String expected = "0";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testEqualEqualTrue() {
+		String[] args = { "2 == 2" };
+		String result = bcApp.equalEqual(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testEqualEqualFalse() {
+		String[] args = { "1 == 2" };
+		String result = bcApp.equalEqual(args);
+		String expected = "0";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testNotEqualTrue() {
+		String[] args = { "1 != 2=" };
+		String result = bcApp.notEqual(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testNotEqualFalse() {
+		String[] args = { "2 != 2" };
+		String result = bcApp.notEqual(args);
+		String expected = "0";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testAndTT() {
+		String[] args = { "123&&123" };
+		String result = bcApp.and(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testAndTF() {
+		String[] args = { "123 && 0" };
+		String result = bcApp.and(args);
+		String expected = "0";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testAndFT() {
+		String[] args = { "0&&123" };
+		String result = bcApp.and(args);
+		String expected = "0";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testAndFF() {
+		String[] args = { "0 && 0" };
+		String result = bcApp.and(args);
+		String expected = "0";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testOrTT() {
+		String[] args = { "12356 || 12356" };
+		String result = bcApp.orMethod(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testOrTF() {
+		String[] args = { "123 || 0" };
+		String result = bcApp.orMethod(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testOrFT() {
+		String[] args = { "0 || 123" };
+		String result = bcApp.orMethod(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testOrFF() {
+		String[] args = { "0 || 0" };
+		String result = bcApp.orMethod(args);
+		String expected = "0";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testNotF() {
+		String[] args = { "!0" };
+		String result = bcApp.not(args);
+		String expected = "1";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testNotT() {
+		String[] args = { "!123" };
+		String result = bcApp.not(args);
+		String expected = "0";
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testFromShell() throws AbstractApplicationException,
+			ShellException {
+		String temp = "bc \"5==5\" ";
+		String expected = "1" + NEW_LINE;
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		ShellImpl shell = new ShellImpl();
+		shell.parseAndEvaluate(temp, stdout);
+		assertEquals(expected, stdout.toString());
+	}
+
+	@Test
+	public void testFromShell2() throws AbstractApplicationException,
+			ShellException {
+		String temp = "echo \"5 < 2\" | bc";
+		String expected = "0" + NEW_LINE;
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		ShellImpl shell = new ShellImpl();
+		shell.parseAndEvaluate(temp, stdout);
+		assertEquals(expected, stdout.toString());
 	}
 }

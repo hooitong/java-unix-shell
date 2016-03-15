@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.app.Comm;
 import sg.edu.nus.comp.cs4218.exception.CommException;
+import sg.edu.nus.comp.cs4218.exception.SortException;
 import sg.edu.nus.comp.cs4218.misc.LineComparison;
 
 public class CommApplication implements Comm {
@@ -337,6 +338,9 @@ public class CommApplication implements Comm {
 	}
 
 	private void stdoutString(OutputStream stdout, String resultStr) throws CommException {
+		if (stdout == null) {
+			throw new CommException("stdout is not present");
+		}
 		try {
 			stdout.write(resultStr.getBytes(CHARSET_UTF_8));
 		} catch (IOException e) {

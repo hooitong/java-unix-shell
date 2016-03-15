@@ -13,6 +13,7 @@ import java.util.Vector;
 import sg.edu.nus.comp.cs4218.app.Bc;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.BcException;
+import sg.edu.nus.comp.cs4218.exception.CommException;
 import sg.edu.nus.comp.cs4218.exception.SortException;
 import sg.edu.nus.comp.cs4218.misc.ExpressionEvaluator;
 import sg.edu.nus.comp.cs4218.misc.SignChecker;
@@ -161,6 +162,9 @@ public class BcApplication implements Bc {
 	 */
 	private void stdoutSortedArray(OutputStream stdout, String finalResult)
 			throws BcException {
+		if (stdout == null) {
+			throw new BcException("stdout is not present");
+		}
 
 		try {
 			stdout.write(finalResult.getBytes(CHARSET_UTF_8));
