@@ -67,7 +67,6 @@ public class CommApplicationTest {
 	@Test
 	public void testCommBothMathches() {
 		String actualResult = caTest.commBothMathches(args);
-		System.out.println(bothMatchResult);
 		assertEquals(bothMatchResult, actualResult);
 	}
 

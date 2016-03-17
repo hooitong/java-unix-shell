@@ -29,6 +29,13 @@ public final class SignChecker {
 	private SignChecker() {
 	}
 
+	/**
+	 * This method checks if a string is either an integer or a float
+	 * 
+	 * @param input
+	 *            input string
+	 * @return boolean True if it is an integer/float else false
+	 */
 	public static boolean isNumeric(String input) {
 		boolean result = true;
 		if (input.contains(DOT)) {
@@ -48,16 +55,14 @@ public final class SignChecker {
 		return result;
 	}
 
-	public static boolean isAlphabet(String input) {
-		boolean result = true;
-		for (int i = 0; i < input.length(); i++) {
-			if (!Character.isAlphabetic(input.charAt(i))) {
-				result = false;
-			}
-		}
-		return result;
-	}
-
+	/**
+	 * This method performs the negation of an expression.
+	 * 
+	 * @param input
+	 *            input string
+	 * @return string
+	 * 
+	 */
 	public static String negation(String input) {
 		StringBuilder stringBuilder = new StringBuilder("");
 		if (input.charAt(ZERO) == MINUS) {
@@ -68,6 +73,14 @@ public final class SignChecker {
 		return stringBuilder.toString();
 	}
 
+	/**
+	 * This method checks if a character is an operator of the following without
+	 * quotes " + - / ^ "
+	 * 
+	 * @param currChar
+	 *            input character
+	 * @return boolean
+	 */
 	public static boolean isOperator(char currChar) {
 		boolean result = false;
 		if (currChar == PLUS || currChar == MINUS || currChar == DIVIDE
@@ -77,6 +90,14 @@ public final class SignChecker {
 		return result;
 	}
 
+	/**
+	 * This method checks if the input character is part of a
+	 * relational/conditional character. It is defined as one of the following
+	 * without quotes "< > ? ! ="
+	 * 
+	 * @param currChar
+	 * @return
+	 */
 	public static boolean isRelationCondtional(char currChar) {
 		boolean result = false;
 		if (currChar == LESS || currChar == GREATER || currChar == EQUAL

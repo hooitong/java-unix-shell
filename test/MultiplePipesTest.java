@@ -120,5 +120,17 @@ public class MultiplePipesTest {
 //		assertEquals(expected, stdout.toString());
 //	}
 	
+	@Test
+	public void testPipeSortTailFmt() throws AbstractApplicationException,
+			ShellException {
+		String cmd = "sort " + FOLDER_LOCATION + "sort1.txt " + FOLDER_LOCATION
+				+ "sort2.txt " + FOLDER_LOCATION + "sort3.txt > abbbbb.txt";
+		System.out.println(cmd);
+		shell.parseAndEvaluate(cmd, stdout);
+		String expected = "muse science yawn";
+		System.out.println(stdout.toString());
+		assertEquals(expected, stdout.toString());
+	}
+	
 
 }

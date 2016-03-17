@@ -28,6 +28,7 @@ public class LineComparison {
 	public ArrayList<ArrayList<String>> compareLines() {
 		int indexLineFile1 = 0;
 		int indexLineFile2 = 0;
+		MergeSort mergeSort = new MergeSort(false);
 		ArrayList<ArrayList<String>> mainAl = new ArrayList<ArrayList<String>>();
 		mainAl.add(new ArrayList<String>());
 		mainAl.add(new ArrayList<String>());
@@ -51,7 +52,7 @@ public class LineComparison {
 				mainAl.get(COL_TWO).add(TAB_LINE);
 				indexLineFile1++;
 			} else {// compare lines that are not empty
-				result = lineA.compareTo(lineB);
+				result = mergeSort.customCompare(lineA, lineB);
 				if (result == ZERO) {
 					mainAl.get(COL_ZERO).add(TAB_LINE);
 					mainAl.get(COL_ONE).add(TAB_LINE);
