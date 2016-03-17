@@ -182,8 +182,12 @@ public class MergeSort {
 	}
 
 	/**
+	 * This method attempts to compare the first Number word of both strings
+	 * 
 	 * @param str1
+	 *            first input string
 	 * @param str2
+	 *            second input string
 	 * @return int
 	 */
 	private int checkOnlyAtFirstNumWord(String str1, String str2) {
@@ -196,44 +200,66 @@ public class MergeSort {
 			if (assumedNumStr1.compareTo(assumedNumStr2) == 0) {
 				return customCompare(str1, str2);
 			} else {
-				return Integer.parseInt(assumedNumStr1) - Integer.parseInt(assumedNumStr2);
+				return Integer.parseInt(assumedNumStr1)
+						- Integer.parseInt(assumedNumStr2);
 			}
 		} else {
 			return customCompare(str1, str2);
 		}
 	}
-	public int customCompare(String str1, String str2){
-		int shortLength = str1.length() >= str2.length() ?str2.length():str1.length();
-		int result = str1.length() < str2.length()?-1:1;
-		if(str1.equals(str2)){
+
+	/**
+	 * This method compares both string character by character based on its
+	 * precedence
+	 * 
+	 * @param str1
+	 * @param str2
+	 * @return int which indicates if a particular string should appear before
+	 *         or after the other
+	 * 
+	 */
+	public int customCompare(String str1, String str2) {
+		int shortLength = str1.length() >= str2.length() ? str2.length() : str1
+				.length();
+		int result = str1.length() < str2.length() ? -1 : 1;
+		if (str1.equals(str2)) {
 			return 0;
 		}
 		for (int i = 0; i < shortLength; i++) {
-			if(getRank(str1.charAt(i)) < getRank(str2.charAt(i))){
+			if (getRank(str1.charAt(i)) < getRank(str2.charAt(i))) {
 				return 1;
-			}else if(getRank(str1.charAt(i)) > getRank(str2.charAt(i))){
+			} else if (getRank(str1.charAt(i)) > getRank(str2.charAt(i))) {
 				return -1;
-			}else{
-				 if((int)str1.charAt(i) - (int) str2.charAt(i) == 0){
-					 continue;
-				 }else{
-					return (int)str1.charAt(i) - (int) str2.charAt(i); 
-				 }
+			} else {
+				if ((int) str1.charAt(i) - (int) str2.charAt(i) == 0) {
+					continue;
+				} else {
+					return (int) str1.charAt(i) - (int) str2.charAt(i);
+				}
 			}
 		}
 		return result;
 	}
-	public int getRank(char currChar){
+
+	/**
+	 * This methods identify the precedence/ rank of a character. Precedence
+	 * goes in this order Special -> Digit -> Capital -> Lower
+	 * 
+	 * @param currChar
+	 *            input character
+	 * @return int rank number
+	 */
+	public int getRank(char currChar) {
 		int asciiNum = (int) currChar;
 		int result = -1;
-		if(asciiNum >= CAPITAL_START && asciiNum <= CAPITAL_END){
+		if (asciiNum >= CAPITAL_START && asciiNum <= CAPITAL_END) {
 			result = 2;
-		}else if(asciiNum >= LOWER_START && asciiNum <= LOWER_END){
+		} else if (asciiNum >= LOWER_START && asciiNum <= LOWER_END) {
 			result = 1;
-		}else if(asciiNum >= DIGIT_START && asciiNum <= DIGIT_END){
+		} else if (asciiNum >= DIGIT_START && asciiNum <= DIGIT_END) {
 			result = 3;
-		}else{
-			result = 4;//special characters
+		} else {
+			result = 4;// special characters
 		}
 		return result;
 	}

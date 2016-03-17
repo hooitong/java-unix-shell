@@ -207,6 +207,12 @@ public final class SortHelper {
 		return ansList;
 	}
 	
+	/**This method initiates the sort process by calling helper methods to read and sort the input.
+	 * @param args
+	 * @param stdin
+	 * @return
+	 * @throws SortException
+	 */
 	public static String[] sortProcess(String[] args, InputStream stdin)
 			throws SortException {
 		Path currentDir = Paths.get(Environment.currentDirectory);
