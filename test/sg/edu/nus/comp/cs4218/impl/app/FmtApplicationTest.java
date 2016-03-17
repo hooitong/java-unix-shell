@@ -81,10 +81,10 @@ public class FmtApplicationTest {
 
 	@Test
 	public void testTooShortWrapWidth() throws FmtException {
-		exception.expect(FmtException.class);
-		exception.expectMessage("Wrap width too short");
-		int wrapValue = 5;
-		fmtApplication.wrapText("The random String", wrapValue);
+		int wrapValue = 4;
+		String wrappedText = fmtApplication.wrapText("The random string is a cat", wrapValue);
+		String expectedString = "The" + NEW_LINE + "random" + NEW_LINE + "string" + NEW_LINE + "is a" + NEW_LINE + "cat";
+		assertEquals(expectedString, wrappedText);
 	}
 
 	@Test

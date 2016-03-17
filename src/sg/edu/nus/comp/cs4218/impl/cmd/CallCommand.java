@@ -55,7 +55,17 @@ public class CallCommand implements Command {
 	public CallCommand() {
 		this("");
 	}
-
+	/**
+	 * Getter function for inputStreamS
+	 * 
+	 * @return inputStreamS
+	 *            
+	 */
+	public String getInputStreamS()
+	{
+		return inputStreamS;
+	}
+	
 	/**
 	 * Evaluates sub-command using data provided through stdin stream. Writes
 	 * result to stdout stream.
@@ -241,7 +251,7 @@ public class CallCommand implements Command {
 	 *             When more than one input redirection string is found, or when
 	 *             invalid syntax is encountered..
 	 */
-	int extractInputRedir(String str, Vector<String> cmdVector, int endIdx) throws ShellException {
+	public int extractInputRedir(String str, Vector<String> cmdVector, int endIdx) throws ShellException {
 		String substring = str.substring(endIdx);
 		String strTrm = substring.trim();
 		if (strTrm.startsWith(">") || strTrm.isEmpty()) {
@@ -296,7 +306,7 @@ public class CallCommand implements Command {
 	 *             When more than one input redirection string is found, or when
 	 *             invalid syntax is encountered..
 	 */
-	int extractOutputRedir(String str, Vector<String> cmdVector, int endIdx) throws ShellException {
+	public int extractOutputRedir(String str, Vector<String> cmdVector, int endIdx) throws ShellException {
 		String substring = str.substring(endIdx);
 		String strTrm = substring.trim();
 		if (strTrm.isEmpty()) {

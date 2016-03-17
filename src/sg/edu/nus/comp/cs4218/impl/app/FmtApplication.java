@@ -123,7 +123,8 @@ public class FmtApplication implements Application {
 			String trimmedString = strArray[count].trim();
 			if (tempLine.length() == 0) {
 				if (wrapWidth < trimmedString.length()) {
-					throw new FmtException("Wrap width too short");
+					wrappedString = wrappedString.concat(NEW_LINE + trimmedString);
+					++count;
 				} else {
 					tempLine = tempLine.concat(trimmedString);
 					++count;
@@ -132,7 +133,7 @@ public class FmtApplication implements Application {
 					}
 				}
 			} else {
-				if ((tempLine.length() + strArray[count].trim().length() + 1) < wrapWidth) {
+				if ((tempLine.length() + strArray[count].trim().length() + 1) <= wrapWidth) {
 					tempLine = tempLine.concat(" " + strArray[count].trim());
 					++count;
 				} else {
