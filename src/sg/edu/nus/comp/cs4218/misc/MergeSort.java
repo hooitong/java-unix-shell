@@ -1,5 +1,7 @@
 package sg.edu.nus.comp.cs4218.misc;
 
+import sg.edu.nus.comp.cs4218.exception.SortException;
+
 public class MergeSort {
 	private static final int ZERO = 0;
 	private static final int ONE = 1;
@@ -32,8 +34,15 @@ public class MergeSort {
 	 * @param numFlag
 	 *            set true to enable alphanum ordering
 	 * @return an sorted array
+	 * @throws SortException 
 	 */
-	public String[] mergeSort(String[] toSort, int pos1, int pos2) {
+	public String[] mergeSort(String[] toSort, int pos1, int pos2) throws SortException {
+		if(toSort == null){
+			throw new SortException("Array not found");
+		}
+		if(pos1 < ZERO || pos2 > toSort.length - 1){
+			throw new SortException("Postion cannot be negative or beyond array's size");
+		}
 		int front = pos1;
 		int mid = 0;
 		int back = pos2;

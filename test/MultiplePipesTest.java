@@ -69,68 +69,54 @@ public class MultiplePipesTest {
 	 * assertEquals(expected, stdout.toString()); }
 	 */
 
-	// @Test
-	// public void testPipeHeadFmtTail() throws AbstractApplicationException,
-	// ShellException {
-	// String cmd = "head " + FOLDER_LOCATION
-	// + "sampleOriginal.txt  | fmt -w 4";
-	// System.out.println(cmd);
-	// shell.parseAndEvaluate(cmd, stdout);
-	// String expected = "meaning" + NEW_LINE + "\"innate" + NEW_LINE
-	// + "quality," + NEW_LINE;
-	// // System.out.println(stdout.toString());
-	// assertEquals(expected, stdout.toString());
-	//
-	// }
-	
-	/*
-	 * @Test public void testPipeEchoFmtHead() throws
-	 * AbstractApplicationException, ShellException { String cmd =
-	 * "echo \"Engineering has existed since ancient times as humans devised fundamental inventions such as the wedge, lever, wheel, and pulley.\" | fmt -w 20 | head -n 2"
-	 * ; System.out.println(cmd); shell.parseAndEvaluate(cmd, stdout); String
-	 * expected = "Engineering has" + NEW_LINE + "existed since" + NEW_LINE;
-	 * System.out.println(stdout.toString()); assertEquals(expected,
-	 * stdout.toString()); }
-	 */
-/*
-	@Test
-	public void testPipeCatSortComm() throws AbstractApplicationException,
+//	 @Test
+//	 public void testPipeHeadFmtTail() throws AbstractApplicationException,
+//	 ShellException {
+//	 String cmd = "head " + FOLDER_LOCATION
+//	 + "sampleOriginal.txt  | fmt -w 20 |tail -n 4 ";
+//	 System.out.println(cmd);
+//	 shell.parseAndEvaluate(cmd, stdout);
+//	 String expected = "meaning" + NEW_LINE + "\"innate" + NEW_LINE
+//	 + "quality," + NEW_LINE;
+//	 System.out.println(stdout.toString());
+//	 assertEquals(expected, stdout.toString());
+//	
+//	 }
+
+	/*@Test
+	public void testPipeEchoFmtHead() throws AbstractApplicationException,
 			ShellException {
-		String cmd = "cat " + FOLDER_LOCATION + "comm1.txt " + FOLDER_LOCATION
-				+ "comm2.txt | sort | comm " + FOLDER_LOCATION + "comm3.txt";
+		String cmd = "echo \"Engineering has existed since ancient times as humans devised fundamental inventions such as the wedge, lever, wheel, and pulley.\" | fmt -w 20 | head -n 2";
 		System.out.println(cmd);
 		shell.parseAndEvaluate(cmd, stdout);
-		String expected = TAB + TAB + "apple" + NEW_LINE + TAB + TAB
-				+ "banana" + NEW_LINE + TAB + "banana" + TAB + NEW_LINE
-				+ "eggplant" + TAB + TAB + NEW_LINE + TAB + "zucchini" + TAB;
+		String expected = "Engineering has" + NEW_LINE + "existed since"
+				+ NEW_LINE;
 		System.out.println(stdout.toString());
 		assertEquals(expected, stdout.toString());
 	}*/
-	
-	
-//	@Test
-//	public void testPipeSortTailFmt() throws AbstractApplicationException,
-//			ShellException {
-//		String cmd = "sort " + FOLDER_LOCATION + "sort1.txt " + FOLDER_LOCATION
-//				+ "sort2.txt " + FOLDER_LOCATION + "sort3.txt |tail -n 3| fmt";
-//		System.out.println(cmd);
-//		shell.parseAndEvaluate(cmd, stdout);
-//		String expected = "muse science yawn";
-//		System.out.println(stdout.toString());
-//		assertEquals(expected, stdout.toString());
-//	}
-	
-	@Test
-	public void testPipeSortTailFmt() throws AbstractApplicationException,
-			ShellException {
-		String cmd = "sort " + FOLDER_LOCATION + "sort1.txt " + FOLDER_LOCATION
-				+ "sort2.txt " + FOLDER_LOCATION + "sort3.txt > abbbbb.txt";
-		System.out.println(cmd);
-		shell.parseAndEvaluate(cmd, stdout);
-		String expected = "muse science yawn";
-		System.out.println(stdout.toString());
-		assertEquals(expected, stdout.toString());
-	}
-	
+
+	/*
+	 * @Test public void testPipeCatSortComm() throws
+	 * AbstractApplicationException, ShellException { String cmd = "cat " +
+	 * FOLDER_LOCATION + "comm1.txt " + FOLDER_LOCATION +
+	 * "comm2.txt | sort | comm " + FOLDER_LOCATION + "comm3.txt";
+	 * System.out.println(cmd); shell.parseAndEvaluate(cmd, stdout); String
+	 * expected = TAB + TAB + "apple" + NEW_LINE + TAB + TAB + "banana" +
+	 * NEW_LINE + TAB + "banana" + TAB + NEW_LINE + "eggplant" + TAB + TAB +
+	 * NEW_LINE + TAB + "zucchini" + TAB; System.out.println(stdout.toString());
+	 * assertEquals(expected, stdout.toString()); }
+	 */
+
+	// @Test
+	// public void testPipeSortTailFmt() throws AbstractApplicationException,
+	// ShellException {
+	// String cmd = "sort " + FOLDER_LOCATION + "sort1.txt " + FOLDER_LOCATION
+	// + "sort2.txt " + FOLDER_LOCATION + "sort3.txt |tail -n 3| fmt";
+	// System.out.println(cmd);
+	// shell.parseAndEvaluate(cmd, stdout);
+	// String expected = "muse science yawn";
+	// System.out.println(stdout.toString());
+	// assertEquals(expected, stdout.toString());
+	// }
 
 }
