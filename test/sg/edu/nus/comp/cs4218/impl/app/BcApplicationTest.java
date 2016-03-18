@@ -782,11 +782,11 @@ public class BcApplicationTest {
 	public void testFromShell5() throws AbstractApplicationException,
 			ShellException {
 		String temp = "echo \"2 ^ -5\" | bc";
-		;
 		String expected = "0.03125" + NEW_LINE;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		ShellImpl shell = new ShellImpl();
 		shell.parseAndEvaluate(temp, stdout);
 		assertEquals(expected, stdout.toString());
+
 	}
 }
