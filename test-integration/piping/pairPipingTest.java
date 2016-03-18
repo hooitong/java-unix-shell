@@ -2,18 +2,16 @@ package piping;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
-import sg.edu.nus.comp.cs4218.exception.CalException;
 import sg.edu.nus.comp.cs4218.exception.PipeCommandException;
 import sg.edu.nus.comp.cs4218.impl.ShellImpl;
-import sg.edu.nus.comp.cs4218.impl.cmd.PipeCommand;
 
-import java.io.*;
-import java.nio.channels.Pipe;
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * TODO: Notable Inconsistencies - Line Separator at the end of output or not.
