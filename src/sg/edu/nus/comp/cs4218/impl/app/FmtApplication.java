@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.exception.FmtException;
@@ -220,7 +219,7 @@ public class FmtApplication implements Application {
 			String input = "";
 
 			while ((input = buffReader.readLine()) != null) {
-				concatString = concatString.concat(input);
+				concatString = concatString.concat(input+" ");
 			}
 
 			buffReader.close();
@@ -228,7 +227,7 @@ public class FmtApplication implements Application {
 			throw new FmtException(e);
 		}
 
-		return concatString;
+		return concatString.trim();
 	}
 
 	/**
@@ -253,15 +252,14 @@ public class FmtApplication implements Application {
 			String input = "";
 
 			while ((input = buffReader.readLine()) != null) {
-				concatString = concatString.concat(input);
+				concatString = concatString.concat(input+" ");
 			}
 
 			buffReader.close();
 		} catch (Exception e) {
 			throw new FmtException(e);
 		}
-
-		return concatString;
+		return concatString.trim();
 	}
 
 	/**

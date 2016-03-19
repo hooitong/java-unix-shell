@@ -73,12 +73,13 @@ public class FmtApplicationTest {
 
 	@Test
 	public final void testWrapText() throws FmtException {
-		int wrapValue = 11;
-		String wrappedText = fmtApplication.wrapText("The random String is tall", wrapValue);
-		String expectedString = "The random" + NEW_LINE + "String is" + NEW_LINE + "tall";
-		assertEquals(expectedString, wrappedText);
+		String[] arguments = {"examples/smallSampleLine.txt" };
+		fmtApplication.run(arguments, null, baos);
+		String resultString = new String(baos.toByteArray());
+		String expectedString = "muse science yawn";
+		assertEquals(expectedString, resultString);
 	}
-
+	
 	@Test
 	public void testTooShortWrapWidth() throws FmtException {
 		int wrapValue = 4;
@@ -139,6 +140,7 @@ public class FmtApplicationTest {
 		String resultString = new String(baos.toByteArray());
 		assertEquals("Indulgence announcing uncommonly met she Continuing two unpleasing terminated" + NEW_LINE + "Now nusy busy apir",resultString);
 	}
+	
 	
 	@Test
 	public void testRemovalOfNewLine() throws FmtException {
