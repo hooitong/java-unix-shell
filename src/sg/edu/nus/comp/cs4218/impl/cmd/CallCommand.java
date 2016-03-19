@@ -321,17 +321,20 @@ public class CallCommand implements Command {
 		Matcher inputRedirM;
 		String inputRedirS = "";
 		int cmdVectorIdx = cmdVector.size() - 1;
+		System.out.println("aaa");
 		while (!substring.trim().isEmpty()) {
 
 			inputRedirM = inputRedirP.matcher(substring);
 			inputRedirS = "";
 			if (inputRedirM.find()) {
+				System.out.println("ff");
 				if (!cmdVector.get(cmdVectorIdx).isEmpty()) {
 					throw new ShellException(EXP_SYNTAX);
 				}
 				inputRedirS = inputRedirM.group(1);
 				cmdVector.set(cmdVectorIdx, inputRedirS.replace(String.valueOf((char) 160), " ").trim());
 				newEndIdx = newEndIdx + inputRedirM.end() - 1;
+				System.out.println(newEndIdx);
 			} else {
 				break;
 			}
