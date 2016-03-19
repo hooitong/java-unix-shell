@@ -4,7 +4,7 @@
 	<classpathentry kind="src" path="test-integration"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="D:/download folder/1sch/cs4218/lab/randoop-2.1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/mohamed/Desktop/finalCS/randoop.1.3.4.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

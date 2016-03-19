@@ -115,12 +115,14 @@ public class FmtApplication implements Application {
 			return "";
 		}
 		String stringToWrapM = stringToWrap.replaceAll("(\\r|\\n)", " ");
-		String[] strArray = stringToWrapM.split(" ");
+		String stringToWrapMod = stringToWrapM.replaceAll(" +", " ");
+		String[] strArray = stringToWrapMod.split(" ");
 		String wrappedString = "";
 		int count = 0;
 		String tempLine = "";
 		while (count < strArray.length) {
-			String trimmedString = strArray[count].trim();
+			String trimmedString = strArray[count].replace(String.valueOf((char) 160), " ").trim();
+			
 			if (tempLine.length() == 0) {
 				if (wrapWidth < trimmedString.length()) {
 					wrappedString = wrappedString.concat(NEW_LINE + trimmedString);
@@ -128,13 +130,10 @@ public class FmtApplication implements Application {
 				} else {
 					tempLine = tempLine.concat(trimmedString);
 					++count;
-					if (count == strArray.length) {
-						wrappedString = wrappedString.concat(NEW_LINE + tempLine);
-					}
 				}
 			} else {
-				if ((tempLine.length() + strArray[count].trim().length() + 1) <= wrapWidth) {
-					tempLine = tempLine.concat(" " + strArray[count].trim());
+				if ((tempLine.length() + strArray[count].replace(String.valueOf((char) 160), " ").trim().length() + 1) <= wrapWidth) {
+					tempLine = tempLine.concat(" " + strArray[count].replace(String.valueOf((char) 160), " ").trim());
 					++count;
 				} else {
 					if (wrappedString.isEmpty()) {
@@ -146,6 +145,12 @@ public class FmtApplication implements Application {
 				}
 			}
 		}
+		if (wrappedString.isEmpty()) {
+			wrappedString = wrappedString.concat(tempLine);
+		} else {
+			wrappedString = wrappedString.concat(NEW_LINE + tempLine);
+		}
+		
 		return wrappedString;
 	}
 

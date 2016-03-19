@@ -131,6 +131,24 @@ public class FmtApplicationTest {
 		assertEquals(expectedString, wrappedText);
 	}
 
+
+	@Test
+	public void testDefaultWrapWidth() throws FmtException {
+		String[] arguments = {"examples/smallSample.txt" };
+		fmtApplication.run(arguments, null, baos);
+		String resultString = new String(baos.toByteArray());
+		assertEquals("Indulgence announcing uncommonly met she Continuing two unpleasing terminated" + NEW_LINE + "Now nusy busy apir",resultString);
+	}
+	
+	@Test
+	public void testRemovalOfNewLine() throws FmtException {
+		int wrapValue = 100;
+		String wrappedText = fmtApplication.wrapText(
+				"The" + "\nrandom" + NEW_LINE + "String" + NEW_LINE + "is" + NEW_LINE + "tall", wrapValue);
+		String expectedString = "The random String is tall";
+		assertEquals(expectedString,wrappedText);
+	}
+	
 	@Test
 	public void testReadFromFile() throws FmtException {
 		Path currentDir = Paths.get(Environment.currentDirectory);
@@ -139,7 +157,7 @@ public class FmtApplicationTest {
 		String expectedString = "Selon la préfecture, des engins explosifs avaient été";
 		assertEquals(expectedString, readString);
 	}
-
+	
 	@After
 	public void tearDown() throws Exception {
 		baos = null;
