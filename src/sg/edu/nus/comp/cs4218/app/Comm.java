@@ -11,7 +11,7 @@ public interface Comm extends Application {
 	 * 
 	 * @throws CommException
 	 */
-	public String commNoMatches(String[] args);
+	public String commNoMatches(String... args);
 
 	/**
 	 * Returns string to print comparisons when there are only lines in the
@@ -19,7 +19,7 @@ public interface Comm extends Application {
 	 * 
 	 * @throws CommException
 	 */
-	public String commOnlyFirst(String[] args);
+	public String commOnlyFirst(String... args);
 
 	/**
 	 * Returns string to print comparisons when there are only lines in the
@@ -27,14 +27,14 @@ public interface Comm extends Application {
 	 * 
 	 * @throws CommException
 	 */
-	public String commOnlySecond(String[] args);
+	public String commOnlySecond(String... args);
 
 	/**
 	 * Returns string to print comparisons when some of the lines match
 	 * 
 	 * @throws CommException
 	 */
-	public String commBothMathches(String[] args);
+	public String commBothMathches(String... args);
 
 	/**
 	 * Returns string to print comparisons when there are all matches in both
@@ -42,5 +42,5 @@ public interface Comm extends Application {
 	 * 
 	 * @throws CommException
 	 */
-	public String commAllMatches(String[] args);
+	public String commAllMatches(String... args);
 }
