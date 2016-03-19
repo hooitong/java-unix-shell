@@ -33,14 +33,14 @@ public class CalApplicationExtra {
 		String[] args = {"1", "2010"};
 		try {
 			calApp.run(args, null, outStream);
-			String expected = "January 2010\n"
-					+ "Su Mo Tu We Th Fr Sa\n"
-					+ "                1  2\n"
-					+ " 3  4  5  6  7  8  9\n"
-					+ "10 11 12 13 14 15 16\n"
-					+ "17 18 19 20 21 22 23\n"
-					+ "24 25 26 27 28 29 30\n"
-					+ "31\n";
+			String expected = "    January 2010    " + System.lineSeparator()
+					+ "Su Mo Tu We Th Fr Sa" + System.lineSeparator()
+					+ "                1  2" + System.lineSeparator()
+					+ " 3  4  5  6  7  8  9" + System.lineSeparator()
+					+ "10 11 12 13 14 15 16" + System.lineSeparator()
+					+ "17 18 19 20 21 22 23" + System.lineSeparator()
+					+ "24 25 26 27 28 29 30" + System.lineSeparator()
+					+ "31" + System.lineSeparator();
 			assertEquals(expected, outStream.toString());
 		} catch (CalException e) {
 			throw e;
@@ -55,7 +55,7 @@ public class CalApplicationExtra {
 
 			fail("CalApplication should fail");
 		} catch (CalException e) {
-			assertEquals("cal: Invalid arguments", e.getMessage());
+			assertEquals("cal: Invalid arguments provided.", e.getMessage());
 		} catch (Exception e) {
 			fail("CalApplication should throw CalException");
 		}
@@ -69,7 +69,7 @@ public class CalApplicationExtra {
 
 			fail("CalApplication should fail");
 		} catch (CalException e) {
-			assertEquals("cal: Year should not be <= 0", e.getMessage());
+			assertEquals("cal: Invalid arguments provided.", e.getMessage());
 		} catch (Exception e) {
 			fail("CalApplication should throw CalException");
 		}
@@ -83,7 +83,7 @@ public class CalApplicationExtra {
 
 			fail("CalApplication should fail");
 		} catch (CalException e) {
-			assertEquals("cal: Month should be between 1 - 12", e.getMessage());
+			assertEquals("cal: Invalid arguments provided.", e.getMessage());
 		} catch (Exception e) {
 			fail("CalApplication should throw CalException");
 		}
@@ -97,7 +97,7 @@ public class CalApplicationExtra {
 
 			fail("CalApplication should fail");
 		} catch (CalException e) {
-			assertEquals("cal: Month should be between 1 - 12", e.getMessage());
+			assertEquals("cal: Invalid arguments provided.", e.getMessage());
 		} catch (Exception e) {
 			fail("CalApplication should throw CalException");
 		}
@@ -111,7 +111,7 @@ public class CalApplicationExtra {
 
 			fail("CalApplication should fail");
 		} catch (CalException e) {
-			assertEquals("cal: Invalid arguments", e.getMessage());
+			assertEquals("cal: Invalid arguments provided.", e.getMessage());
 		} catch (Exception e) {
 			fail("CalApplication should throw CalException");
 		}
@@ -123,13 +123,14 @@ public class CalApplicationExtra {
 		String result = calApp.printCal(args);
 		GregorianCalendar gregCal = new GregorianCalendar();
 		String expected = formatCalendarMonthly(getCalendarMonthlyTable(gregCal.get(Calendar.MONTH), gregCal.get(Calendar.YEAR), false));
-
+		System.out.println(expected);
+		System.out.println(result);
 		assertEquals(expected, result);
 	}
 
 	@Test
 	public void testPrintCalWithMondayFirst() {
-		String[] args = {};
+		String[] args = {"-m"};
 		String result = calApp.printCalWithMondayFirst(args);
 		GregorianCalendar gregCal = new GregorianCalendar();
 		String expected = formatCalendarMonthly(getCalendarMonthlyTable(gregCal.get(Calendar.MONTH), gregCal.get(Calendar.YEAR), true));
@@ -141,14 +142,14 @@ public class CalApplicationExtra {
 	public void testPrintCalForMonthYear1() {
 		String[] args = {"1", "2010"};
 		String result = calApp.printCalForMonthYear(args);
-		String expected = "January 2010\n"
-				+ "Su Mo Tu We Th Fr Sa\n"
-				+ "                1  2\n"
-				+ " 3  4  5  6  7  8  9\n"
-				+ "10 11 12 13 14 15 16\n"
-				+ "17 18 19 20 21 22 23\n"
-				+ "24 25 26 27 28 29 30\n"
-				+ "31\n";
+		String expected = "    January 2010    " + System.lineSeparator()
+				+ "Su Mo Tu We Th Fr Sa" + System.lineSeparator()
+				+ "                1  2" + System.lineSeparator()
+				+ " 3  4  5  6  7  8  9" + System.lineSeparator()
+				+ "10 11 12 13 14 15 16" + System.lineSeparator()
+				+ "17 18 19 20 21 22 23" + System.lineSeparator()
+				+ "24 25 26 27 28 29 30" + System.lineSeparator()
+				+ "31" + System.lineSeparator();
 
 		assertEquals(expected, result);
 	}
@@ -157,13 +158,13 @@ public class CalApplicationExtra {
 	public void testPrintCalForMonthYear2() {
 		String[] args = {"7", "2010"};
 		String result = calApp.printCalForMonthYear(args);
-		String expected = "July 2010\n"
-				+ "Su Mo Tu We Th Fr Sa\n"
-				+ "             1  2  3\n"
-				+ " 4  5  6  7  8  9 10\n"
-				+ "11 12 13 14 15 16 17\n"
-				+ "18 19 20 21 22 23 24\n"
-				+ "25 26 27 28 29 30 31\n";
+		String expected = "     July 2010      " + System.lineSeparator()
+				+ "Su Mo Tu We Th Fr Sa" + System.lineSeparator()
+				+ "             1  2  3" + System.lineSeparator()
+				+ " 4  5  6  7  8  9 10" + System.lineSeparator()
+				+ "11 12 13 14 15 16 17" + System.lineSeparator()
+				+ "18 19 20 21 22 23 24" + System.lineSeparator()
+				+ "25 26 27 28 29 30 31" + System.lineSeparator();
 
 		assertEquals(expected, result);
 	}
@@ -172,13 +173,13 @@ public class CalApplicationExtra {
 	public void testPrintCalForMonthYear3() {
 		String[] args = {"12", "2010"};
 		String result = calApp.printCalForMonthYear(args);
-		String expected = "December 2010\n"
-				+ "Su Mo Tu We Th Fr Sa\n"
-				+ "          1  2  3  4\n"
-				+ " 5  6  7  8  9 10 11\n"
-				+ "12 13 14 15 16 17 18\n"
-				+ "19 20 21 22 23 24 25\n"
-				+ "26 27 28 29 30 31\n";
+		String expected = "   December 2010    " + System.lineSeparator()
+				+ "Su Mo Tu We Th Fr Sa" + System.lineSeparator()
+				+ "          1  2  3  4" + System.lineSeparator()
+				+ " 5  6  7  8  9 10 11" + System.lineSeparator()
+				+ "12 13 14 15 16 17 18" + System.lineSeparator()
+				+ "19 20 21 22 23 24 25" + System.lineSeparator()
+				+ "26 27 28 29 30 31"  + System.lineSeparator();
 
 		assertEquals(expected, result);
 	}
@@ -187,13 +188,13 @@ public class CalApplicationExtra {
 	public void testPrintCalForMonthYear4() {
 		String[] args = {"1", "2020"};
 		String result = calApp.printCalForMonthYear(args);
-		String expected = "January 2020\n"
-				+ "Su Mo Tu We Th Fr Sa\n"
-				+ "          1  2  3  4\n"
-				+ " 5  6  7  8  9 10 11\n"
-				+ "12 13 14 15 16 17 18\n"
-				+ "19 20 21 22 23 24 25\n"
-				+ "26 27 28 29 30 31\n";
+		String expected = "    January 2020    " + System.lineSeparator()
+				+ "Su Mo Tu We Th Fr Sa" + System.lineSeparator()
+				+ "          1  2  3  4" + System.lineSeparator()
+				+ " 5  6  7  8  9 10 11" + System.lineSeparator()
+				+ "12 13 14 15 16 17 18" + System.lineSeparator()
+				+ "19 20 21 22 23 24 25" + System.lineSeparator()
+				+ "26 27 28 29 30 31" + System.lineSeparator();
 
 		assertEquals(expected, result);
 	}
@@ -202,13 +203,13 @@ public class CalApplicationExtra {
 	public void testPrintCalForMonthYear5() {
 		String[] args = {"7", "2020"};
 		String result = calApp.printCalForMonthYear(args);
-		String expected = "July 2020\n"
-				+ "Su Mo Tu We Th Fr Sa\n"
-				+ "          1  2  3  4\n"
-				+ " 5  6  7  8  9 10 11\n"
-				+ "12 13 14 15 16 17 18\n"
-				+ "19 20 21 22 23 24 25\n"
-				+ "26 27 28 29 30 31\n";
+		String expected = "     July 2020      " + System.lineSeparator()
+				+ "Su Mo Tu We Th Fr Sa" + System.lineSeparator()
+				+ "          1  2  3  4" + System.lineSeparator()
+				+ " 5  6  7  8  9 10 11" + System.lineSeparator()
+				+ "12 13 14 15 16 17 18" + System.lineSeparator()
+				+ "19 20 21 22 23 24 25" + System.lineSeparator()
+				+ "26 27 28 29 30 31" + System.lineSeparator();
 
 		assertEquals(expected, result);
 	}
@@ -217,103 +218,103 @@ public class CalApplicationExtra {
 	public void testPrintCalForMonthYear6() {
 		String[] args = {"12", "2020"};
 		String result = calApp.printCalForMonthYear(args);
-		String expected = "December 2020\n"
-				+ "Su Mo Tu We Th Fr Sa\n"
-				+ "       1  2  3  4  5\n"
-				+ " 6  7  8  9 10 11 12\n"
-				+ "13 14 15 16 17 18 19\n"
-				+ "20 21 22 23 24 25 26\n"
-				+ "27 28 29 30 31\n";
+		String expected = "   December 2020    " + System.lineSeparator()
+				+ "Su Mo Tu We Th Fr Sa" + System.lineSeparator()
+				+ "       1  2  3  4  5" + System.lineSeparator()
+				+ " 6  7  8  9 10 11 12" + System.lineSeparator()
+				+ "13 14 15 16 17 18 19" + System.lineSeparator()
+				+ "20 21 22 23 24 25 26" + System.lineSeparator()
+				+ "27 28 29 30 31" + System.lineSeparator();
 
 		assertEquals(expected, result);
 	}
 
 	@Test
 	public void testPrintCalForMonthYearMondayFirst1() {
-		String[] args = {"1", "2010"};
+		String[] args = {"-m", "1", "2010"};
 		String result = calApp.printCalForMonthYearMondayFirst(args);
-		String expected = "January 2010\n"
-				+ "Mo Tu We Th Fr Sa Su\n"
-				+ "             1  2  3\n"
-				+ " 4  5  6  7  8  9 10\n"
-				+ "11 12 13 14 15 16 17\n"
-				+ "18 19 20 21 22 23 24\n"
-				+ "25 26 27 28 29 30 31\n";
+		String expected = "    January 2010    " + System.lineSeparator()
+				+ "Mo Tu We Th Fr Sa Su" + System.lineSeparator()
+				+ "             1  2  3" + System.lineSeparator()
+				+ " 4  5  6  7  8  9 10" + System.lineSeparator()
+				+ "11 12 13 14 15 16 17" + System.lineSeparator()
+				+ "18 19 20 21 22 23 24" + System.lineSeparator()
+				+ "25 26 27 28 29 30 31" + System.lineSeparator();
 
 		assertEquals(expected, result);
 	}
 
 	@Test
 	public void testPrintCalForMonthYearMondayFirst2() {
-		String[] args = {"7", "2010"};
+		String[] args = {"-m", "7", "2010"};
 		String result = calApp.printCalForMonthYearMondayFirst(args);
-		String expected = "July 2010\n"
-				+ "Mo Tu We Th Fr Sa Su\n"
-				+ "          1  2  3  4\n"
-				+ " 5  6  7  8  9 10 11\n"
-				+ "12 13 14 15 16 17 18\n"
-				+ "19 20 21 22 23 24 25\n"
-				+ "26 27 28 29 30 31\n";
+		String expected = "     July 2010      " + System.lineSeparator()
+				+ "Mo Tu We Th Fr Sa Su" + System.lineSeparator()
+				+ "          1  2  3  4" + System.lineSeparator()
+				+ " 5  6  7  8  9 10 11" + System.lineSeparator()
+				+ "12 13 14 15 16 17 18" + System.lineSeparator()
+				+ "19 20 21 22 23 24 25" + System.lineSeparator()
+				+ "26 27 28 29 30 31" + System.lineSeparator();
 
 		assertEquals(expected, result);
 	}
 
 	@Test
 	public void testPrintCalForMonthYearMondayFirst3() {
-		String[] args = {"12", "2010"};
+		String[] args = {"-m", "12", "2010"};
 		String result = calApp.printCalForMonthYearMondayFirst(args);
-		String expected = "December 2010\n"
-				+ "Mo Tu We Th Fr Sa Su\n"
-				+ "       1  2  3  4  5\n"
-				+ " 6  7  8  9 10 11 12\n"
-				+ "13 14 15 16 17 18 19\n"
-				+ "20 21 22 23 24 25 26\n"
-				+ "27 28 29 30 31\n";
+		String expected = "   December 2010    " + System.lineSeparator()
+				+ "Mo Tu We Th Fr Sa Su" + System.lineSeparator()
+				+ "       1  2  3  4  5" + System.lineSeparator()
+				+ " 6  7  8  9 10 11 12" + System.lineSeparator()
+				+ "13 14 15 16 17 18 19" + System.lineSeparator()
+				+ "20 21 22 23 24 25 26" + System.lineSeparator()
+				+ "27 28 29 30 31" + System.lineSeparator();
 
 		assertEquals(expected, result);
 	}
 
 	@Test
 	public void testPrintCalForMonthYearMondayFirst4() {
-		String[] args = {"1", "2020"};
+		String[] args = {"-m", "1", "2020"};
 		String result = calApp.printCalForMonthYearMondayFirst(args);
-		String expected = "January 2020\n"
-				+ "Mo Tu We Th Fr Sa Su\n"
-				+ "       1  2  3  4  5\n"
-				+ " 6  7  8  9 10 11 12\n"
-				+ "13 14 15 16 17 18 19\n"
-				+ "20 21 22 23 24 25 26\n"
-				+ "27 28 29 30 31\n";
+		String expected = "    January 2020    " + System.lineSeparator()
+				+ "Mo Tu We Th Fr Sa Su" + System.lineSeparator()
+				+ "       1  2  3  4  5" + System.lineSeparator()
+				+ " 6  7  8  9 10 11 12" + System.lineSeparator()
+				+ "13 14 15 16 17 18 19" + System.lineSeparator()
+				+ "20 21 22 23 24 25 26" + System.lineSeparator()
+				+ "27 28 29 30 31" + System.lineSeparator();
 
 		assertEquals(expected, result);
 	}
 
 	@Test
 	public void testPrintCalForMonthYearMondayFirst5() {
-		String[] args = {"7", "2020"};
+		String[] args = {"-m", "7", "2020"};
 		String result = calApp.printCalForMonthYearMondayFirst(args);
-		String expected = "July 2020\n"
-				+ "Mo Tu We Th Fr Sa Su\n"
-				+ "       1  2  3  4  5\n"
-				+ " 6  7  8  9 10 11 12\n"
-				+ "13 14 15 16 17 18 19\n"
-				+ "20 21 22 23 24 25 26\n"
-				+ "27 28 29 30 31\n";
+		String expected = "     July 2020      " + System.lineSeparator()
+				+ "Mo Tu We Th Fr Sa Su" + System.lineSeparator()
+				+ "       1  2  3  4  5" + System.lineSeparator()
+				+ " 6  7  8  9 10 11 12" + System.lineSeparator()
+				+ "13 14 15 16 17 18 19" + System.lineSeparator()
+				+ "20 21 22 23 24 25 26" + System.lineSeparator()
+				+ "27 28 29 30 31" + System.lineSeparator();
 
 		assertEquals(expected, result);
 	}
 
 	@Test
 	public void testPrintCalForMonthYearMondayFirst6() {
-		String[] args = {"12", "2020"};
+		String[] args = {"-m", "12", "2020"};
 		String result = calApp.printCalForMonthYearMondayFirst(args);
-		String expected = "December 2020\n"
-				+ "Mo Tu We Th Fr Sa Su\n"
-				+ "    1  2  3  4  5  6\n"
-				+ " 7  8  9 10 11 12 13\n"
-				+ "14 15 16 17 18 19 20\n"
-				+ "21 22 23 24 25 26 27\n"
-				+ "28 29 30 31\n";
+		String expected = "   December 2020    " + System.lineSeparator()
+				+ "Mo Tu We Th Fr Sa Su" + System.lineSeparator()
+				+ "    1  2  3  4  5  6" + System.lineSeparator()
+				+ " 7  8  9 10 11 12 13" + System.lineSeparator()
+				+ "14 15 16 17 18 19 20" + System.lineSeparator()
+				+ "21 22 23 24 25 26 27" + System.lineSeparator()
+				+ "28 29 30 31" + System.lineSeparator();
 
 		assertEquals(expected, result);
 	}
@@ -322,76 +323,81 @@ public class CalApplicationExtra {
 	public void testPrintCalForYear() {
 		String[] args = {"2010"};
 		String result = calApp.printCalForYear(args);
-		String expected = "January 2010           February 2010          March 2010          \n"
-				+ "Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa\n"
-				+ "                1  2       1  2  3  4  5  6       1  2  3  4  5  6\n"
-				+ " 3  4  5  6  7  8  9    7  8  9 10 11 12 13    7  8  9 10 11 12 13\n"
-				+ "10 11 12 13 14 15 16   14 15 16 17 18 19 20   14 15 16 17 18 19 20\n"
-				+ "17 18 19 20 21 22 23   21 22 23 24 25 26 27   21 22 23 24 25 26 27\n"
-				+ "24 25 26 27 28 29 30   28                     28 29 30 31         \n"
-				+ "\n"
-				+ "April 2010             May 2010               June 2010           \n"
-				+ "Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa\n"
-				+ "             1  2  3                      1          1  2  3  4  5\n"
-				+ " 4  5  6  7  8  9 10    2  3  4  5  6  7  8    6  7  8  9 10 11 12\n"
-				+ "11 12 13 14 15 16 17    9 10 11 12 13 14 15   13 14 15 16 17 18 19\n"
-				+ "18 19 20 21 22 23 24   16 17 18 19 20 21 22   20 21 22 23 24 25 26\n"
-				+ "25 26 27 28 29 30      23 24 25 26 27 28 29   27 28 29 30         \n"
-				+ "\n"
-				+ "July 2010              August 2010            September 2010      \n"
-				+ "Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa\n"
-				+ "             1  2  3    1  2  3  4  5  6  7             1  2  3  4\n"
-				+ " 4  5  6  7  8  9 10    8  9 10 11 12 13 14    5  6  7  8  9 10 11\n"
-				+ "11 12 13 14 15 16 17   15 16 17 18 19 20 21   12 13 14 15 16 17 18\n"
-				+ "18 19 20 21 22 23 24   22 23 24 25 26 27 28   19 20 21 22 23 24 25\n"
-				+ "25 26 27 28 29 30 31   29 30 31               26 27 28 29 30      \n"
-				+ "\n"
-				+ "October 2010           November 2010          December 2010       \n"
-				+ "Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa\n"
-				+ "                1  2       1  2  3  4  5  6             1  2  3  4\n"
-				+ " 3  4  5  6  7  8  9    7  8  9 10 11 12 13    5  6  7  8  9 10 11\n"
-				+ "10 11 12 13 14 15 16   14 15 16 17 18 19 20   12 13 14 15 16 17 18\n"
-				+ "17 18 19 20 21 22 23   21 22 23 24 25 26 27   19 20 21 22 23 24 25\n"
-				+ "24 25 26 27 28 29 30   28 29 30               26 27 28 29 30 31   \n";
+		String expected = "                              2010                              " + System.lineSeparator()
+				+ "      January               February               March        " + System.lineSeparator()
+				+ "Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa" + System.lineSeparator()
+				+ "                1  2      1  2  3  4  5  6      1  2  3  4  5  6" + System.lineSeparator()
+				+ " 3  4  5  6  7  8  9   7  8  9 10 11 12 13   7  8  9 10 11 12 13" + System.lineSeparator()
+				+ "10 11 12 13 14 15 16  14 15 16 17 18 19 20  14 15 16 17 18 19 20" + System.lineSeparator()
+				+ "17 18 19 20 21 22 23  21 22 23 24 25 26 27  21 22 23 24 25 26 27" + System.lineSeparator()
+				+ "24 25 26 27 28 29 30  28                    28 29 30 31         " + System.lineSeparator()
+				+ "31                                                              " + System.lineSeparator()
+				+ "       April                  May                   June        " + System.lineSeparator()
+				+ "Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa" + System.lineSeparator()
+				+ "             1  2  3                     1         1  2  3  4  5" + System.lineSeparator()
+				+ " 4  5  6  7  8  9 10   2  3  4  5  6  7  8   6  7  8  9 10 11 12" + System.lineSeparator()
+				+ "11 12 13 14 15 16 17   9 10 11 12 13 14 15  13 14 15 16 17 18 19" + System.lineSeparator()
+				+ "18 19 20 21 22 23 24  16 17 18 19 20 21 22  20 21 22 23 24 25 26" + System.lineSeparator()
+				+ "25 26 27 28 29 30     23 24 25 26 27 28 29  27 28 29 30         " + System.lineSeparator()
+				+ "                      30 31                                     " + System.lineSeparator()
+				+ "        July                 August              September      " + System.lineSeparator()
+				+ "Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa" + System.lineSeparator()
+				+ "             1  2  3   1  2  3  4  5  6  7            1  2  3  4" + System.lineSeparator()
+				+ " 4  5  6  7  8  9 10   8  9 10 11 12 13 14   5  6  7  8  9 10 11" + System.lineSeparator()
+				+ "11 12 13 14 15 16 17  15 16 17 18 19 20 21  12 13 14 15 16 17 18" + System.lineSeparator()
+				+ "18 19 20 21 22 23 24  22 23 24 25 26 27 28  19 20 21 22 23 24 25" + System.lineSeparator()
+				+ "25 26 27 28 29 30 31  29 30 31              26 27 28 29 30      " + System.lineSeparator()
+				+ "                                                                " + System.lineSeparator()
+				+ "      October               November              December      " + System.lineSeparator()
+				+ "Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa" + System.lineSeparator()
+				+ "                1  2      1  2  3  4  5  6            1  2  3  4" + System.lineSeparator()
+				+ " 3  4  5  6  7  8  9   7  8  9 10 11 12 13   5  6  7  8  9 10 11" + System.lineSeparator()
+				+ "10 11 12 13 14 15 16  14 15 16 17 18 19 20  12 13 14 15 16 17 18" + System.lineSeparator()
+				+ "17 18 19 20 21 22 23  21 22 23 24 25 26 27  19 20 21 22 23 24 25" + System.lineSeparator()
+				+ "24 25 26 27 28 29 30  28 29 30              26 27 28 29 30 31   " + System.lineSeparator()
+				+ "31                                                              " + System.lineSeparator();
 
 		assertEquals(expected, result);
 	}
 
 	@Test
 	public void testPrintCalForYearMondayFirst() {
-		String[] args = {"2010"};
+		String[] args = {"-m", "2010"};
 		String result = calApp.printCalForYearMondayFirst(args);
-		String expected = "January 2010           February 2010          March 2010          \n"
-				+ "Mo Tu We Th Fr Sa Su   Mo Tu We Th Fr Sa Su   Mo Tu We Th Fr Sa Su\n"
-				+ "             1  2  3    1  2  3  4  5  6  7    1  2  3  4  5  6  7\n"
-				+ " 4  5  6  7  8  9 10    8  9 10 11 12 13 14    8  9 10 11 12 13 14\n"
-				+ "11 12 13 14 15 16 17   15 16 17 18 19 20 21   15 16 17 18 19 20 21\n"
-				+ "18 19 20 21 22 23 24   22 23 24 25 26 27 28   22 23 24 25 26 27 28\n"
-				+ "25 26 27 28 29 30 31                          29 30 31            \n"
-				+ "\n"
-				+ "April 2010             May 2010               June 2010           \n"
-				+ "Mo Tu We Th Fr Sa Su   Mo Tu We Th Fr Sa Su   Mo Tu We Th Fr Sa Su\n"
-				+ "          1  2  3  4                   1  2       1  2  3  4  5  6\n"
-				+ " 5  6  7  8  9 10 11    3  4  5  6  7  8  9    7  8  9 10 11 12 13\n"
-				+ "12 13 14 15 16 17 18   10 11 12 13 14 15 16   14 15 16 17 18 19 20\n"
-				+ "19 20 21 22 23 24 25   17 18 19 20 21 22 23   21 22 23 24 25 26 27\n"
-				+ "26 27 28 29 30         24 25 26 27 28 29 30   28 29 30            \n"
-				+ "\n"
-				+ "July 2010              August 2010            September 2010      \n"
-				+ "Mo Tu We Th Fr Sa Su   Mo Tu We Th Fr Sa Su   Mo Tu We Th Fr Sa Su\n"
-				+ "          1  2  3  4                      1          1  2  3  4  5\n"
-				+ " 5  6  7  8  9 10 11    2  3  4  5  6  7  8    6  7  8  9 10 11 12\n"
-				+ "12 13 14 15 16 17 18    9 10 11 12 13 14 15   13 14 15 16 17 18 19\n"
-				+ "19 20 21 22 23 24 25   16 17 18 19 20 21 22   20 21 22 23 24 25 26\n"
-				+ "26 27 28 29 30 31      23 24 25 26 27 28 29   27 28 29 30         \n"
-				+ "\n"
-				+ "October 2010           November 2010          December 2010       \n"
-				+ "Mo Tu We Th Fr Sa Su   Mo Tu We Th Fr Sa Su   Mo Tu We Th Fr Sa Su\n"
-				+ "             1  2  3    1  2  3  4  5  6  7          1  2  3  4  5\n"
-				+ " 4  5  6  7  8  9 10    8  9 10 11 12 13 14    6  7  8  9 10 11 12\n"
-				+ "11 12 13 14 15 16 17   15 16 17 18 19 20 21   13 14 15 16 17 18 19\n"
-				+ "18 19 20 21 22 23 24   22 23 24 25 26 27 28   20 21 22 23 24 25 26\n"
-				+ "25 26 27 28 29 30 31   29 30                  27 28 29 30 31      \n";
+		String expected = "                              2010                              " + System.lineSeparator()
+				+ "      January               February               March        " + System.lineSeparator()
+				+ "Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su" + System.lineSeparator()
+				+ "                1  2      1  2  3  4  5  6      1  2  3  4  5  6" + System.lineSeparator()
+				+ " 3  4  5  6  7  8  9   7  8  9 10 11 12 13   7  8  9 10 11 12 13" + System.lineSeparator()
+				+ "10 11 12 13 14 15 16  14 15 16 17 18 19 20  14 15 16 17 18 19 20" + System.lineSeparator()
+				+ "17 18 19 20 21 22 23  21 22 23 24 25 26 27  21 22 23 24 25 26 27" + System.lineSeparator()
+				+ "24 25 26 27 28 29 30  28                    28 29 30 31         " + System.lineSeparator()
+				+ "31                                                              " + System.lineSeparator()
+				+ "       April                  May                   June        " + System.lineSeparator()
+				+ "Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su" + System.lineSeparator()
+				+ "             1  2  3                     1         1  2  3  4  5" + System.lineSeparator()
+				+ " 4  5  6  7  8  9 10   2  3  4  5  6  7  8   6  7  8  9 10 11 12" + System.lineSeparator()
+				+ "11 12 13 14 15 16 17   9 10 11 12 13 14 15  13 14 15 16 17 18 19" + System.lineSeparator()
+				+ "18 19 20 21 22 23 24  16 17 18 19 20 21 22  20 21 22 23 24 25 26" + System.lineSeparator()
+				+ "25 26 27 28 29 30     23 24 25 26 27 28 29  27 28 29 30         " + System.lineSeparator()
+				+ "                      30 31                                     " + System.lineSeparator()
+				+ "        July                 August              September      " + System.lineSeparator()
+				+ "Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su" + System.lineSeparator()
+				+ "             1  2  3   1  2  3  4  5  6  7            1  2  3  4" + System.lineSeparator()
+				+ " 4  5  6  7  8  9 10   8  9 10 11 12 13 14   5  6  7  8  9 10 11" + System.lineSeparator()
+				+ "11 12 13 14 15 16 17  15 16 17 18 19 20 21  12 13 14 15 16 17 18" + System.lineSeparator()
+				+ "18 19 20 21 22 23 24  22 23 24 25 26 27 28  19 20 21 22 23 24 25" + System.lineSeparator()
+				+ "25 26 27 28 29 30 31  29 30 31              26 27 28 29 30      " + System.lineSeparator()
+				+ "                                                                " + System.lineSeparator()
+				+ "      October               November              December      " + System.lineSeparator()
+				+ "Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su  Mo Tu We Th Fr Sa Su" + System.lineSeparator()
+				+ "                1  2      1  2  3  4  5  6            1  2  3  4" + System.lineSeparator()
+				+ " 3  4  5  6  7  8  9   7  8  9 10 11 12 13   5  6  7  8  9 10 11" + System.lineSeparator()
+				+ "10 11 12 13 14 15 16  14 15 16 17 18 19 20  12 13 14 15 16 17 18" + System.lineSeparator()
+				+ "17 18 19 20 21 22 23  21 22 23 24 25 26 27  19 20 21 22 23 24 25" + System.lineSeparator()
+				+ "24 25 26 27 28 29 30  28 29 30              26 27 28 29 30 31   " + System.lineSeparator()
+				+ "31                                                              " +  System.lineSeparator();
+
 		assertEquals(expected, result);
 	}
 
@@ -427,7 +433,7 @@ public class CalApplicationExtra {
 					calendarString += " ";
 				}
 			}
-			calendarString += "\n";
+			calendarString += System.lineSeparator();
 		}
 
 		return calendarString;
@@ -437,8 +443,10 @@ public class CalApplicationExtra {
 		ArrayList<String> calendarRow = new ArrayList<String>();
 		ArrayList<ArrayList<String>> calendarTable = new ArrayList<ArrayList<String>>();
 
+		calendarRow.add("    ");
 		calendarRow.add(String.valueOf(MONTHS[currentMonth]));
 		calendarRow.add(String.valueOf(currentYear));
+		calendarRow.add("    ");
 		calendarTable.add(calendarRow);
 
 		calendarRow = new ArrayList<String>();
