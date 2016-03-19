@@ -184,8 +184,9 @@ public final class SortHelper {
 	 * @param resultList
 	 *            rhe input list
 	 * @return List<String> sorted list of string
+	 * @throws SortException 
 	 */
-	public static List<String> sortHelper(List<String> resultList) {
+	public static List<String> sortHelper(List<String> resultList) throws SortException {
 		MergeSort mergeSort = new MergeSort(false);
 		ArrayList<String> ansList = new ArrayList<String>(Arrays.asList(
 				mergeSort.mergeSort(resultList.toArray(new String[resultList.size()]), ZERO, resultList.size() - 1)));
@@ -199,8 +200,9 @@ public final class SortHelper {
 	 * @param resultList
 	 *            rhe input list
 	 * @return List<String> sorted list of string
+	 * @throws SortException 
 	 */
-	public static List<String> sortHelperWithNumFlag(List<String> resultList) {
+	public static List<String> sortHelperWithNumFlag(List<String> resultList) throws SortException {
 		MergeSort mergeSort = new MergeSort(true);
 		ArrayList<String> ansList = new ArrayList<String>(Arrays.asList(
 				mergeSort.mergeSort(resultList.toArray(new String[resultList.size()]), ZERO, resultList.size() - 1)));
