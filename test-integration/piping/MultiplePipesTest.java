@@ -135,7 +135,7 @@ public class MultiplePipesTest {
 		String cmd = "head " + FOLDER_LOCATION
 				+ "sampleOriginal.txt  | fmt -w 40 |tail -n 2";
 		shell.parseAndEvaluate(cmd, stdout);
-		String expected = "innate quality, especially mental" + NEW_LINE
+		String expected = "\"innate quality, especially mental" + NEW_LINE
 				+ "power, hence a clever invention.\"[5]";
 
 		System.out.println(stdout.toString());

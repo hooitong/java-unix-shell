@@ -143,4 +143,12 @@ public class PipeCommandTest {
 		ShellImpl shell = new ShellImpl();
 		shell.parseAndEvaluate(temp, stdout);
 	}
+	
+	@Test(expected = PipeCommandException.class)
+	public void testMissingPipeOperato1r() throws ShellException, AbstractApplicationException {
+		String temp = "   | cal";
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		ShellImpl shell = new ShellImpl();
+		shell.parseAndEvaluate(temp, stdout);
+	}
 }

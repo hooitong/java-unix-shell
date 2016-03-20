@@ -47,9 +47,9 @@ public class PipeCommand implements Command {
 			} else {
 				stringBuilder.append(cmdLine.charAt(i));
 			}
-		}
-		if (stringBuilder.length() != ZERO) {
-			this.argsList.add(stringBuilder.toString().trim());
+			if (i == cmdline.length() - 1) {
+				this.argsList.add(stringBuilder.toString().trim());
+			}
 		}
 	}
 
