@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  * A Shell is a command interpreter and forms the backbone of the entire
  * program. Its responsibility is to interpret commands that the user type and
  * to run programs that the user specify in her command lines.
- * 
+ *
  * <p>
  * <b>Command format:</b>
  * <code>&lt;Pipe&gt; | &lt;Sequence&gt; | &lt;Call&gt;</code>
@@ -48,12 +48,12 @@ public class ShellImpl implements Shell {
 	 * input is returned unchanged. If back quotes are found, the back quotes
 	 * and its enclosed commands substituted with the output from processing the
 	 * commands enclosed in the back quotes.
-	 * 
+	 *
 	 * @param argsArray
 	 *            String array of the individual commands.
-	 * 
+	 *
 	 * @return String array with the back quotes command processed.
-	 * 
+	 *
 	 * @throws AbstractApplicationException
 	 *             If an exception happens while processing the content in the
 	 *             back quotes.
@@ -99,7 +99,7 @@ public class ShellImpl implements Shell {
 	/**
 	 * Static method to run the application as specified by the application
 	 * command keyword and arguments.
-	 * 
+	 *
 	 * @param app
 	 *            String containing the keyword that specifies what application
 	 *            to run.
@@ -111,7 +111,7 @@ public class ShellImpl implements Shell {
 	 *            needed.
 	 * @param outputStream
 	 *            OutputStream for the application to print its output to.
-	 * 
+	 *
 	 * @throws AbstractApplicationException
 	 *             If an exception happens while running any of the
 	 *             application(s).
@@ -150,12 +150,12 @@ public class ShellImpl implements Shell {
 	/**
 	 * Static method to creates an inputStream based on the file name or file
 	 * path.
-	 * 
+	 *
 	 * @param inputStreamS
 	 *            String of file name or file path
-	 * 
+	 *
 	 * @return InputStream of file opened
-	 * 
+	 *
 	 * @throws ShellException
 	 *             If file is not found.
 	 */
@@ -173,12 +173,12 @@ public class ShellImpl implements Shell {
 	/**
 	 * Static method to creates an outputStream based on the file name or file
 	 * path.
-	 * 
+	 *
 	 * @param outputStreamS
 	 *            String of file name or file path.
-	 * 
+	 *
 	 * @return OutputStream of file opened.
-	 * 
+	 *
 	 * @throws ShellException
 	 *             If file destination cannot be opened or inaccessible.
 	 */
@@ -195,10 +195,10 @@ public class ShellImpl implements Shell {
 
 	/**
 	 * Static method to close an inputStream.
-	 * 
+	 *
 	 * @param inputStream
 	 *            InputStream to be closed.
-	 * 
+	 *
 	 * @throws ShellException
 	 *             If inputStream cannot be closed successfully.
 	 */
@@ -215,10 +215,10 @@ public class ShellImpl implements Shell {
 	/**
 	 * Static method to close an outputStream. If outputStream provided is
 	 * System.out, it will be ignored.
-	 * 
+	 *
 	 * @param outputStream
 	 *            OutputStream to be closed.
-	 * 
+	 *
 	 * @throws ShellException
 	 *             If outputStream cannot be closed successfully.
 	 */
@@ -235,7 +235,7 @@ public class ShellImpl implements Shell {
 	/**
 	 * Static method to write output of an outputStream to another outputStream,
 	 * usually System.out.
-	 * 
+	 *
 	 * @param outputStream
 	 *            Source outputStream to get stream from.
 	 * @param stdout
@@ -257,12 +257,12 @@ public class ShellImpl implements Shell {
 	/**
 	 * Static method to pipe data from an outputStream to an inputStream, for
 	 * the evaluation of the Pipe Commands.
-	 * 
+	 *
 	 * @param outputStream
 	 *            Source outputStream to get stream from.
-	 * 
+	 *
 	 * @return InputStream with data piped from the outputStream.
-	 * 
+	 *
 	 * @throws ShellException
 	 *             If exception is thrown during piping.
 	 */
@@ -272,7 +272,7 @@ public class ShellImpl implements Shell {
 
 	/**
 	 * Main method for the Shell Interpreter program.
-	 * 
+	 *
 	 * @param args
 	 *            List of strings arguments, unused.
 	 */
@@ -304,7 +304,7 @@ public class ShellImpl implements Shell {
 
 	/**
 	 * Method to parse the given string command from the user.
-	 * 
+	 *
 	 * @param cmdline
 	 *            The string to parse and execute
 	 * @param stdout
@@ -321,7 +321,7 @@ public class ShellImpl implements Shell {
 
 	/**
 	 * Attempt to pass using grammar syntax and return parent command.
-	 * 
+	 *
 	 * @param cmdline
 	 *            The string to parse into a command
 	 * @return parent command
@@ -351,7 +351,7 @@ public class ShellImpl implements Shell {
 
 	/**
 	 * Evaluate pipe call with two commands
-	 * 
+	 *
 	 * @param args
 	 * @return string the string could return the exception message or the
 	 *         actual result
@@ -363,7 +363,7 @@ public class ShellImpl implements Shell {
 
 	/**
 	 * Evaluate pipe call with more than two commands
-	 * 
+	 *
 	 * @param args
 	 * @return string the string could return the exception message or the
 	 *         actual result
@@ -377,9 +377,9 @@ public class ShellImpl implements Shell {
 	 * Since the interface cannot be modified to throw an exception due to
 	 * project requirements, a string of the error message is returned instead
 	 * when an exception occurs during the execution of one of the commands.
-	 * 
+	 *
 	 * @param args
-	 * 
+	 *
 	 * @return string the string could return an exception message ( "pipe:
 	 *         exception detected for one of the call commands") or the actual
 	 *         result
@@ -391,7 +391,7 @@ public class ShellImpl implements Shell {
 
 	/**
 	 * This methods calls all starts the parsing and evaluate pipe command
-	 * 
+	 *
 	 * @param args
 	 * @return string the string could return the exception message or the
 	 *         actual result

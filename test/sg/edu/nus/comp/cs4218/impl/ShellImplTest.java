@@ -1,8 +1,11 @@
 package sg.edu.nus.comp.cs4218.impl;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.junit.Before;
 import org.junit.Test;
 
 import sg.edu.nus.comp.cs4218.Command;
@@ -12,6 +15,15 @@ import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.SequenceCommand;
 
 public class ShellImplTest {
+	ShellImpl mockShell;
+	ByteArrayOutputStream mockOutput;
+
+	@Before
+	public void setUp() {
+		mockShell = new ShellImpl();
+		mockOutput = new ByteArrayOutputStream();
+	}
+
 	/**
 	 * Test whether the application can handle a valid execution of running an
 	 * application.
@@ -88,5 +100,19 @@ public class ShellImplTest {
 		String cmdline = "test; ";
 		Command mockCommand = ShellImpl.parse(cmdline);
 		fail("Should be throwing exception due to invalid syntax");
+	}
+
+	@Test
+	public void testGlobQuote() throws Exception {
+		String cmdline = "bc '5 * 5'";
+		mockShell.parseAndEvaluate(cmdline, mockOutput);
+		assertEquals("25" + System.lineSeparator(), new String(mockOutput.toByteArray(), "UTF-8"));
+	}
+
+	@Test
+	public void testQuoteDisablePipe() throws Exception {
+		String cmdline = "echo \" | \"";
+		mockShell.parseAndEvaluate(cmdline, mockOutput);
+		assertEquals(" | " + System.lineSeparator(), new String(mockOutput.toByteArray(), "UTF-8"));
 	}
 }
