@@ -97,7 +97,6 @@ public class PipeCommand implements Command {
 
 	public void parse() throws ShellException {
 		for (int i = 0; i < this.argsList.size(); i++) {
-			ShellImpl shell = new ShellImpl();
 			Command command = ShellImpl.parse(this.argsList.get(i));
 			cmdList.add((CallCommand) command);
 		}
