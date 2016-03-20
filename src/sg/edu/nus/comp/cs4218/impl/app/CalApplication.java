@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.util.Calendar;
 
 import sg.edu.nus.comp.cs4218.app.Cal;
-import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.CalException;
 import sg.edu.nus.comp.cs4218.exception.CatException;
 
@@ -527,6 +526,6 @@ public class CalApplication implements Cal {
 	 * @return true if the flag in the first argument is valid
 	 */
 	private boolean validateMonFlag(String[] args) {
-		return args.length > 0 && MON_FLAG.equals(args[0]);
+		return args.length > 0 && MON_FLAG.equals(args[0].trim());
 	}
 }
