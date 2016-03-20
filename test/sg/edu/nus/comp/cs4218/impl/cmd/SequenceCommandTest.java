@@ -58,15 +58,4 @@ public class SequenceCommandTest {
 		SequenceCommand cmd = new SequenceCommand(cmdline);
 		cmd.parse();
 	}
-
-	/**
-	 * Test if method <i>terminate</i> can effectively stop the termination of
-	 * the command execution.
-	 *
-	 * @throws Exception
-	 */
-	@Test
-	public void testTerminate() throws Exception {
-		fail("to be implemented in EF2");
-	}
 }

@@ -1,6 +1,6 @@
 package sg.edu.nus.comp.cs4218.impl.app;
 /***
- * This class is test for Echoapplication
+ * This class is test for EchoApplication
  * Application takes in user input in the argument
  * And add new line after each arg
  * Then present in the output stream.
@@ -23,7 +23,6 @@ public class EchoApplicationTest {
 
 	static EchoApplication eApp;
 	static String[] args;
-	InputStream input;
 	OutputStream output;
 
 	@BeforeClass
@@ -36,7 +35,6 @@ public class EchoApplicationTest {
 	public void testRun() throws EchoException {
 		output = System.out;
 		eApp.run(null, null, output);
-
 	}
 
 	// Case 2: Stdout is null - nowhere to output
@@ -45,43 +43,37 @@ public class EchoApplicationTest {
 		args = new String[1];
 		args[0] = "test";
 		eApp.run(args, null, null);
-
 	}
 
 	// Case 3: Stdout is null - nowhere to output
 	@Test
 	public void testRun3() throws EchoException {
-
 		args = new String[1];
 		args[0] = "test";
 		output = new ByteArrayOutputStream();
 		eApp.run(args, null, output);
-		assertEquals(output.toString(), args[0] + "\n");
-
+		assertEquals(output.toString(), args[0] + System.lineSeparator());
 	}
 
 	// Case 4: empty string in args
 	@Test
 	public void testRun4() throws EchoException {
-
 		args = new String[1];
 		args[0] = "";
 		output = new ByteArrayOutputStream();
 		eApp.run(args, null, output);
-		assertEquals(output.toString(), "\n\n");
+		assertEquals(output.toString(), System.lineSeparator() + System.lineSeparator());
 	}
 
 	// Case 5:
 	// Excepted output: This is a trap.
 	@Test
 	public void testRun5() throws EchoException {
-
 		args = new String[1];
 		args[0] = "This is a trap.";
 		output = new ByteArrayOutputStream();
 		eApp.run(args, null, output);
-		assertEquals(output.toString(), args[0] + "\n");
-
+		assertEquals(output.toString(), args[0] + System.lineSeparator());
 	}
 
 	// Case 6: Proper run of the system
@@ -92,7 +84,7 @@ public class EchoApplicationTest {
 		output = new ByteArrayOutputStream();
 
 		eApp.run(args, null, output);
-		assertEquals(output.toString(), "This is a trap\n");
+		assertEquals(output.toString(), "This is a trap" + System.lineSeparator());
 	}
 
 	@After
