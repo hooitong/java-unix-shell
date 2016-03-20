@@ -34,6 +34,20 @@ public class SequenceCommandTest {
 	}
 
 	/**
+	 * Test if method <i>parse</i> properly throws exception when cmdline with
+	 * sequence command but not complete syntax is given.
+	 *
+	 * @throws Exception
+	 */
+	@Test(expected = ShellException.class)
+	public void testParseInvalidArgsTwo() throws Exception {
+		String cmdline = "; cat abc.txt";
+		SequenceCommand cmd = new SequenceCommand(cmdline);
+		cmd.parse();
+	}
+
+
+	/**
 	 * Test if method <i>parse</i> properly splits arguments of the sequence
 	 * command into two sub-commands.
 	 *
@@ -57,16 +71,5 @@ public class SequenceCommandTest {
 		String cmdline = "grep test/apple/* ; cat abc.txt ; cat tk.test > a.out ";
 		SequenceCommand cmd = new SequenceCommand(cmdline);
 		cmd.parse();
-	}
-
-	/**
-	 * Test if method <i>terminate</i> can effectively stop the termination of
-	 * the command execution.
-	 *
-	 * @throws Exception
-	 */
-	@Test
-	public void testTerminate() throws Exception {
-		fail("to be implemented in EF2");
 	}
 }

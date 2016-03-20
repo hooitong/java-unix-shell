@@ -37,9 +37,9 @@ public class CallCommand implements Command {
 	public static final String EXP_SAME_REDIR = "Input redirection file same as " + "output redirection file.";
 	public static final String EXP_STDOUT = "Error writing to stdout.";
 	public static final String EXP_NOT_SUPPORTED = " not supported yet";
-	public static final String EXP_MULTIPLE_OUTPUT = "Multiple output redirection not supported";
-	public static final String EXP_MULTIPLE_INPUT = "Multiple input redirection not supported";
-	
+	private static final String EXP_MULTIPLE_INPUT = "Multiple input redirection is not supported";
+	private static final String EXP_MULTIPLE_OUTPUT = "Multiple output redirection is not supported";
+
 	String app;
 	String cmdline, inputStreamS, outputStreamS;
 	String[] argsArray;
@@ -92,7 +92,6 @@ public class CallCommand implements Command {
 		OutputStream outputStream;
 
 		argsArray = ShellImpl.processBQ(argsArray);
-		// argsArray = evaluateGlob(argsArray);
 
 		if (("").equals(inputStreamS)) {// empty
 			inputStream = stdin;
@@ -131,7 +130,6 @@ public class CallCommand implements Command {
 			cmdVector.add(""); // reserved for output redir
 			endIdx = extractInputRedir(str, cmdVector, endIdx);
 			endIdx = extractOutputRedir(str, cmdVector, endIdx);
-			// System.out.println(cmdVector.toString());
 		} catch (ShellException e) {
 			result = false;
 		}
@@ -141,11 +139,7 @@ public class CallCommand implements Command {
 			result = false;
 		}
 		if (!result) {
-			this.app = cmdVector.get(0);
-			error = true;
-			if (("").equals(errorMsg)) {
-				errorMsg = ShellImpl.EXP_SYNTAX;
-			}
+			errorMsg = ShellImpl.EXP_SYNTAX;
 			throw new ShellException(errorMsg);
 		}
 
@@ -225,7 +219,11 @@ public class CallCommand implements Command {
 						errorMsg = ShellImpl.EXP_SYNTAX;
 						throw new ShellException(errorMsg);
 					} // check if there's any invalid token not detected
-					cmdVector.add(matchedStr);
+					if (smallestPattIdx == 2 || smallestPattIdx == 3 || !matchedStr.contains("*")) {
+						cmdVector.add(matchedStr);
+					} else {
+						cmdVector.addAll(Arrays.asList(processSingleGlob(matchedStr)));
+					}
 					newEndIdx = newEndIdx + matcher.end() - 1;
 				}
 			}
@@ -331,6 +329,16 @@ public class CallCommand implements Command {
 			if (!cmdVector.get(cmdVectorIdx).isEmpty()) {
 				throw new ShellException(EXP_SYNTAX);
 			}
+			inputRedirM = inputRedirP.matcher(substring);
+			inputRedirS = "";
+			if (inputRedirM.find()) {
+				if (!cmdVector.get(cmdVectorIdx).isEmpty()) {
+					throw new ShellException(EXP_SYNTAX);
+				}
+				inputRedirS = inputRedirM.group(1);
+				cmdVector.set(cmdVectorIdx, inputRedirS.replace(String.valueOf((char) 160), " ").trim());
+				newEndIdx = newEndIdx + inputRedirM.end() - 1;
+			} 
 			inputRedirS = inputRedirM.group(1);
 			cmdVector.set(cmdVectorIdx, inputRedirS.replace(String.valueOf((char) 160), " ").trim());
 			newEndIdx = newEndIdx + inputRedirM.end() - 1;
@@ -357,39 +365,59 @@ public class CallCommand implements Command {
 		for (String arg : args) {
 			Matcher singleMatcher = singleQuote.matcher(arg);
 			Matcher doubleMatcher = doubleQuote.matcher(arg);
-			if (arg.contains("*") && !singleMatcher.find() && !doubleMatcher.find()) {
-				/* Retrieve parent directory before wildcard */
-				int firstWildcard = arg.indexOf('*');
-
-				/* Find separator before this wildcard */
-				int beforeSeperator = arg.substring(0, firstWildcard).lastIndexOf(File.separator);
-
-				/*
-				 * If there is no separators, it means that path to search is
-				 * relative path
-				 */
-				Path parentPath = beforeSeperator == -1 ? Paths.get("") : Paths.get(arg.substring(0, beforeSeperator));
-
-				String pattern = arg.substring(beforeSeperator + 1);
-				GlobFinder finder = new GlobFinder(pattern, parentPath.toAbsolutePath().toString());
-
-				try {
-					Files.walkFileTree(parentPath.toAbsolutePath(), finder);
-				} catch (IOException e) {
-					throw new ShellException(e);
-				}
-
-				List<String> results = finder.getResults();
-
-				if (!results.isEmpty()) {
-					tempList.addAll(results);
-				}
-
+			if(arg.contains("*") && !singleMatcher.find() && !doubleMatcher.find()) {
+				tempList.addAll(Arrays.asList(processSingleGlob(arg)));
 			} else {
-				/* Nothing to glob, no change to the arg */
 				tempList.add(arg);
 			}
 		}
+		return tempList.toArray(new String[tempList.size()]);
+	}
+
+	/**
+	 * This method strictly does not check for quotes and treats all asterisks as special characters. Evaluates globbing
+	 * for a single argumen and replaces wildcards symbol with matched files.
+	 *
+	 * @param arg the argument to glob
+	 * @return a String array contains matched paths
+	 * @throws ShellException
+     */
+	private String[] processSingleGlob(String arg) throws ShellException {
+		List<String> tempList = new ArrayList<>();
+
+		if (arg.contains("*")) {
+			/* Retrieve parent directory before wildcard */
+			int firstWildcard = arg.indexOf('*');
+
+			/* Find separator before this wildcard */
+			int beforeSeperator = arg.substring(0, firstWildcard).lastIndexOf(File.separator);
+
+			/*
+			 * If there is no separators, it means that path to search is
+			 * relative path
+			 */
+			Path parentPath = beforeSeperator == -1 ? Paths.get("") : Paths.get(arg.substring(0, beforeSeperator));
+
+			String pattern = arg.substring(beforeSeperator + 1);
+			GlobFinder finder = new GlobFinder(pattern, parentPath.toAbsolutePath().toString());
+
+			try {
+				Files.walkFileTree(parentPath.toAbsolutePath(), finder);
+			} catch (IOException e) {
+				throw new ShellException(e);
+			}
+
+			List<String> results = finder.getResults();
+
+			if (!results.isEmpty()) {
+				tempList.addAll(results);
+			}
+
+		} else {
+			/* Nothing to glob, no change to the arg */
+			tempList.add(arg);
+		}
+
 		return tempList.toArray(new String[tempList.size()]);
 	}
 

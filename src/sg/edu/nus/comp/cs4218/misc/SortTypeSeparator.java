@@ -7,7 +7,7 @@ public final class SortTypeSeparator {
 	/**
 	 * Counts lower case letters in a string
 	 * 
-	 * @param string
+	 * @param currentLine
 	 *            input line
 	 * @return int count of lower case letters
 	 */
@@ -26,7 +26,7 @@ public final class SortTypeSeparator {
 	/**
 	 * Counts uppercase letters in a string
 	 * 
-	 * @param string
+	 * @param currentLine
 	 *            input line
 	 * @return int count of uppercase leters
 	 */
@@ -45,7 +45,7 @@ public final class SortTypeSeparator {
 	/**
 	 * Get a count of digits present in a string /**
 	 * 
-	 * @param string
+	 * @param currentLine
 	 *            input line
 	 * @return int a count of digits
 	 */

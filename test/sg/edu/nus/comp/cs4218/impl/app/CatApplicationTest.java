@@ -257,7 +257,7 @@ public class CatApplicationTest {
 		args[2] = filePath + TEXT_INPUT2_TXT;
 		output = new ByteArrayOutputStream();
 		cApp.run(args, null, output);
-		assertEquals(output.toString(), expectedOutput3() + "\n" + expectedOutput2());
+		assertEquals(output.toString(), expectedOutput3() + System.lineSeparator() + expectedOutput2());
 
 	}
 

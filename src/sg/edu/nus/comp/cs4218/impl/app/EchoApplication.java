@@ -85,13 +85,13 @@ public class EchoApplication implements Application {
 	private String[] createList(String... args) {
 		int index = 0;
 		String[] cleanList = new String[args.length];
-		cleanList[index] = "\n";
+		cleanList[index] = System.lineSeparator();
 
 		for (int i = 0; i < args.length; i++) {
 			if (args[i] == null) {
 				continue;
 			}
-			String temp = args[i].trim();
+			String temp = args[i];
 			if (temp.isEmpty()) {
 				continue;
 			}

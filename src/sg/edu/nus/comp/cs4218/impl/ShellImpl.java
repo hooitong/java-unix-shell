@@ -1,44 +1,26 @@
 package sg.edu.nus.comp.cs4218.impl;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.app.BcApplication;
-import sg.edu.nus.comp.cs4218.impl.app.CalApplication;
-import sg.edu.nus.comp.cs4218.impl.app.CatApplication;
-import sg.edu.nus.comp.cs4218.impl.app.CommApplication;
-import sg.edu.nus.comp.cs4218.impl.app.DateApplication;
-import sg.edu.nus.comp.cs4218.impl.app.EchoApplication;
-import sg.edu.nus.comp.cs4218.impl.app.FmtApplication;
-import sg.edu.nus.comp.cs4218.impl.app.HeadApplication;
-import sg.edu.nus.comp.cs4218.impl.app.SortApplication;
-import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
+import sg.edu.nus.comp.cs4218.impl.app.*;
 import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.PipeCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.SequenceCommand;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A Shell is a command interpreter and forms the backbone of the entire
  * program. Its responsibility is to interpret commands that the user type and
  * to run programs that the user specify in her command lines.
- * 
+ *
  * <p>
  * <b>Command format:</b>
  * <code>&lt;Pipe&gt; | &lt;Sequence&gt; | &lt;Call&gt;</code>
@@ -66,12 +48,12 @@ public class ShellImpl implements Shell {
 	 * input is returned unchanged. If back quotes are found, the back quotes
 	 * and its enclosed commands substituted with the output from processing the
 	 * commands enclosed in the back quotes.
-	 * 
+	 *
 	 * @param argsArray
 	 *            String array of the individual commands.
-	 * 
+	 *
 	 * @return String array with the back quotes command processed.
-	 * 
+	 *
 	 * @throws AbstractApplicationException
 	 *             If an exception happens while processing the content in the
 	 *             back quotes.
@@ -90,18 +72,21 @@ public class ShellImpl implements Shell {
 
 		for (int i = 0; i < argsArray.length; i++) {
 			Matcher matcherBQ = patternBQp.matcher(argsArray[i]);
+			int a = 0;
+			System.out.println(argsArray[i]);
 			if (matcherBQ.find()) {// found backquoted
 				String bqStr = matcherBQ.group(1);
-				// cmdVector.add(bqStr.trim());
+				//Vector<String> cmdVector = new Vector<String>();
+				//cmdVector.add(bqStr.trim());
 				// process back quote
-				// System.out.println("backquote" + bqStr);
+				System.out.println("backquote" + bqStr + i);
 				OutputStream bqOutputStream = new ByteArrayOutputStream();
 				ShellImpl shell = new ShellImpl();
-				// shell.parseAndEvaluate(bqStr, bqOutputStream);
+				shell.parseAndEvaluate(bqStr, bqOutputStream);
 
 				ByteArrayOutputStream outByte = (ByteArrayOutputStream) bqOutputStream;
 				byte[] byteArray = outByte.toByteArray();
-				String bqResult = new String(byteArray).replace("\n", "").replace("\r", "");
+				String bqResult = new String(byteArray).replace("\n", " ").replace("\r", "");
 
 				// replace substring of back quote with result
 				String replacedStr = argsArray[i].replace("`" + bqStr + "`", bqResult);
@@ -114,7 +99,7 @@ public class ShellImpl implements Shell {
 	/**
 	 * Static method to run the application as specified by the application
 	 * command keyword and arguments.
-	 * 
+	 *
 	 * @param app
 	 *            String containing the keyword that specifies what application
 	 *            to run.
@@ -126,7 +111,7 @@ public class ShellImpl implements Shell {
 	 *            needed.
 	 * @param outputStream
 	 *            OutputStream for the application to print its output to.
-	 * 
+	 *
 	 * @throws AbstractApplicationException
 	 *             If an exception happens while running any of the
 	 *             application(s).
@@ -165,12 +150,12 @@ public class ShellImpl implements Shell {
 	/**
 	 * Static method to creates an inputStream based on the file name or file
 	 * path.
-	 * 
+	 *
 	 * @param inputStreamS
 	 *            String of file name or file path
-	 * 
+	 *
 	 * @return InputStream of file opened
-	 * 
+	 *
 	 * @throws ShellException
 	 *             If file is not found.
 	 */
@@ -188,12 +173,12 @@ public class ShellImpl implements Shell {
 	/**
 	 * Static method to creates an outputStream based on the file name or file
 	 * path.
-	 * 
+	 *
 	 * @param outputStreamS
 	 *            String of file name or file path.
-	 * 
+	 *
 	 * @return OutputStream of file opened.
-	 * 
+	 *
 	 * @throws ShellException
 	 *             If file destination cannot be opened or inaccessible.
 	 */
@@ -210,10 +195,10 @@ public class ShellImpl implements Shell {
 
 	/**
 	 * Static method to close an inputStream.
-	 * 
+	 *
 	 * @param inputStream
 	 *            InputStream to be closed.
-	 * 
+	 *
 	 * @throws ShellException
 	 *             If inputStream cannot be closed successfully.
 	 */
@@ -230,10 +215,10 @@ public class ShellImpl implements Shell {
 	/**
 	 * Static method to close an outputStream. If outputStream provided is
 	 * System.out, it will be ignored.
-	 * 
+	 *
 	 * @param outputStream
 	 *            OutputStream to be closed.
-	 * 
+	 *
 	 * @throws ShellException
 	 *             If outputStream cannot be closed successfully.
 	 */
@@ -250,7 +235,7 @@ public class ShellImpl implements Shell {
 	/**
 	 * Static method to write output of an outputStream to another outputStream,
 	 * usually System.out.
-	 * 
+	 *
 	 * @param outputStream
 	 *            Source outputStream to get stream from.
 	 * @param stdout
@@ -272,12 +257,12 @@ public class ShellImpl implements Shell {
 	/**
 	 * Static method to pipe data from an outputStream to an inputStream, for
 	 * the evaluation of the Pipe Commands.
-	 * 
+	 *
 	 * @param outputStream
 	 *            Source outputStream to get stream from.
-	 * 
+	 *
 	 * @return InputStream with data piped from the outputStream.
-	 * 
+	 *
 	 * @throws ShellException
 	 *             If exception is thrown during piping.
 	 */
@@ -287,7 +272,7 @@ public class ShellImpl implements Shell {
 
 	/**
 	 * Main method for the Shell Interpreter program.
-	 * 
+	 *
 	 * @param args
 	 *            List of strings arguments, unused.
 	 */
@@ -295,7 +280,7 @@ public class ShellImpl implements Shell {
 	public static void main(String... args) {
 		ShellImpl shell = new ShellImpl();
 
-		BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
+		BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
 		String readLine = null;
 		String currentDir;
 
@@ -319,7 +304,7 @@ public class ShellImpl implements Shell {
 
 	/**
 	 * Method to parse the given string command from the user.
-	 * 
+	 *
 	 * @param cmdline
 	 *            The string to parse and execute
 	 * @param stdout
@@ -336,7 +321,7 @@ public class ShellImpl implements Shell {
 
 	/**
 	 * Attempt to pass using grammar syntax and return parent command.
-	 * 
+	 *
 	 * @param cmdline
 	 *            The string to parse into a command
 	 * @return parent command
@@ -366,7 +351,7 @@ public class ShellImpl implements Shell {
 
 	/**
 	 * Evaluate pipe call with two commands
-	 * 
+	 *
 	 * @param args
 	 * @return string the string could return the exception message or the
 	 *         actual result
@@ -378,7 +363,7 @@ public class ShellImpl implements Shell {
 
 	/**
 	 * Evaluate pipe call with more than two commands
-	 * 
+	 *
 	 * @param args
 	 * @return string the string could return the exception message or the
 	 *         actual result
@@ -392,9 +377,9 @@ public class ShellImpl implements Shell {
 	 * Since the interface cannot be modified to throw an exception due to
 	 * project requirements, a string of the error message is returned instead
 	 * when an exception occurs during the execution of one of the commands.
-	 * 
+	 *
 	 * @param args
-	 * 
+	 *
 	 * @return string the string could return an exception message ( "pipe:
 	 *         exception detected for one of the call commands") or the actual
 	 *         result
@@ -402,12 +387,11 @@ public class ShellImpl implements Shell {
 	@Override
 	public String pipeWithException(String... args) {
 		return pipeCaller(args);
-
 	}
 
 	/**
 	 * This methods calls all starts the parsing and evaluate pipe command
-	 * 
+	 *
 	 * @param args
 	 * @return string the string could return the exception message or the
 	 *         actual result
@@ -420,8 +404,8 @@ public class ShellImpl implements Shell {
 		try {
 			pipeCmd.parse();
 			pipeCmd.evaluate(null, stdout);
-			result = stdout.toString();
-		} catch (AbstractApplicationException | ShellException e) {
+			result = stdout.toString("UTF-8");
+		} catch (AbstractApplicationException | ShellException | UnsupportedEncodingException e) {
 			result = e.getMessage();
 		}
 		return result;
@@ -449,11 +433,12 @@ public class ShellImpl implements Shell {
 	 */
 	@Override
 	public String globOneFile(String[] args) {
-		String tempResult = "";
+		StringBuilder builder = new StringBuilder();
 		for (String arg : args) {
-			tempResult += arg + NEW_LINE;
+			builder.append(arg);
+			builder.append(NEW_LINE);
 		}
-		return tempResult;
+		return builder.toString();
 	}
 
 	/**
@@ -484,16 +469,26 @@ public class ShellImpl implements Shell {
 
 	private String globHelper(String[] args) {
 		CallCommand helper = new CallCommand();
-		String tempResult = "";
 		try {
 			String[] globResult = helper.evaluateGlob(args);
+			StringBuilder builder = new StringBuilder();
 			for (String result : globResult) {
-				tempResult += result + NEW_LINE;
+				builder.append(result);
+				builder.append(NEW_LINE);
 			}
+			return builder.toString();
 		} catch (ShellException e) {
 			return e.getMessage();
 		}
-
-		return tempResult;
 	}
 }
+
+/************************************************************************************************************
+ * 
+ * For reference
+ * 
+ * https://stackoverflow.com/questions/16517689/confused-about-matcher-group-in-java-regex/27328750#27328750
+ * on regular expression
+ * 
+ *************************************************************************************************************/
+ 

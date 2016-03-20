@@ -192,10 +192,9 @@ public class CommApplication implements Comm {
 		int file1Position = ZERO;
 		int file2Position = ZERO;
 		ArrayList<ArrayList<String>> mainList = new ArrayList<ArrayList<String>>();
-		ArrayList<String> strList1 = new ArrayList<String>();
-		ArrayList<String> strList2 = new ArrayList<String>();
+		ArrayList<String> strList1, strList2;
 
-		if (args.length == ZERO || args == null) {
+		if (args == null || args.length == ZERO) {
 			throw new CommException("Length of arguments 0 or null");
 		} else if (args.length == ONE) {
 			file2Position = ZERO;

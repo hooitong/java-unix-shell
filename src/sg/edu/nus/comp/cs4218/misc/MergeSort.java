@@ -31,8 +31,6 @@ public class MergeSort {
 	 *            starting position of the string
 	 * @param pos2
 	 *            ending position of the string
-	 * @param numFlag
-	 *            set true to enable alphanum ordering
 	 * @return an sorted array
 	 * @throws SortException 
 	 */
@@ -69,8 +67,6 @@ public class MergeSort {
 	 *            middle position of array
 	 * @param back
 	 *            ending position of array
-	 * @param numFlag
-	 *            set true to enable alphanum ordering
 	 * @return an sorted array
 	 */
 	public void merge(String[] toSort, int front, int mid, int back) {

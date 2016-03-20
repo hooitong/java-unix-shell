@@ -76,11 +76,12 @@ public class PairPipingTest {
         String testInput = "echo Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock | fmt -w 33";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
         String output = new String(mockOutputStream.toByteArray(), "UTF-8");
-        String expectedOutput = "Contrary to popular belief," + System.lineSeparator()
-                + "Lorem Ipsum is not simply random" + System.lineSeparator()
-                + "text. It has roots in a piece of" + System.lineSeparator()
+        String expectedOutput = "Contrary to popular belief, Lorem" + System.lineSeparator()
+                + "Ipsum is not simply random text." + System.lineSeparator()
+                + "It has roots in a piece of" + System.lineSeparator()
                 + "classical Latin literature from" + System.lineSeparator()
-                + "45 BC, making it over 2000 years";
+                + "45 BC, making it over 2000 years" + System.lineSeparator()
+                + "old. Richard McClintock";
         assertEquals(expectedOutput, output);
 
     }
@@ -379,6 +380,50 @@ public class PairPipingTest {
     @Test (expected = PipeCommandException.class)
     public void pipeNegativeDate() throws Exception {
         String testInput = "cal -n | date";
+        mockShell.parseAndEvaluate(testInput, mockOutputStream);
+    }
+
+    /**
+     * Invalid piping syntax without space as last argument.
+     *
+     * @throws Exception
+     */
+    @Test (expected = PipeCommandException.class)
+    public void pipeEchoNegative() throws Exception {
+        String testInput = "echo abc |";
+        mockShell.parseAndEvaluate(testInput, mockOutputStream);
+    }
+
+    /**
+     * Invalid piping syntax with spaces as last argument.
+     *
+     * @throws Exception
+     */
+    @Test (expected = PipeCommandException.class)
+    public void pipeDateNegative() throws Exception {
+        String testInput = "date|    ";
+        mockShell.parseAndEvaluate(testInput, mockOutputStream);
+    }
+
+    /**
+     * Invalid piping syntax with spaces as first argument.
+     *
+     * @throws Exception
+     */
+    @Test (expected = PipeCommandException.class)
+    public void pipeNegativeBc() throws Exception {
+        String testInput = "     |  bc '5+3'   ";
+        mockShell.parseAndEvaluate(testInput, mockOutputStream);
+    }
+
+    /**
+     * Invalid piping syntax without space as first argument.
+     *
+     * @throws Exception
+     */
+    @Test (expected = PipeCommandException.class)
+    public void pipeNegativeCal() throws Exception {
+        String testInput = "|cal";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
     }
 }

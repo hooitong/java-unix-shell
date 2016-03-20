@@ -283,15 +283,4 @@ public class CallCommandTest {
 		assertTrue(results.length == 1);
 		assertTrue(noGlobArg.equals(results[0]));
 	}
-
-	/**
-	 * Test whether the current execution of the command can be terminated
-	 * correctly.
-	 *
-	 * @throws Exception
-	 */
-	@Test
-	public void testTerminate() throws Exception {
-		fail("Not yet implemented");
-	}
 }

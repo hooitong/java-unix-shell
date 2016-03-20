@@ -11,7 +11,7 @@ public class ShellException extends Exception {
 	/**
 	 * Overloaded constructor to wrap any exception into a ShellException.
 	 * 
-	 * @param e
+	 * @param excep
 	 */
 	public ShellException(Exception excep) {
 		super("shell: " + excep.getMessage());
