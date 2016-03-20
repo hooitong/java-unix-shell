@@ -163,4 +163,32 @@ public class CalApplicationTest {
 		ByteArrayOutputStream rawOutput = new ByteArrayOutputStream();
 		testCal.run(arguments, null, rawOutput);
 	}
+
+
+	/**
+	 * Tests whether the calendar app can respond with an error message when
+	 * given an invalid month but valid year.
+	 *
+	 * @throws Exception
+	 */
+	@Test(expected = CalException.class)
+	public void testInvalidFlag() throws Exception {
+		String[] arguments = {"-M"};
+		ByteArrayOutputStream rawOutput = new ByteArrayOutputStream();
+		testCal.run(arguments, null, rawOutput);
+	}
+
+	/**
+	 * Tests whether the calendar app can respond with an error message when
+	 * given an invalid month but valid year.
+	 *
+	 * @throws Exception
+	 */
+	@Test(expected = CalException.class)
+	public void testInvalidFlagOrder() throws Exception {
+		String mockYear = "2016";
+		String[] arguments = {mockYear, "-m"};
+		ByteArrayOutputStream rawOutput = new ByteArrayOutputStream();
+		testCal.run(arguments, null, rawOutput);
+	}
 }
