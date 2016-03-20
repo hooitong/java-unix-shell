@@ -47,7 +47,7 @@ public class PipeCommand implements Command {
 			} else {
 				stringBuilder.append(cmdLine.charAt(i));
 			}
-			if (i == cmdline.length() - 1) {
+			if (i == cmdline.length() - 1 && !cmdLine.equals(stringBuilder.toString())) {
 				this.argsList.add(stringBuilder.toString().trim());
 			}
 		}
@@ -96,10 +96,6 @@ public class PipeCommand implements Command {
 	}
 
 	public void parse() throws ShellException {
-		if(argsList.size() < 2) {
-			throw new ShellException("invalid syntax");
-		}
-
 		for (int i = 0; i < this.argsList.size(); i++) {
 			ShellImpl shell = new ShellImpl();
 			Command command = ShellImpl.parse(this.argsList.get(i));

@@ -1,6 +1,7 @@
 package ef2test;
 
 import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayOutputStream;
 import java.util.Vector;
 
@@ -9,6 +10,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.ShellImpl;
 import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
@@ -18,6 +20,7 @@ public class RedirectionTest
 	private CallCommand stubCommand;
 	private ShellImpl shell;
 	private ByteArrayOutputStream baos;
+	private static final String FOLDER_LOCATION = "examples-integration/Multiple-Pipe/";
 	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
