@@ -76,11 +76,12 @@ public class PairPipingTest {
         String testInput = "echo Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock | fmt -w 33";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
         String output = new String(mockOutputStream.toByteArray(), "UTF-8");
-        String expectedOutput = "Contrary to popular belief," + System.lineSeparator()
-                + "Lorem Ipsum is not simply random" + System.lineSeparator()
-                + "text. It has roots in a piece of" + System.lineSeparator()
+        String expectedOutput = "Contrary to popular belief, Lorem" + System.lineSeparator()
+                + "Ipsum is not simply random text." + System.lineSeparator()
+                + "It has roots in a piece of" + System.lineSeparator()
                 + "classical Latin literature from" + System.lineSeparator()
-                + "45 BC, making it over 2000 years";
+                + "45 BC, making it over 2000 years" + System.lineSeparator()
+                + "old. Richard McClintock";
         assertEquals(expectedOutput, output);
 
     }

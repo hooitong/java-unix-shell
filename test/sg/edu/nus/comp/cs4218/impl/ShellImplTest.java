@@ -102,15 +102,51 @@ public class ShellImplTest {
 		fail("Should be throwing exception due to invalid syntax");
 	}
 
+	/**
+	 * Test whether single quotes can successfully disable asterisk operators.
+	 *
+	 * @throws Exception
+     */
 	@Test
-	public void testGlobQuote() throws Exception {
+	public void testGlobSingleQuote() throws Exception {
 		String cmdline = "bc '5 * 5'";
 		mockShell.parseAndEvaluate(cmdline, mockOutput);
 		assertEquals("25" + System.lineSeparator(), new String(mockOutput.toByteArray(), "UTF-8"));
 	}
 
+
+	/**
+	 * Test whether single quotes can successfully disable asterisk operators.
+	 *
+	 * @throws Exception
+	 */
 	@Test
-	public void testQuoteDisablePipe() throws Exception {
+	public void testGlobDoubleQuote() throws Exception {
+		String cmdline = "bc \"5 * 5\"";
+		mockShell.parseAndEvaluate(cmdline, mockOutput);
+		assertEquals("25" + System.lineSeparator(), new String(mockOutput.toByteArray(), "UTF-8"));
+	}
+
+	/**
+	 * Test whether double quotes can successfully disable piping operators.
+	 *
+	 * @throws Exception
+     */
+	@Test
+	public void testPipeSingleQuote() throws Exception {
+		String cmdline = "echo ' | '";
+		mockShell.parseAndEvaluate(cmdline, mockOutput);
+		assertEquals(" | " + System.lineSeparator(), new String(mockOutput.toByteArray(), "UTF-8"));
+	}
+
+
+	/**
+	 * Test whether double quotes can successfully disable piping operators.
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testPipeDoubleQuote() throws Exception {
 		String cmdline = "echo \" | \"";
 		mockShell.parseAndEvaluate(cmdline, mockOutput);
 		assertEquals(" | " + System.lineSeparator(), new String(mockOutput.toByteArray(), "UTF-8"));
