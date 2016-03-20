@@ -93,6 +93,22 @@ public class CommandSubstitutionTest {
 		// assertEquals(new String(mockOut.toByteArray(),
 		// Charset.defaultCharset()), "a aa aaa aaaa");
 	}
+	
+	/*
+	 * 
+	 */
+	@Test
+	public void testCommandSubSort() throws Exception {
+		
+		String command = "echo `cat examples\\numbersort.txt | sort`";
+		mockShell.parseAndEvaluate(command, mockOut);
+		System.out.println(mockOut.toString());
+		
+		// assertEquals(new String(mockOut.toByteArray(),
+		// Charset.defaultCharset()), "a aa aaa aaaa");
+		
+		
+	}
 
 	/*
 	 * Test for correct line read when reading a file and then piping to head
@@ -123,7 +139,7 @@ public class CommandSubstitutionTest {
 	 */
 	@Test(expected = PipeCommandException.class)
 	public void testCommandPipe3() throws Exception {
-		String command = "echo `cat example\\file1.txt | head n -2`";
+		String command = "echo `cat examples\\file1.txt | head n -2`";
 		mockShell.parseAndEvaluate(command, mockOut);
 		System.out.println(mockOut.toString());
 		// assertEquals(new String(mockOut.toByteArray(),
@@ -135,16 +151,79 @@ public class CommandSubstitutionTest {
 	 */
 	@Test
 	public void testSemicolon() throws Exception {
-		System.out.println("SPECIAL TEST******************************************");
-		//String command = "echo testing 123: `echo \"showing content of file1.txt\"; cat example\\file1.txt`";
-		String command = "echo testing 123; cat example\\file1.txt";
+		String command = "echo testing 123: `echo showing content of file1.txt; cat examples\\file1.txt`";
+		//String command = "echo testing 123; cat examples\\file1.txt";
 		mockShell.parseAndEvaluate(command, mockOut);
 		System.out.println(mockOut.toString());
-		System.out.println("*******************************TESTEND");
 		// assertEquals(new String(mockOut.toByteArray(),
 		// Charset.defaultCharset()), "a aa aaa aaaa");
 	}
 
+	/*
+	 * Globbing
+	 */
+		@Test
+		public void testGlobbing() throws Exception {
+			System.out.println("SPECIAL TEST******************************************");
+			String command = "echo `cat examples/*`";
+			mockShell.parseAndEvaluate(command, mockOut);
+			System.out.println(mockOut.toString());
+			System.out.println("*******************************TESTEND");
+			// assertEquals(new String(mockOut.toByteArray(),
+			// Charset.defaultCharset()), "a aa aaa aaaa");
+		}
+	
+	
+	/*
+	 * Calendar
+	 */
+	@Test
+	public void testCal() throws Exception {
+		String command = "echo testing calendar: `cal`";
+		//String command = "echo testing 123; cat examples\\file1.txt";
+		mockShell.parseAndEvaluate(command, mockOut);
+		System.out.println(mockOut.toString());
+		// assertEquals(new String(mockOut.toByteArray(),
+		// Charset.defaultCharset()), "a aa aaa aaaa");
+	}
+	
+	/*
+	 * Date
+	 */
+	@Test
+	public void testDate() throws Exception {
+		String command = "echo Today is:  `date`";
+		//String command = "echo testing 123; cat examples\\file1.txt";
+		mockShell.parseAndEvaluate(command, mockOut);
+		System.out.println(mockOut.toString());
+		// assertEquals(new String(mockOut.toByteArray(),
+		// Charset.defaultCharset()), "a aa aaa aaaa");
+	}
+	
+	/*
+	 * Test bc
+	 */
+	@Test
+	public void testBC() throws Exception {
+		String command = "echo what is the sum of 1+1: `echo 1+1|bc`";
+		//String command = "echo testing 123; cat examples\\file1.txt";
+		mockShell.parseAndEvaluate(command, mockOut);
+		System.out.println(mockOut.toString());
+		// assertEquals(new String(mockOut.toByteArray(),
+		// Charset.defaultCharset()), "a aa aaa aaaa");
+	}
+	
+	//Read from file
+	@Test
+	public void testRemoveNewLineSymbol() throws Exception {
+		String command = "echo `cat examples\\file2.txt`";
+		mockShell.parseAndEvaluate(command, mockOut);
+		System.out.println(mockOut.toString());
+		// assertEquals(new String(mockOut.toByteArray(),
+		// Charset.defaultCharset()), "a aa aaa aaaa");
+	}
+	
+	
 	/**
 	 * 
 	 * Input: assume that it takes in a string of command Output: assume that it
@@ -211,4 +290,20 @@ public class CommandSubstitutionTest {
 	 * ); }
 	 * 
 	 */
+	
+	/*
+	 * Test bc - under integration test
+	 */
+	@Test
+	public void testBCWithIntegrationTest() throws Exception {
+		System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+		String command = "cat file1`echo .md`";
+		//String command = "echo testing 123; cat examples\\file1.txt";
+		mockShell.parseAndEvaluate(command, mockOut);
+		System.out.println(mockOut.toString());
+		// assertEquals(new String(mockOut.toByteArray(),
+		// Charset.defaultCharset()), "a aa aaa aaaa");
+	}
+	
+	
 }
