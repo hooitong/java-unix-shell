@@ -27,8 +27,9 @@ public class PipeCommandTest {
 	@Test
 	public void testPipeMultipleCommands() {
 		String cmdLine = "head -n 20 examples/file3.txt | sort | head -n 7 | sort -n";
-		String expectedResult = "1" + NEW_LINE + "10" + NEW_LINE + "11" + NEW_LINE + "12" + NEW_LINE + "13" + NEW_LINE
-				+ "14" + NEW_LINE + "15" + NEW_LINE;
+		String expectedResult = "1" + NEW_LINE + "10" + NEW_LINE + "11"
+				+ NEW_LINE + "12" + NEW_LINE + "13" + NEW_LINE + "14"
+				+ NEW_LINE + "15" + NEW_LINE;
 		String actualResult = shell.pipeMultipleCommands(cmdLine.split(" "));
 		assertEquals(expectedResult, actualResult);
 	}
@@ -39,7 +40,8 @@ public class PipeCommandTest {
 	@Test
 	public void testPipeTwoCommands() {
 		String cmdLine = "sort examples/file3.txt | head -n 5";
-		String expectedResult = "1" + NEW_LINE + "10" + NEW_LINE + "11" + NEW_LINE + "12" + NEW_LINE + "13" + NEW_LINE;
+		String expectedResult = "1" + NEW_LINE + "10" + NEW_LINE + "11"
+				+ NEW_LINE + "12" + NEW_LINE + "13" + NEW_LINE;
 		String actualResult = shell.pipeTwoCommands(cmdLine.split(" "));
 		assertEquals(expectedResult, actualResult);
 	}
@@ -75,9 +77,11 @@ public class PipeCommandTest {
 	 * @throws AbstractApplicationException
 	 */
 	@Test
-	public void testFromShell() throws ShellException, AbstractApplicationException {
+	public void testFromShell() throws ShellException,
+			AbstractApplicationException {
 		String temp = "sort -n examples/file3.txt | head -n 5";
-		String expected = "1" + NEW_LINE + "2" + NEW_LINE + "3" + NEW_LINE + "4" + NEW_LINE + "5" + NEW_LINE;
+		String expected = "1" + NEW_LINE + "2" + NEW_LINE + "3" + NEW_LINE
+				+ "4" + NEW_LINE + "5" + NEW_LINE;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		ShellImpl shell = new ShellImpl();
 		shell.parseAndEvaluate(temp, stdout);
@@ -92,9 +96,11 @@ public class PipeCommandTest {
 	 * @throws AbstractApplicationException
 	 */
 	@Test(expected = PipeCommandException.class)
-	public void testFromShellWithExceptionInFront() throws ShellException, AbstractApplicationException {
+	public void testFromShellWithExceptionInFront() throws ShellException,
+			AbstractApplicationException {
 		String temp = "sort -j examples/file3.txt | head -n 5";
-		String expected = "1" + NEW_LINE + "2" + NEW_LINE + "3" + NEW_LINE + "4" + NEW_LINE + "5" + NEW_LINE;
+		String expected = "1" + NEW_LINE + "2" + NEW_LINE + "3" + NEW_LINE
+				+ "4" + NEW_LINE + "5" + NEW_LINE;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		ShellImpl shell = new ShellImpl();
 		shell.parseAndEvaluate(temp, stdout);
@@ -108,9 +114,11 @@ public class PipeCommandTest {
 	 * @throws AbstractApplicationException
 	 */
 	@Test(expected = PipeCommandException.class)
-	public void testFromShellWithExceptionBehind() throws ShellException, AbstractApplicationException {
+	public void testFromShellWithExceptionBehind() throws ShellException,
+			AbstractApplicationException {
 		String temp = "sort -n examples/file3.txt | head -j 5";
-		String expected = "1" + NEW_LINE + "2" + NEW_LINE + "3" + NEW_LINE + "4" + NEW_LINE + "5" + NEW_LINE;
+		String expected = "1" + NEW_LINE + "2" + NEW_LINE + "3" + NEW_LINE
+				+ "4" + NEW_LINE + "5" + NEW_LINE;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		ShellImpl shell = new ShellImpl();
 		shell.parseAndEvaluate(temp, stdout);
@@ -121,9 +129,10 @@ public class PipeCommandTest {
 	 *
 	 * @throws ShellException
 	 * @throws AbstractApplicationException
-     */
+	 */
 	@Test(expected = PipeCommandException.class)
-	public void testMissingPipeOperator() throws ShellException, AbstractApplicationException {
+	public void testMissingPipeOperator() throws ShellException,
+			AbstractApplicationException {
 		String temp = "echo abc | echo 123 |";
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		ShellImpl shell = new ShellImpl();
@@ -137,16 +146,9 @@ public class PipeCommandTest {
 	 * @throws AbstractApplicationException
 	 */
 	@Test(expected = PipeCommandException.class)
-	public void testDoublePipeOperator() throws ShellException, AbstractApplicationException {
+	public void testDoublePipeOperator() throws ShellException,
+			AbstractApplicationException {
 		String temp = "echo abc || echo 123";
-		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-		ShellImpl shell = new ShellImpl();
-		shell.parseAndEvaluate(temp, stdout);
-	}
-	
-	@Test(expected = PipeCommandException.class)
-	public void testMissingPipeOperato1r() throws ShellException, AbstractApplicationException {
-		String temp = "   | cal";
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		ShellImpl shell = new ShellImpl();
 		shell.parseAndEvaluate(temp, stdout);
