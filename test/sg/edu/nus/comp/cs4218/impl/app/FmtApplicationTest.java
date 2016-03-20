@@ -146,7 +146,7 @@ public class FmtApplicationTest {
 	public void testRemovalOfNewLine() throws FmtException {
 		int wrapValue = 100;
 		String wrappedText = fmtApplication.wrapText(
-				"The" + "\nrandom" + NEW_LINE + "String" + NEW_LINE + "is" + NEW_LINE + "tall", wrapValue);
+				"The" + NEW_LINE + "random" + NEW_LINE + "String" + NEW_LINE + "is" + NEW_LINE + "tall", wrapValue);
 		String expectedString = "The random String is tall";
 		assertEquals(expectedString,wrappedText);
 	}
@@ -156,7 +156,7 @@ public class FmtApplicationTest {
 		Path currentDir = Paths.get(Environment.currentDirectory);
 		Path filePath = currentDir.resolve("examples/testRead.txt");
 		String readString = fmtApplication.readFromFile(filePath);
-		String expectedString = "Selon la préfecture, des engins explosifs avaient été";
+		String expectedString = "Selon la prï¿½fecture, des engins explosifs avaient ï¿½tï¿½";
 		assertEquals(expectedString, readString);
 	}
 	

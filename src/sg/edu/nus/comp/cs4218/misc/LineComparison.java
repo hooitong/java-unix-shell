@@ -80,9 +80,9 @@ public class LineComparison {
 	 * This method gets the particular line from a list based on the index
 	 * provided
 	 * 
-	 * @param ArrayList
+	 * @param strList
 	 *            <String>
-	 * @param int
+	 * @param lineIndexFile1
 	 * @return string content of the string
 	 */
 	private String getLineFromList(ArrayList<String> strList, int lineIndexFile1) {

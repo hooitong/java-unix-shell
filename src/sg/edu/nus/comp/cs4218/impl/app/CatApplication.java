@@ -97,7 +97,7 @@ public class CatApplication implements Application {
 						continue;
 					}
 					stdout.write(byteFileArray);
-					byte[] newLine = "\n".getBytes("UTF-8");
+					byte[] newLine = System.lineSeparator().getBytes("UTF-8");
 					stdout.write(newLine);
 					stdout.flush();
 				} catch (IOException e) {
@@ -164,10 +164,8 @@ public class CatApplication implements Application {
 	private void throwExceptionIfNoInput(String[] args, InputStream stdin) throws CatException {
 		if (args == null && stdin == null) {
 			throw new CatException("No input");
-		} else if(args != null) {
-			if (args.length == 0 && stdin == null) {
-				throw new CatException("No input");
-			}
+		} else if(args != null && args.length == 0 && stdin == null) {
+			throw new CatException("No input");
 		}
 	}
 

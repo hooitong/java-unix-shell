@@ -35,7 +35,7 @@ public class PipeCommand implements Command {
 	 * this method uses the pipe as a delimiter and breaks a line of string into
 	 * their various call commands
 	 * 
-	 * @param string
+	 * @param cmdLine
 	 *            a string of commands
 	 */
 	private void separateIntoIndividualCommands(String cmdLine) {

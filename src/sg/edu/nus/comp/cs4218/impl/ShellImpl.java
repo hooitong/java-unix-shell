@@ -433,10 +433,10 @@ public class ShellImpl implements Shell {
 	 */
 	@Override
 	public String globOneFile(String[] args) {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		for (String arg : args) {
-			sb.append(arg);
-			sb.append(NEW_LINE);
+			builder.append(arg);
+			builder.append(NEW_LINE);
 		}
 		return sb.toString();
 	}
@@ -471,12 +471,12 @@ public class ShellImpl implements Shell {
 		CallCommand helper = new CallCommand();
 		try {
 			String[] globResult = helper.evaluateGlob(args);
-			StringBuilder sb = new StringBuilder();
+			StringBuilder builder = new StringBuilder();
 			for (String result : globResult) {
-				sb.append(result);
-				sb.append(NEW_LINE);
+				builder.append(result);
+				builder.append(NEW_LINE);
 			}
-			return sb.toString();
+			return builder.toString();
 		} catch (ShellException e) {
 			return e.getMessage();
 		}
