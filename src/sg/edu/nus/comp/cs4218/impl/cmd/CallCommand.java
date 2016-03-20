@@ -37,8 +37,6 @@ public class CallCommand implements Command {
 	public static final String EXP_SAME_REDIR = "Input redirection file same as " + "output redirection file.";
 	public static final String EXP_STDOUT = "Error writing to stdout.";
 	public static final String EXP_NOT_SUPPORTED = " not supported yet";
-	private static final String EXP_MULTIPLE_INPUT = "Multiple input redirection is not supported";
-	private static final String EXP_MULTIPLE_OUTPUT = "Multiple output redirection is not supported";
 
 	String app;
 	String cmdline, inputStreamS, outputStreamS;
@@ -267,22 +265,21 @@ public class CallCommand implements Command {
 		String inputRedirS = "";
 		int cmdVectorIndex = cmdVector.size() - 2;
 
-		inputRedirM = inputRedirP.matcher(substring);
-		inputRedirS = "";
-		if (inputRedirM.find()) {
-			if (!cmdVector.get(cmdVectorIndex).isEmpty()) {
-				throw new ShellException(EXP_SYNTAX);
+		while (!substring.trim().isEmpty()) {
+			inputRedirM = inputRedirP.matcher(substring);
+			inputRedirS = "";
+			if (inputRedirM.find()) {
+				if (!cmdVector.get(cmdVectorIndex).isEmpty()) {
+					throw new ShellException(EXP_SYNTAX);
+				}
+				inputRedirS = inputRedirM.group(1);
+				String extractedInput = inputRedirS.replace(String.valueOf((char) 160), " ").trim();
+				cmdVector.set(cmdVectorIndex, extractedInput);
+				newEndIdx = newEndIdx + inputRedirM.end() - 1;
+			} else {
+				break;
 			}
-			inputRedirS = inputRedirM.group(1);
-			String extractedInput = inputRedirS.replace(String.valueOf((char) 160), " ").trim();
-			cmdVector.set(cmdVectorIndex, extractedInput);
-			newEndIdx = newEndIdx + inputRedirM.end() - 1;
-		} 
-		substring = str.substring(newEndIdx);
-		System.out.println(substring);
-		if(substring.replace(String.valueOf((char) 160), "").trim().startsWith("<"))
-		{
-			throw new ShellException(EXP_MULTIPLE_INPUT);
+			substring = str.substring(newEndIdx);
 		}
 		return newEndIdx;
 	}
@@ -322,13 +319,8 @@ public class CallCommand implements Command {
 		Matcher inputRedirM;
 		String inputRedirS = "";
 		int cmdVectorIdx = cmdVector.size() - 1;
-		
-		inputRedirM = inputRedirP.matcher(substring);
-		inputRedirS = "";
-		if (inputRedirM.find()) {
-			if (!cmdVector.get(cmdVectorIdx).isEmpty()) {
-				throw new ShellException(EXP_SYNTAX);
-			}
+		while (!substring.trim().isEmpty()) {
+
 			inputRedirM = inputRedirP.matcher(substring);
 			inputRedirS = "";
 			if (inputRedirM.find()) {
@@ -338,16 +330,10 @@ public class CallCommand implements Command {
 				inputRedirS = inputRedirM.group(1);
 				cmdVector.set(cmdVectorIdx, inputRedirS.replace(String.valueOf((char) 160), " ").trim());
 				newEndIdx = newEndIdx + inputRedirM.end() - 1;
-			} 
-			inputRedirS = inputRedirM.group(1);
-			cmdVector.set(cmdVectorIdx, inputRedirS.replace(String.valueOf((char) 160), " ").trim());
-			newEndIdx = newEndIdx + inputRedirM.end() - 1;
-		}
-		
-		substring = str.substring(newEndIdx);
-		if(substring.replace(String.valueOf((char) 160), "").trim().startsWith(">"))
-		{
-			throw new ShellException(EXP_MULTIPLE_OUTPUT);
+			} else {
+				break;
+			}
+			substring = str.substring(newEndIdx);
 		}
 		return newEndIdx;
 	}
