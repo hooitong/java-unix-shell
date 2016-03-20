@@ -11,6 +11,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.PipeCommandException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
@@ -135,7 +136,7 @@ public class MultiplePipesTest {
 		String cmd = "head " + FOLDER_LOCATION
 				+ "sampleOriginal.txt  | fmt -w 40 |tail -n 2";
 		shell.parseAndEvaluate(cmd, stdout);
-		String expected = "innate quality, especially mental" + NEW_LINE
+		String expected = "\"innate quality, especially mental" + NEW_LINE
 				+ "power, hence a clever invention.\"[5]";
 
 		System.out.println(stdout.toString());

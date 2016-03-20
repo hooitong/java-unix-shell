@@ -26,6 +26,7 @@ public class TailApplicationTest {
 	private static ByteArrayOutputStream baos;
 	private static ByteArrayInputStream bis;
 	private static String fileToRead = "examples/sample.txt";
+	private static String fileToReadEmpty = "examples/sampleEmpty.txt";
 
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
@@ -71,6 +72,68 @@ public class TailApplicationTest {
 		exception.expectMessage("Number of lines not a number");
 
 		String[] arguments = { "-n", "ad3", fileToRead };
+		tailApplication.run(arguments, null, baos);
+	}
+	
+	@Test
+	public void testIncorrectFlagFileSpecified() throws TailException {
+		exception.expect(TailException.class);
+		exception.expectMessage("Incorrect flag used to denote number of lines to print");
+
+		String[] arguments = { "-a", "2", fileToRead };
+		tailApplication.run(arguments, null, baos);
+	}
+	
+	@Test
+	public void testIncorrectFlagFileUnspecified() throws TailException {
+		exception.expect(TailException.class);
+		exception.expectMessage("Incorrect flag used to denote number of lines to print");
+
+		String[] arguments = { "-a", "2" };
+		tailApplication.run(arguments, bis, baos);
+	}
+	
+	@Test
+	public void testReadFromStdIn() throws TailException {
+		String[] arguments = { "-n", "1" };
+		tailApplication.run(arguments, bis, baos);
+		String result = new String(baos.toByteArray());
+		String[] resultLines = result.split(NEW_LINE);
+		assertEquals("This is a test string",resultLines[resultLines.length - 1]);
+	}
+	
+	@Test
+	public void testToReadZeroLines() throws TailException {
+		String[] arguments = { "-n", "0" };
+		tailApplication.run(arguments, bis, baos);
+		String result = new String(baos.toByteArray());
+		assertEquals(result.length(),0);
+	}
+	
+	@Test
+	public void testEmptyText() throws TailException {
+		String[] arguments = { "-n", "0", fileToReadEmpty };
+		tailApplication.run(arguments, null, baos);
+		String result = new String(baos.toByteArray());
+		assertEquals("",result);
+	}
+	
+	
+	@Test
+	public void testNullStdOutput() throws TailException {
+		exception.expect(TailException.class);
+		exception.expectMessage("Null pointer exception - stdout is not defined");
+		
+		String[] arguments = { "-n", "0" };
+		tailApplication.run(arguments, bis, null);
+	}
+	
+	@Test
+	public void testIncorrectNumArguments() throws TailException {
+		exception.expect(TailException.class);
+		exception.expectMessage("Incorrect number of arguments");
+
+		String[] arguments = { "-a", "2", fileToRead, "fourth arg"};
 		tailApplication.run(arguments, null, baos);
 	}
 

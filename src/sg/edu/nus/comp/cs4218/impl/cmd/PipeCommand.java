@@ -35,7 +35,7 @@ public class PipeCommand implements Command {
 	 * this method uses the pipe as a delimiter and breaks a line of string into
 	 * their various call commands
 	 * 
-	 * @param string
+	 * @param cmdLine
 	 *            a string of commands
 	 */
 	private void separateIntoIndividualCommands(String cmdLine) {
@@ -47,9 +47,9 @@ public class PipeCommand implements Command {
 			} else {
 				stringBuilder.append(cmdLine.charAt(i));
 			}
-		}
-		if (stringBuilder.length() != ZERO) {
-			this.argsList.add(stringBuilder.toString().trim());
+			if (i == cmdline.length() - 1 && !cmdLine.equals(stringBuilder.toString())) {
+				this.argsList.add(stringBuilder.toString().trim());
+			}
 		}
 	}
 
@@ -97,10 +97,8 @@ public class PipeCommand implements Command {
 
 	public void parse() throws ShellException {
 		for (int i = 0; i < this.argsList.size(); i++) {
-			ShellImpl shell = new ShellImpl();
-			Command command = shell.parse(this.argsList.get(i));
+			Command command = ShellImpl.parse(this.argsList.get(i));
 			cmdList.add((CallCommand) command);
-
 		}
 	}
 }

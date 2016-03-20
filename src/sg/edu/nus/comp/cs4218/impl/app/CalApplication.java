@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.util.Calendar;
 
 import sg.edu.nus.comp.cs4218.app.Cal;
-import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.CalException;
 import sg.edu.nus.comp.cs4218.exception.CatException;
 
@@ -14,7 +13,8 @@ import sg.edu.nus.comp.cs4218.exception.CatException;
  * The cal command prints the calendar of the month and can be adjusted via
  * arguments to print different formats. This calendar is based on the gregorian
  * calendar and only supports year 1-9999. Months allowed to be pass can be in
- * the form of 1..12, Jan..Dec or January..December.
+ * the form of 1..12, Jan..Dec or January..December. The "-m" flag must be in
+ * lower case and comes first as per the format given below.
  *
  * <p>
  * <b>Command format:</b> <code>cat [-m] [[month] [year]]</code>
@@ -526,6 +526,6 @@ public class CalApplication implements Cal {
 	 * @return true if the flag in the first argument is valid
 	 */
 	private boolean validateMonFlag(String[] args) {
-		return args.length > 0 && MON_FLAG.equalsIgnoreCase(args[0]);
+		return args.length > 0 && MON_FLAG.equals(args[0].trim());
 	}
 }

@@ -34,6 +34,20 @@ public class SequenceCommandTest {
 	}
 
 	/**
+	 * Test if method <i>parse</i> properly throws exception when cmdline with
+	 * sequence command but not complete syntax is given.
+	 *
+	 * @throws Exception
+	 */
+	@Test(expected = ShellException.class)
+	public void testParseInvalidArgsTwo() throws Exception {
+		String cmdline = "; cat abc.txt";
+		SequenceCommand cmd = new SequenceCommand(cmdline);
+		cmd.parse();
+	}
+
+
+	/**
 	 * Test if method <i>parse</i> properly splits arguments of the sequence
 	 * command into two sub-commands.
 	 *
