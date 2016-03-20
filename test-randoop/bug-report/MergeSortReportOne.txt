@@ -1,0 +1,71 @@
+// (1) Generated Test(s) found in ErrorTest(0).java
+==============================================================================================================
+  public void test1() throws Throwable {
+
+    if (debug) { System.out.format("%n%s%n","ErrorTest0.test1"); }
+
+    sg.edu.nus.comp.cs4218.misc.MergeSort mergeSort1 = new sg.edu.nus.comp.cs4218.misc.MergeSort(false);
+    java.lang.String str3 = mergeSort1.extractFirstNumberWordFromLine("");
+    int i5 = mergeSort1.getRank('!');
+    java.lang.String[] str_array6 = null;
+    // during test generation this statement threw an exception of type java.lang.StackOverflowError in error
+    java.lang.String[] str_array9 = mergeSort1.mergeSort(str_array6, (-29), 28);
+
+  }
+
+// (2) Buggy Code Fragment Identified
+==============================================================================================================
+	public String[] mergeSort(String[] toSort, int pos1, int pos2) throws SortException {
+		int front = pos1;
+		int mid = 0;
+		int back = pos2;
+
+		if (front < back) {
+			mid = (front + back) / 2;
+			mergeSort(toSort, front, mid);
+			mergeSort(toSort, mid + 1, back);
+			merge(toSort, front, mid, back);
+		}
+
+		return toSort;
+    }
+
+Unchecked value for toSort and values supplied which may lead to unhandled exception thrown if method is called
+directly with invalid input.
+
+// (3) Applied Fix
+==============================================================================================================
+    public String[] mergeSort(String[] toSort, int pos1, int pos2) throws SortException {
+            if(toSort == null){
+                throw new SortException("Array not found");
+            }
+            if(pos1 < ZERO || pos2 > toSort.length - 1){
+                throw new SortException("Postion cannot be negative or beyond array's size");
+            }
+            int front = pos1;
+            int mid = 0;
+            int back = pos2;
+
+            if (front < back) {
+                mid = (front + back) / 2;
+                mergeSort(toSort, front, mid);
+                mergeSort(toSort, mid + 1, back);
+                merge(toSort, front, mid, back);
+            }
+
+            return toSort;
+     }
+
+Added checks infront to handle potential error and passes the randoop test case.
+
+// (4) Command Line Options to Generate Randoop
+==============================================================================================================
+Command Line Options
+=====================
+gentests --classlist=randoop-test-classes.txt --timelimit=10 --junit-output-dir=test-randoop
+
+
+Resources
+====================
+Please look at randoop-test-classes.txt in root folder
+
