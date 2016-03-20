@@ -73,6 +73,8 @@ public class CatApplication implements Application {
 					continue;
 				} else {
 					filePath = currentDir.resolve(args[i]);
+					System.out.println(filePath);
+					System.out.println(args[i]);
 					isFileReadable = checkIfFileIsReadable(filePath);
 					if (isFileReadable) {
 						filePaths.add(filePath);

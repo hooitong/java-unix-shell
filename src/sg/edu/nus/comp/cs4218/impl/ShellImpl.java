@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -90,14 +91,17 @@ public class ShellImpl implements Shell {
 
 		for (int i = 0; i < argsArray.length; i++) {
 			Matcher matcherBQ = patternBQp.matcher(argsArray[i]);
+			int a = 0;
+			System.out.println(argsArray[i]);
 			if (matcherBQ.find()) {// found backquoted
 				String bqStr = matcherBQ.group(1);
-				// cmdVector.add(bqStr.trim());
+				//Vector<String> cmdVector = new Vector<String>();
+				//cmdVector.add(bqStr.trim());
 				// process back quote
-				// System.out.println("backquote" + bqStr);
+				System.out.println("backquote" + bqStr + i);
 				OutputStream bqOutputStream = new ByteArrayOutputStream();
 				ShellImpl shell = new ShellImpl();
-				// shell.parseAndEvaluate(bqStr, bqOutputStream);
+				shell.parseAndEvaluate(bqStr, bqOutputStream);
 
 				ByteArrayOutputStream outByte = (ByteArrayOutputStream) bqOutputStream;
 				byte[] byteArray = outByte.toByteArray();
@@ -497,3 +501,13 @@ public class ShellImpl implements Shell {
 		return tempResult;
 	}
 }
+
+/************************************************************************************************************
+ * 
+ * For reference
+ * 
+ * https://stackoverflow.com/questions/16517689/confused-about-matcher-group-in-java-regex/27328750#27328750
+ * on regular expression
+ * 
+ *************************************************************************************************************/
+ 
