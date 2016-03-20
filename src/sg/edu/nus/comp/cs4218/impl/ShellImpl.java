@@ -438,7 +438,7 @@ public class ShellImpl implements Shell {
 			builder.append(arg);
 			builder.append(NEW_LINE);
 		}
-		return sb.toString();
+		return builder.toString();
 	}
 
 	/**
