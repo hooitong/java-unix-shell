@@ -91,7 +91,7 @@ public class EchoApplication implements Application {
 			if (args[i] == null) {
 				continue;
 			}
-			String temp = args[i].trim();
+			String temp = args[i];
 			if (temp.isEmpty()) {
 				continue;
 			}
