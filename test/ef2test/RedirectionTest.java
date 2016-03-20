@@ -93,7 +93,7 @@ public class RedirectionTest
 		shell.parseAndEvaluate("tail -n 1 < examples/redirectOutput4.txt", baos);
 		assertEquals("zackary",new String(baos.toByteArray()));
 	}
-	
+
 	/*
 	 * Test whether the IO redirection works for a non-existant file. Pre-condition : redirectOutput4.txt does not exist in ./examples
 	 *
@@ -123,15 +123,14 @@ public class RedirectionTest
 	}
 	
 	/**
-	 * Test whether the output redirection can be parsed from the given command
-	 * line.
+	 * Test whether exception is raised for multiple output redirection
 	 *
 	 * @throws Exception
 	 */
 	@Test
 	public void testMultipleOutputRedir() throws Exception {
 		exception.expect(ShellException.class);
-		exception.expectMessage("Multiple output redirection not supported");
+		exception.expectMessage("Invalid syntax encountered");
 		
 		String stringToTest = "sort -n < file1.txt > file2.txt > file3.txt";
 		Vector<String> cmdVector = new Vector<String>();
@@ -141,7 +140,7 @@ public class RedirectionTest
 	}
 	
 	/**
-	 * Test whether the output redirection can be parsed from the given command
+	 * Test whether exception is raised for multiple input redirection
 	 * line.
 	 *
 	 * @throws Exception
@@ -149,12 +148,12 @@ public class RedirectionTest
 	@Test
 	public void testMultipleInputRedir() throws Exception {
 		exception.expect(ShellException.class);
-		exception.expectMessage("Multiple input redirection not supported");
+		exception.expectMessage("Invalid syntax encountered");
 		
 		String stringToTest = "sort -n < file1.txt < file2.txt > file3.txt";
 		Vector<String> cmdVector = new Vector<String>();
 		cmdVector.addElement("");
 		cmdVector.addElement("");
-		stubCommand.extractInputRedir(stringToTest, cmdVector, 20);	
+		stubCommand.extractInputRedir(stringToTest, cmdVector, 8);	
 	}
 }

@@ -264,7 +264,8 @@ public class CallCommand implements Command {
 		Matcher inputRedirM;
 		String inputRedirS = "";
 		int cmdVectorIndex = cmdVector.size() - 2;
-
+		
+		boolean singleFlag = true;
 		while (!substring.trim().isEmpty()) {
 			inputRedirM = inputRedirP.matcher(substring);
 			inputRedirS = "";
@@ -275,6 +276,14 @@ public class CallCommand implements Command {
 				inputRedirS = inputRedirM.group(1);
 				String extractedInput = inputRedirS.replace(String.valueOf((char) 160), " ").trim();
 				cmdVector.set(cmdVectorIndex, extractedInput);
+				if(singleFlag)
+				{
+					singleFlag = false;
+				}
+				else
+				{
+					throw new ShellException(EXP_SYNTAX);
+				}
 				newEndIdx = newEndIdx + inputRedirM.end() - 1;
 			} else {
 				break;
