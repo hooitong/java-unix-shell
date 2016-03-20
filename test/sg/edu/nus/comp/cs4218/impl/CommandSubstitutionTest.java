@@ -192,7 +192,17 @@ public class CommandSubstitutionTest {
 	 */
 	@Test
 	public void testDate() throws Exception {
-		String command = "echo Today is:  `date`";
+		String command = "echo `echo today date is:` `date`";
+		//String command = "echo testing 123; cat examples\\file1.txt";
+		mockShell.parseAndEvaluate(command, mockOut);
+		System.out.println(mockOut.toString());
+		// assertEquals(new String(mockOut.toByteArray(),
+		// Charset.defaultCharset()), "a aa aaa aaaa");
+	}
+	
+	@Test (expected = ShellException.class)
+	public void testDate2() throws Exception {
+		String command = "echo today date is:`date`";
 		//String command = "echo testing 123; cat examples\\file1.txt";
 		mockShell.parseAndEvaluate(command, mockOut);
 		System.out.println(mockOut.toString());
@@ -294,7 +304,7 @@ public class CommandSubstitutionTest {
 	/*
 	 * Test bc - under integration test
 	 */
-	@Test
+	@Test (expected = ShellException.class)
 	public void testBCWithIntegrationTest() throws Exception {
 		System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
 		String command = "cat file1`echo .md`";
