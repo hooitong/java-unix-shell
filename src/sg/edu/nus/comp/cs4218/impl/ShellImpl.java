@@ -1,39 +1,20 @@
 package sg.edu.nus.comp.cs4218.impl;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.app.BcApplication;
-import sg.edu.nus.comp.cs4218.impl.app.CalApplication;
-import sg.edu.nus.comp.cs4218.impl.app.CatApplication;
-import sg.edu.nus.comp.cs4218.impl.app.CommApplication;
-import sg.edu.nus.comp.cs4218.impl.app.DateApplication;
-import sg.edu.nus.comp.cs4218.impl.app.EchoApplication;
-import sg.edu.nus.comp.cs4218.impl.app.FmtApplication;
-import sg.edu.nus.comp.cs4218.impl.app.HeadApplication;
-import sg.edu.nus.comp.cs4218.impl.app.SortApplication;
-import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
+import sg.edu.nus.comp.cs4218.impl.app.*;
 import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.PipeCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.SequenceCommand;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A Shell is a command interpreter and forms the backbone of the entire
@@ -299,7 +280,7 @@ public class ShellImpl implements Shell {
 	public static void main(String... args) {
 		ShellImpl shell = new ShellImpl();
 
-		BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
+		BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
 		String readLine = null;
 		String currentDir;
 
@@ -406,7 +387,6 @@ public class ShellImpl implements Shell {
 	@Override
 	public String pipeWithException(String... args) {
 		return pipeCaller(args);
-
 	}
 
 	/**
@@ -424,8 +404,8 @@ public class ShellImpl implements Shell {
 		try {
 			pipeCmd.parse();
 			pipeCmd.evaluate(null, stdout);
-			result = stdout.toString();
-		} catch (AbstractApplicationException | ShellException e) {
+			result = stdout.toString("UTF-8");
+		} catch (AbstractApplicationException | ShellException | UnsupportedEncodingException e) {
 			result = e.getMessage();
 		}
 		return result;
@@ -453,11 +433,12 @@ public class ShellImpl implements Shell {
 	 */
 	@Override
 	public String globOneFile(String[] args) {
-		String tempResult = "";
+		StringBuilder sb = new StringBuilder();
 		for (String arg : args) {
-			tempResult += arg + NEW_LINE;
+			sb.append(arg);
+			sb.append(NEW_LINE);
 		}
-		return tempResult;
+		return sb.toString();
 	}
 
 	/**
@@ -488,17 +469,17 @@ public class ShellImpl implements Shell {
 
 	private String globHelper(String[] args) {
 		CallCommand helper = new CallCommand();
-		String tempResult = "";
 		try {
 			String[] globResult = helper.evaluateGlob(args);
+			StringBuilder sb = new StringBuilder();
 			for (String result : globResult) {
-				tempResult += result + NEW_LINE;
+				sb.append(result);
+				sb.append(NEW_LINE);
 			}
+			return sb.toString();
 		} catch (ShellException e) {
 			return e.getMessage();
 		}
-
-		return tempResult;
 	}
 }
 

@@ -123,8 +123,6 @@ public class CalApplicationExtra {
 		String result = calApp.printCal(args);
 		GregorianCalendar gregCal = new GregorianCalendar();
 		String expected = formatCalendarMonthly(getCalendarMonthlyTable(gregCal.get(Calendar.MONTH), gregCal.get(Calendar.YEAR), false));
-		System.out.println(expected);
-		System.out.println(result);
 		assertEquals(expected, result);
 	}
 

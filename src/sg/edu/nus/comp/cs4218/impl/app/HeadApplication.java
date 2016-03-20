@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -194,23 +195,18 @@ public class HeadApplication implements Application {
 			throw new HeadException("Null Pointer Exception");
 		}
 
-		BufferedReader buffReader = new BufferedReader(new InputStreamReader(stdin));
+		BufferedReader buffReader = new BufferedReader(new InputStreamReader(stdin, StandardCharsets.UTF_8));
 
 		int numRead = 0;
 
 		while (numLinesToRead != numRead) {
-
 			try {
 				String inputString = buffReader.readLine();
 				if (inputString == null) { // signify end of file
 					break;
 				}
-				stdout.write(inputString.getBytes("UTF-8"));
-				if (numLinesToRead == numRead) {
-					stdout.flush();
-					break;
-				}
-				stdout.write(System.lineSeparator().getBytes("UTF-8"));
+				stdout.write(inputString.getBytes(StandardCharsets.UTF_8));
+				stdout.write(System.lineSeparator().getBytes(StandardCharsets.UTF_8));
 				numRead++;
 			} catch (IOException e) {
 				throw new HeadException(e);
