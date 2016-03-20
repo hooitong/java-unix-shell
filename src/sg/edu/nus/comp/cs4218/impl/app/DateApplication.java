@@ -1,8 +1,8 @@
 package sg.edu.nus.comp.cs4218.impl.app;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -19,7 +19,6 @@ import sg.edu.nus.comp.cs4218.exception.DateException;
  * </p>
  */
 public class DateApplication implements Application {
-	private static final String CHARSET_UTF_8 = "UTF-8";
 	private static final String DATE_FORMAT = "EEE MMM dd HH:mm:ss zzz yyyy";
 	
 	/**
@@ -42,11 +41,12 @@ public class DateApplication implements Application {
 		}
 
 		String dateGenerated = generateDate(DATE_FORMAT);
-		try {
-			stdout.write(dateGenerated.getBytes(CHARSET_UTF_8));
-		} catch (IOException e) {
-			throw new DateException(e);
-		}
+		
+		PrintWriter printWriter = new PrintWriter(stdout);
+		printWriter.println(dateGenerated);
+		printWriter.flush();
+		printWriter.close();
+		
 	}
 
 	/**

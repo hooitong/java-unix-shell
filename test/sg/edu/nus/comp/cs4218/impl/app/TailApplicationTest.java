@@ -47,9 +47,8 @@ public class TailApplicationTest {
 		String[] arguments = { "-n", "1", fileToRead };
 		tailApplication.run(arguments, bis, baos);
 		String result = new String(baos.toByteArray());
-
 		assertEquals(
-				"Apartments frequently or motionless on reasonable projecting expression. Way mrs end gave tall walk fact bed.",
+				"Apartments frequently or motionless on reasonable projecting expression. Way mrs end gave tall walk fact bed."+NEW_LINE,
 				result);
 	}
 
@@ -107,7 +106,7 @@ public class TailApplicationTest {
 		String[] arguments = { "-n", "0" };
 		tailApplication.run(arguments, bis, baos);
 		String result = new String(baos.toByteArray());
-		assertEquals(result.length(),0);
+		assertEquals("",result);
 	}
 	
 	@Test
@@ -143,7 +142,7 @@ public class TailApplicationTest {
 		tailApplication.run(arguments, null, baos);
 		String resultString = new String(baos.toByteArray());
 
-		assertEquals(resultString, "");
+		assertEquals("",resultString);
 	}
 
 	@Test

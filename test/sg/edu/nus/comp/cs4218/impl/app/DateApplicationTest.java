@@ -23,7 +23,8 @@ public class DateApplicationTest {
 	private static ByteArrayOutputStream baos;
 	private static ByteArrayInputStream bis;
 
-
+	private static final String NEW_LINE = System.lineSeparator();
+	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 	
@@ -48,7 +49,7 @@ public class DateApplicationTest {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
 		dateApplication.run(null, bis, baos);
 		String output = new String(baos.toByteArray());
-		assertEquals(simpleDateFormat.format(new Date()), output);
+		assertEquals(simpleDateFormat.format(new Date())+NEW_LINE, output);
 	}
 	
 	@Test

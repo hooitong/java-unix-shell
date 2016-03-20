@@ -19,6 +19,8 @@ public class RedirectionTest
 	private ShellImpl shell;
 	private ByteArrayOutputStream baos;
 	
+	private static final String NEW_LINE = System.lineSeparator();
+	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 	
@@ -55,7 +57,7 @@ public class RedirectionTest
 	public void testSortRedir() throws Exception {
 		shell.parseAndEvaluate("sort -n < examples/redirectInput1.txt > examples/redirectOutput1.txt", null);
 		shell.parseAndEvaluate("tail -n 1 < examples/redirectOutput1.txt", baos);
-		assertEquals("zackary",new String(baos.toByteArray()));
+		assertEquals("zackary"+NEW_LINE,new String(baos.toByteArray()));
 	}
 	
 	/*
@@ -67,7 +69,7 @@ public class RedirectionTest
 	@Test
 	public void testTailRedir() throws Exception {
 		shell.parseAndEvaluate("tail -n 1 < examples/redirectOutput2.txt", baos);
-		assertEquals("This is the last line",new String(baos.toByteArray()));
+		assertEquals("This is the last line"+NEW_LINE,new String(baos.toByteArray()));
 	}
 	
 	/*
@@ -91,7 +93,7 @@ public class RedirectionTest
 	public void testNonExistantOutputRedir() throws Exception {
 		shell.parseAndEvaluate("sort -n < examples/redirectInput1.txt > examples/redirectOutput4.txt", baos);
 		shell.parseAndEvaluate("tail -n 1 < examples/redirectOutput4.txt", baos);
-		assertEquals("zackary",new String(baos.toByteArray()));
+		assertEquals("zackary"+NEW_LINE,new String(baos.toByteArray()));
 	}
 
 	/*

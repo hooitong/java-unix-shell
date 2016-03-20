@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,7 +30,6 @@ import sg.edu.nus.comp.cs4218.exception.FmtException;
  * </p>
  */
 public class FmtApplication implements Application {
-	private static final String CHARSET_UTF_8 = "UTF-8";
 	private static final String NEW_LINE = System.lineSeparator();
 	private static final String WIDTH_FLAG = "-w";
 
@@ -121,10 +121,9 @@ public class FmtApplication implements Application {
 		String tempLine = "";
 		while (count < strArray.length) {
 			String trimmedString = strArray[count].replace(String.valueOf((char) 160), " ").trim();
-			
 			if (tempLine.length() == 0) {
 				if (wrapWidth < trimmedString.length()) {
-					wrappedString = wrappedString.concat(NEW_LINE + trimmedString);
+					wrappedString = wrappedString.concat(trimmedString + NEW_LINE);
 					++count;
 				} else {
 					tempLine = tempLine.concat(trimmedString);
@@ -135,22 +134,15 @@ public class FmtApplication implements Application {
 					tempLine = tempLine.concat(" " + strArray[count].replace(String.valueOf((char) 160), " ").trim());
 					++count;
 				} else {
-					if (wrappedString.isEmpty()) {
-						wrappedString = wrappedString.concat(tempLine);
-					} else {
-						wrappedString = wrappedString.concat(NEW_LINE + tempLine);
-					}
+					wrappedString = wrappedString.concat(tempLine + NEW_LINE);	
 					tempLine = "";
 				}
 			}
 		}
-		if (wrappedString.isEmpty()) {
-			wrappedString = wrappedString.concat(tempLine);
-		} else {
-			wrappedString = wrappedString.concat(NEW_LINE + tempLine);
-		}
 		
-		return wrappedString;
+		wrappedString = wrappedString.concat(tempLine);
+		
+		return wrappedString+NEW_LINE;
 	}
 
 	/**
@@ -193,11 +185,10 @@ public class FmtApplication implements Application {
 			throw new FmtException("Null pointer exception - stdout is not defined");
 		}
 
-		try {
-			stdout.write(stringToWrite.getBytes(CHARSET_UTF_8));
-		} catch (IOException e) {
-			throw new FmtException(e);
-		}
+		PrintWriter printWriter = new PrintWriter(stdout);
+		printWriter.print(stringToWrite);
+		printWriter.flush();
+		printWriter.close();
 	}
 
 	/**
