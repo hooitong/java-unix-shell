@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -12,15 +13,22 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import sg.edu.nus.comp.cs4218.exception.DateException;
+import sg.edu.nus.comp.cs4218.exception.FmtException;
 
 public class DateApplicationTest {
 	private static DateApplication dateApplication;
 	private static ByteArrayOutputStream baos;
 	private static ByteArrayInputStream bis;
 
+
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		dateApplication = new DateApplication();
@@ -44,7 +52,22 @@ public class DateApplicationTest {
 		String output = new String(baos.toByteArray());
 		assertEquals(simpleDateFormat.format(new Date()), output);
 	}
-
+	
+	@Test
+	public final void testUnrequiredArg() throws DateException {
+		exception.expect(DateException.class);
+		exception.expectMessage("No arguments expected");
+		String[] arguments = {"-d 10"};
+		dateApplication.run(arguments, bis, baos);
+	}
+	
+	@Test
+	public final void testNullStdOut() throws DateException {
+		exception.expect(DateException.class);
+		exception.expectMessage("Cannot write to stdout as it is null");
+		dateApplication.run(null, bis, null);
+	}
+	
 	@After
 	public void tearDown() throws Exception {
 		baos = null;

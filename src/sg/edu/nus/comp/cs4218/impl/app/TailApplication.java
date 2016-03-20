@@ -99,9 +99,7 @@ public class TailApplication implements Application {
 			isFileReadable = checkIfFileIsReadable(filePath);
 			if (isFileReadable) {
 				inputString = readFromFile(filePath);
-			} else {
-				throw new TailException("File not readable");
-			}
+			} 
 		} else {
 			inputString = readFromStdin(stdin);
 		}

@@ -37,7 +37,9 @@ public class CallCommand implements Command {
 	public static final String EXP_SAME_REDIR = "Input redirection file same as " + "output redirection file.";
 	public static final String EXP_STDOUT = "Error writing to stdout.";
 	public static final String EXP_NOT_SUPPORTED = " not supported yet";
-
+	public static final String EXP_MULTIPLE_OUTPUT = "Multiple output redirection not supported";
+	public static final String EXP_MULTIPLE_INPUT = "Multiple input redirection not supported";
+	
 	String app;
 	String cmdline, inputStreamS, outputStreamS;
 	String[] argsArray;
@@ -267,21 +269,22 @@ public class CallCommand implements Command {
 		String inputRedirS = "";
 		int cmdVectorIndex = cmdVector.size() - 2;
 
-		while (!substring.trim().isEmpty()) {
-			inputRedirM = inputRedirP.matcher(substring);
-			inputRedirS = "";
-			if (inputRedirM.find()) {
-				if (!cmdVector.get(cmdVectorIndex).isEmpty()) {
-					throw new ShellException(EXP_SYNTAX);
-				}
-				inputRedirS = inputRedirM.group(1);
-				String extractedInput = inputRedirS.replace(String.valueOf((char) 160), " ").trim();
-				cmdVector.set(cmdVectorIndex, extractedInput);
-				newEndIdx = newEndIdx + inputRedirM.end() - 1;
-			} else {
-				break;
+		inputRedirM = inputRedirP.matcher(substring);
+		inputRedirS = "";
+		if (inputRedirM.find()) {
+			if (!cmdVector.get(cmdVectorIndex).isEmpty()) {
+				throw new ShellException(EXP_SYNTAX);
 			}
-			substring = str.substring(newEndIdx);
+			inputRedirS = inputRedirM.group(1);
+			String extractedInput = inputRedirS.replace(String.valueOf((char) 160), " ").trim();
+			cmdVector.set(cmdVectorIndex, extractedInput);
+			newEndIdx = newEndIdx + inputRedirM.end() - 1;
+		} 
+		substring = str.substring(newEndIdx);
+		System.out.println(substring);
+		if(substring.replace(String.valueOf((char) 160), "").trim().startsWith("<"))
+		{
+			throw new ShellException(EXP_MULTIPLE_INPUT);
 		}
 		return newEndIdx;
 	}
@@ -321,24 +324,22 @@ public class CallCommand implements Command {
 		Matcher inputRedirM;
 		String inputRedirS = "";
 		int cmdVectorIdx = cmdVector.size() - 1;
-		System.out.println("aaa");
-		while (!substring.trim().isEmpty()) {
-
-			inputRedirM = inputRedirP.matcher(substring);
-			inputRedirS = "";
-			if (inputRedirM.find()) {
-				System.out.println("ff");
-				if (!cmdVector.get(cmdVectorIdx).isEmpty()) {
-					throw new ShellException(EXP_SYNTAX);
-				}
-				inputRedirS = inputRedirM.group(1);
-				cmdVector.set(cmdVectorIdx, inputRedirS.replace(String.valueOf((char) 160), " ").trim());
-				newEndIdx = newEndIdx + inputRedirM.end() - 1;
-				System.out.println(newEndIdx);
-			} else {
-				break;
+		
+		inputRedirM = inputRedirP.matcher(substring);
+		inputRedirS = "";
+		if (inputRedirM.find()) {
+			if (!cmdVector.get(cmdVectorIdx).isEmpty()) {
+				throw new ShellException(EXP_SYNTAX);
 			}
-			substring = str.substring(newEndIdx);
+			inputRedirS = inputRedirM.group(1);
+			cmdVector.set(cmdVectorIdx, inputRedirS.replace(String.valueOf((char) 160), " ").trim());
+			newEndIdx = newEndIdx + inputRedirM.end() - 1;
+		}
+		
+		substring = str.substring(newEndIdx);
+		if(substring.replace(String.valueOf((char) 160), "").trim().startsWith(">"))
+		{
+			throw new ShellException(EXP_MULTIPLE_OUTPUT);
 		}
 		return newEndIdx;
 	}

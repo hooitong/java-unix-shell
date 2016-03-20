@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
+
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.exception.DateException;
 
@@ -21,7 +24,7 @@ import sg.edu.nus.comp.cs4218.exception.DateException;
 public class DateApplication implements Application {
 	private static final String CHARSET_UTF_8 = "UTF-8";
 	private static final String DATE_FORMAT = "EEE MMM dd HH:mm:ss zzz yyyy";
-
+	
 	/**
 	 * Runs the date application with the specified arguments.
 	 * 
