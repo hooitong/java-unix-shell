@@ -242,7 +242,9 @@ public final class SortHelper {
 
 		} 
 		MergeSort mergeSort = new MergeSort(numFlag);
-		mergeSort.mergeSort(toSort, ZERO, toSort.length - 1);
+		if(toSort != null) {
+			mergeSort.mergeSort(toSort, ZERO, toSort.length - 1);
+		}
 		return toSort;
 	}
 }

@@ -178,11 +178,11 @@ public class BcApplication implements Bc {
 	public void run(String[] args, InputStream stdin, OutputStream stdout)
 			throws BcException {
 		String[] stdinArr = null;
-		if (args.length > 1) {
+		if (args == null || args.length == ZERO) {
+			stdinArr = readFromStdinAndWriteToStringArray(stdin);
+		} else if (args.length > 1) {
 			throw new BcException(
 					"Too many arguments, BC arguments must be wrapped with quotes");
-		} else if (args == null || args.length == ZERO) {
-			stdinArr = readFromStdinAndWriteToStringArray(stdin);
 		} else {
 			stdinArr = Arrays.copyOf(args, args.length);
 		}
@@ -205,11 +205,11 @@ public class BcApplication implements Bc {
 	}
 
 	/**
-	 * write the sorted array to the outstream
+	 * Write the sorted array to the output stream
 	 * 
-	 * @param outputstream
+	 * @param stdout
 	 *            stream to write out
-	 * @param string
+	 * @param finalResult
 	 *            array sorted array
 	 * @throws BcException
 	 */
