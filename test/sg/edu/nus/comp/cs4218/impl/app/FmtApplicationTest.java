@@ -164,7 +164,7 @@ public class FmtApplicationTest {
 		Path currentDir = Paths.get(Environment.currentDirectory);
 		Path filePath = currentDir.resolve("examples/testRead.txt");
 		String readString = fmtApplication.readFromFile(filePath);
-		String expectedString = "Selon la pr�fecture, des engins explosifs avaient �t�";
+		String expectedString = "Selon la prefecture, des engins explosifs avaient ete";
 		assertEquals(expectedString, readString);
 	}
 	
