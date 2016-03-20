@@ -137,11 +137,7 @@ public class CallCommand implements Command {
 			result = false;
 		}
 		if (!result) {
-			this.app = cmdVector.get(0);
-			error = true;
-			if (("").equals(errorMsg)) {
-				errorMsg = ShellImpl.EXP_SYNTAX;
-			}
+			errorMsg = ShellImpl.EXP_SYNTAX;
 			throw new ShellException(errorMsg);
 		}
 
