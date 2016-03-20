@@ -79,7 +79,7 @@ public class RedirectionTest
 	@Test
 	public void testHeadRedir() throws Exception {
 		shell.parseAndEvaluate("head -n 1 < examples/redirectOutput3.txt", baos);
-		assertEquals("This is the first line",new String(baos.toByteArray()));
+		assertEquals("This is the first line" + System.lineSeparator(),new String(baos.toByteArray()));
 	}
 	
 	/*

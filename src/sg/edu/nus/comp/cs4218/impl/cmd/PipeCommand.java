@@ -96,11 +96,14 @@ public class PipeCommand implements Command {
 	}
 
 	public void parse() throws ShellException {
+		if(argsList.size() < 2) {
+			throw new ShellException("invalid syntax");
+		}
+
 		for (int i = 0; i < this.argsList.size(); i++) {
 			ShellImpl shell = new ShellImpl();
-			Command command = shell.parse(this.argsList.get(i));
+			Command command = ShellImpl.parse(this.argsList.get(i));
 			cmdList.add((CallCommand) command);
-
 		}
 	}
 }
