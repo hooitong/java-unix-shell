@@ -45,8 +45,8 @@ public class SequenceCommand implements Command {
 		/* Setup boolean parameters and conditions for parsing */
 		boolean dblNotFound = doubleCommands.length < 2;
 		boolean sinNotFound = singleCommands.length < 2;
-		boolean dblArgMissing = doubleCommands.length == 2 && doubleCommands[1].isEmpty();
-		boolean sinArgMissing = singleCommands.length == 2 && singleCommands[1].isEmpty();
+		boolean dblArgMissing = doubleCommands.length == 2 && (doubleCommands[1].isEmpty() || doubleCommands[0].isEmpty());
+		boolean sinArgMissing = singleCommands.length == 2 && (singleCommands[1].isEmpty() || singleCommands[0].isEmpty());
 
 		if (dblNotFound || sinNotFound) {
 			throw new ShellException(EXP_SYNTAX);
