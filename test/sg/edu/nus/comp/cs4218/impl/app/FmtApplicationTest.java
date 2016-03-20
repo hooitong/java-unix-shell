@@ -84,7 +84,7 @@ public class FmtApplicationTest {
 	public void testTooShortWrapWidth() throws FmtException {
 		int wrapValue = 4;
 		String wrappedText = fmtApplication.wrapText("The random string is a cat", wrapValue);
-		String expectedString = "The" + NEW_LINE + "random" + NEW_LINE + "string" + NEW_LINE + "is a" + NEW_LINE + "cat";
+		String expectedString = "The" + NEW_LINE + "random" + NEW_LINE + "string" + NEW_LINE + "is" + NEW_LINE + "a" + NEW_LINE + "cat";
 		assertEquals(expectedString, wrappedText);
 	}
 
@@ -149,6 +149,14 @@ public class FmtApplicationTest {
 				"The" + "\nrandom" + NEW_LINE + "String" + NEW_LINE + "is" + NEW_LINE + "tall", wrapValue);
 		String expectedString = "The random String is tall";
 		assertEquals(expectedString,wrappedText);
+	}
+	
+	@Test
+	public void testTemp() throws FmtException {
+		String[] arguments = {"-w","40","examples-integration/Multiple-Pipe/sampleOriginal.txt" };
+		fmtApplication.run(arguments, null, baos);
+		String resultString = new String(baos.toByteArray());
+		System.out.println(resultString);
 	}
 	
 	@Test

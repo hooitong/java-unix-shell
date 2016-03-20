@@ -1,4 +1,4 @@
-package piping;
+package commandSubstituition;
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
@@ -19,12 +19,12 @@ import sg.edu.nus.comp.cs4218.impl.ShellImpl;
 
 
 
-public class MultiplePipesTest {
+public class MultipleCmdSubTest {
 	private ShellImpl shell;
 	private ByteArrayOutputStream stdout;
 	private final static String NEW_LINE = System.lineSeparator();
 	private final static String TAB = "\t";
-	private static final String FOLDER_LOCATION = "examples-integration/Multiple-Pipe/";
+	private static final String FOLDER_LOCATION = "examples-integration/Multiple-CmdSub/";
 	private static final String UTF8 = "UTF-8";
 
 	@Before
@@ -34,16 +34,15 @@ public class MultiplePipesTest {
 	}
 
 	/**
-	 * test the pipe evaluation from Cat app -> Tail app -> Head
+	 * test the command substituition evaluation from Cat app -> Tail app -> Head
 	 * 
 	 * @throws AbstractApplicationException
 	 * @throws ShellException
 	 */
 	@Test
-	public void testPipeCatTailHead() throws AbstractApplicationException,
+	public void testCmdSubSortCatHead() throws AbstractApplicationException,
 			ShellException {
-		String cmd = "cat " + FOLDER_LOCATION + "sampleOriginalPart1.txt "
-				+ FOLDER_LOCATION + "sampleOriginalPart2.txt | tail -n 4";
+		String cmd = "sort `cat " + FOLDER_LOCATION + "files.txt | head -n 1`";
 		shell.parseAndEvaluate(cmd, stdout);
 		String expected = "ultimately deriving from the Latin ingenium (c. 1250), "
 				+ NEW_LINE
@@ -135,7 +134,7 @@ public class MultiplePipesTest {
 		String cmd = "head " + FOLDER_LOCATION
 				+ "sampleOriginal.txt  | fmt -w 40 |tail -n 2";
 		shell.parseAndEvaluate(cmd, stdout);
-		String expected = "\"innate quality, especially mental" + NEW_LINE
+		String expected = "innate quality, especially mental" + NEW_LINE
 				+ "power, hence a clever invention.\"[5]";
 
 		System.out.println(stdout.toString());

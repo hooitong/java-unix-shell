@@ -131,7 +131,7 @@ public class FmtApplication implements Application {
 					++count;
 				}
 			} else {
-				if ((tempLine.length() + strArray[count].replace(String.valueOf((char) 160), " ").trim().length() + 1) <= wrapWidth) {
+				if ((tempLine.length() + strArray[count].replace(String.valueOf((char) 160), " ").trim().length() + 1) < wrapWidth) {
 					tempLine = tempLine.concat(" " + strArray[count].replace(String.valueOf((char) 160), " ").trim());
 					++count;
 				} else {
