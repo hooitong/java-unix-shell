@@ -381,4 +381,48 @@ public class PairPipingTest {
         String testInput = "cal -n | date";
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
     }
+
+    /**
+     * Invalid piping syntax without space as last argument.
+     *
+     * @throws Exception
+     */
+    @Test (expected = PipeCommandException.class)
+    public void pipeEchoNegative() throws Exception {
+        String testInput = "echo abc |";
+        mockShell.parseAndEvaluate(testInput, mockOutputStream);
+    }
+
+    /**
+     * Invalid piping syntax with spaces as last argument.
+     *
+     * @throws Exception
+     */
+    @Test (expected = PipeCommandException.class)
+    public void pipeDateNegative() throws Exception {
+        String testInput = "date|    ";
+        mockShell.parseAndEvaluate(testInput, mockOutputStream);
+    }
+
+    /**
+     * Invalid piping syntax with spaces as first argument.
+     *
+     * @throws Exception
+     */
+    @Test (expected = PipeCommandException.class)
+    public void pipeNegativeBc() throws Exception {
+        String testInput = "     |  bc '5+3'   ";
+        mockShell.parseAndEvaluate(testInput, mockOutputStream);
+    }
+
+    /**
+     * Invalid piping syntax without space as first argument.
+     *
+     * @throws Exception
+     */
+    @Test (expected = PipeCommandException.class)
+    public void pipeNegativeCal() throws Exception {
+        String testInput = "|cal";
+        mockShell.parseAndEvaluate(testInput, mockOutputStream);
+    }
 }
