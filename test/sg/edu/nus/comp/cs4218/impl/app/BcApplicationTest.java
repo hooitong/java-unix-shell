@@ -700,6 +700,28 @@ public class BcApplicationTest {
 	}
 
 	/**
+	 * throws an expression if a numeric string/open parenthesis does not follow
+	 * after a relational operator
+	 * 
+	 * @throws BcException
+	 */
+	@Test(expected = BcException.class)
+	public void testRunInvalidExpressionEquals() throws BcException {
+		String[] args = { "5  =" };
+		bcApp.run(args, null, outStream);
+	}
+
+	/**throws an expression if an expression is invalid
+	 * 
+	 * @throws BcException
+	 */
+	@Test(expected = BcException.class)
+	public void testRunInvalidExpressionPlusPlus() throws BcException {
+		String[] args = { "2 ++ -6 " };
+		bcApp.run(args, null, outStream);
+	}
+
+	/**
 	 * Test if two expression are equal equal to each other through the shell
 	 * 
 	 * @throws AbstractApplicationException

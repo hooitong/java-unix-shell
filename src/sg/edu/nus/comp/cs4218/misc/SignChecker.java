@@ -45,10 +45,10 @@ public final class SignChecker {
 				result = false;
 			}
 		} else {
-			for (int i = 0; i < input.length(); i++) {
-				if (!Character.isDigit(input.charAt(i))) {
-					result = false;
-				}
+			try {
+				Integer.parseInt(input);
+			} catch (Exception e) {
+				result = false;
 			}
 		}
 

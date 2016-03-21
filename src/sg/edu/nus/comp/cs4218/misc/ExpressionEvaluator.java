@@ -9,17 +9,6 @@ import java.util.Vector;
 import sg.edu.nus.comp.cs4218.exception.BcException;
 
 public final class ExpressionEvaluator {
-	private String[] argArr;
-	public String leftExp;
-	public String rightExp;
-	public boolean isEqualPresent;
-	public boolean isTwoEqualPresent;
-	public boolean isNotPresent;
-	public boolean isAndPresent;
-	public boolean isOrPresent;
-	public boolean isGreaterPresent;
-	public boolean isLesserPresent;
-
 	public final static String NEGATE = "-";
 	public final static String NOT_EQUAL = "!=";
 	public final static String AND_SIGN = "&&";
@@ -68,10 +57,8 @@ public final class ExpressionEvaluator {
 		Stack<String> tStack = new Stack<String>();
 		Vector<String> splittedString = splitSeparateStrings(exp);
 		Vector<String> resultVector = new Vector<String>();
-
 		for (int i = 0; i < splittedString.size(); i++) {
 			String cString = splittedString.get(i);
-
 			if (cString.charAt(ZERO) == OPENPAREN) {
 				tStack.push(String.valueOf(cString));
 			} else if (cString.charAt(ZERO) == CLOSEDPAREN) {
@@ -105,6 +92,15 @@ public final class ExpressionEvaluator {
 		return resultVector;
 	}
 
+	/**
+	 * check for valid position of a unary minus, if so mark it with a '$'
+	 * instead of a '-' as it will interfere during the precedence checking
+	 * 
+	 * @param splittedString
+	 * @param index
+	 * @param cString
+	 * @return
+	 */
 	private static String checkForUnaryMinus(Vector<String> splittedString,
 			int index, String cString) {
 		if (index == ZERO) {
@@ -194,19 +190,26 @@ public final class ExpressionEvaluator {
 		Stack<String> tStack = new Stack<String>();
 		for (int i = 0; i < postfixVector.size(); i++) {
 			String cString = postfixVector.get(i);
+			String num1Str = "";
+			String num2Str = "";
 			if (SignChecker.isNumeric(cString)) {
 				tStack.push(String.valueOf(cString));
 			} else {
 				if (cString.compareTo(UNARY_MARKER) == 0) {
-					tStack.push(calculateArithmetic(NEGATIVE_ONE, tStack.pop(), TIMES));
+					num1Str = EspressionEvaluationAdditional.getTopStack(tStack);
+					tStack.push(calculateArithmetic(NEGATIVE_ONE, num1Str,
+							TIMES));
 				} else if (cString.compareTo(NOT) == 0) {
-					tStack.push(calculateRelation(tStack.pop(), ZERO_STRING,
-							cString));
+					num1Str = EspressionEvaluationAdditional.getTopStack(tStack);
+					tStack.push(calculateRelation(num1Str, ZERO_STRING, cString));
 				} else if (SignChecker.isOperator(cString.charAt(ZERO))) {
-					tStack.push(calculateArithmetic(tStack.pop(), tStack.pop(),
-							cString));
+					num2Str = EspressionEvaluationAdditional.getTopStack(tStack);
+					num1Str = EspressionEvaluationAdditional.getTopStack(tStack);
+					tStack.push(calculateArithmetic(num2Str, num1Str, cString));
 				} else {
-					String solution = calculateRelation(tStack.pop(), tStack.pop(),
+					num2Str = EspressionEvaluationAdditional.getTopStack(tStack);
+					num1Str = EspressionEvaluationAdditional.getTopStack(tStack);
+					String solution = calculateRelation(num2Str, num1Str,
 							cString);
 					tStack.push(solution);
 				}
@@ -215,6 +218,8 @@ public final class ExpressionEvaluator {
 		}
 		return tStack.pop();
 	}
+
+	
 
 	/**
 	 * This method performs arithmetic operations for the following without
@@ -250,7 +255,8 @@ public final class ExpressionEvaluator {
 			result = bdNum1.multiply(bdNum2).toString();
 			break;
 		case POW:
-			result = bdNum1.pow(bdNum2.intValueExact(), new MathContext(FIVE)).toString();
+			result = bdNum1.pow(bdNum2.intValueExact(), new MathContext(FIVE))
+					.toString();
 			break;
 		default:
 			break;
@@ -379,6 +385,22 @@ public final class ExpressionEvaluator {
 		if (stringBuilder.length() != ZERO) {
 			resultVector.add(stringBuilder.toString());
 		}
+		catchRelationalOperatorException(stringBuilderR);
 		return resultVector;
+	}
+
+	/**
+	 * throws an exception if the relation stringbuilder is not pushed into the
+	 * vector after the end of the loop. this means that no numeric string or
+	 * open parenthesis follows after the relational operator
+	 * 
+	 * @param stringBuilderR
+	 * @throws BcException
+	 */
+	private static void catchRelationalOperatorException(
+			StringBuilder stringBuilderR) throws BcException {
+		if (stringBuilderR.length() != 0) {
+			throw new BcException("Incomplete Relational Operator");
+		}
 	}
 }
