@@ -51,7 +51,7 @@ public class PairCmdSubTest {
 	 */
 	@Test
 	public void testSubEchoCat() throws Exception {
-		String command = "echo `cat examples\\file1.txt`";
+		String command = "echo `cat examples/file1.txt`";
 		mockShell.parseAndEvaluate(command, mockOut);
 		assertEquals("apple banana eggplant" + System.lineSeparator(), mockOut.toString());
 	}
@@ -63,7 +63,7 @@ public class PairCmdSubTest {
 	 */
 	@Test
 	public void testSubEchoHead() throws Exception {
-		String command = "echo `head -n 1 examples\\file1.txt`";
+		String command = "echo `head -n 1 examples/file1.txt`";
 		mockShell.parseAndEvaluate(command, mockOut);
 		assertEquals("apple" + System.lineSeparator(), mockOut.toString());
 	}
@@ -76,7 +76,7 @@ public class PairCmdSubTest {
 	 */
 	@Test
 	public void testSubPipeCatSort() throws Exception {
-		String command = "echo `cat examples\\numbersort.txt | sort`";
+		String command = "echo `cat examples/numbersort.txt | sort`";
 		mockShell.parseAndEvaluate(command, mockOut);
 		assertEquals("1000 11 23 65 9" + System.lineSeparator(), mockOut.toString());
 	}
@@ -89,7 +89,7 @@ public class PairCmdSubTest {
 	 */
 	@Test
 	public void testSubPipeCatHead() throws Exception {
-		String command = "echo `cat examples\\file1.txt | head -n 2`";
+		String command = "echo `cat examples/file1.txt | head -n 2`";
 		mockShell.parseAndEvaluate(command, mockOut);
 		assertEquals("apple banana" + System.lineSeparator(), mockOut.toString());
 	}
@@ -114,7 +114,7 @@ public class PairCmdSubTest {
 	 */
 	@Test
 	public void testSubSequenceEchoCat() throws Exception {
-		String command = "echo testing 123: `echo showing content of file1.txt; cat examples\\file1.txt`";
+		String command = "echo testing 123: `echo showing content of file1.txt; cat examples/file1.txt`";
 		mockShell.parseAndEvaluate(command, mockOut);
 		assertEquals("testing 123: showing content of file1.txt apple banana eggplant" + System.lineSeparator(),
 				mockOut.toString());
@@ -127,7 +127,7 @@ public class PairCmdSubTest {
 	 */
 	@Test
 	public void testSubGlobbing() throws Exception {
-		String command = "echo test globbing: `cat mock-glob-fs\\apple/*`";
+		String command = "echo test globbing: `cat mock-glob-fs/apple/*`";
 		mockShell.parseAndEvaluate(command, mockOut);
 		String expectedOutput = "test globbing: Ascoltami indugiare tre fra rivedervi coricarmi rifugiato ritornata. Che esplorarne osi ingranditi trasfigura dir. Troveresti fu bellissima incessante ma somigliava conservava impaziente. Su lo tenerezza comprendo di affannata. Piuttosto noi fra consumato poi sorrideva. De Nu fransche afstands op verbouwd minstens onzuiver. Rente bezig te geval ad. Taiping tijdens zit aan zij regelen inhouds dit sneller vreezen. Alleen nog ruimte steeds bieden ook mei brusch men levert."
 				+ System.lineSeparator();
@@ -158,7 +158,7 @@ public class PairCmdSubTest {
 	 */
 	@Test
 	public void testSubEchoCatTwo() throws Exception {
-		String command = "echo `cat examples\\file2.txt`";
+		String command = "echo `cat examples/file2.txt`";
 		mockShell.parseAndEvaluate(command, mockOut);
 		assertEquals(mockOut.toString(), "apple banana banana zucchini" + System.lineSeparator());
 	}

@@ -103,10 +103,8 @@ public class RedirectionTest {
 	 *
 	 * @throws Exception
 	 */
-	@Test
+	@Test (expected = ShellException.class)
 	public void testNonExistantInputRedir() throws Exception {
-		exception.expect(ShellException.class);
-		exception.expectMessage("The system cannot find the file specified");
 		shell.parseAndEvaluate("tail -n 1 < examples/redirectOutputNE.txt", baos);
 	}
 

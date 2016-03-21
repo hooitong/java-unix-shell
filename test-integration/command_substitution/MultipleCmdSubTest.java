@@ -42,9 +42,9 @@ public class MultipleCmdSubTest {
 	 */
 	@Test
 	public void testSubPipeEcho() throws Exception {
-		String command = "echo `cat examples\\comsub1.txt` testing | head -n `echo 1`";
+		String command = "echo `cat examples/comsub1.txt` testing | head -n `echo 1`";
 		mockShell.parseAndEvaluate(command, mockOut);
-		assertEquals("examples\\file1.txt examples\\file2.txt examples\\file3.txt testing" + System.lineSeparator(),
+		assertEquals("examples/file1.txt examples/file2.txt examples/file3.txt testing" + System.lineSeparator(),
 				mockOut.toString());
 
 	}
@@ -59,7 +59,7 @@ public class MultipleCmdSubTest {
 	 */
 	@Test
 	public void testSubPipePipePipe() throws Exception {
-		String command = "echo `cat examples\\numbersort.txt| head -n 1` plus `cat examples\\numbersort.txt|sort|head -n 1` is `echo 65+1000|bc` ";
+		String command = "echo `cat examples/numbersort.txt| head -n 1` plus `cat examples/numbersort.txt|sort|head -n 1` is `echo 65+1000|bc` ";
 		mockShell.parseAndEvaluate(command, mockOut);
 		assertEquals("65 plus 1000 is 1065" + System.lineSeparator(), mockOut.toString());
 	}
@@ -74,7 +74,7 @@ public class MultipleCmdSubTest {
 	 */
 	@Test
 	public void testSubHeadHead() throws Exception {
-		String command = "cat `head -n 1 examples\\comsub1.txt` `head -n 1 examples\\comsub2.txt` | sort | head -n 1";
+		String command = "cat `head -n 1 examples/comsub1.txt` `head -n 1 examples/comsub2.txt` | sort | head -n 1";
 		mockShell.parseAndEvaluate(command, mockOut);
 		assertEquals("1000" + System.lineSeparator(), mockOut.toString());
 	}

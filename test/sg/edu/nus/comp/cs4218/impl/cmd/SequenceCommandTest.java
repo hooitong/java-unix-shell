@@ -52,7 +52,7 @@ public class SequenceCommandTest {
 	 */
 	@Test
 	public void testParseSingleValid() throws Exception {
-		String cmdline = "cat abc.txt ; grep abc/*.txt";
+		String cmdline = "cat abc.txt ; grep abc/apple.txt";
 		SequenceCommand cmd = new SequenceCommand(cmdline);
 		cmd.parse();
 	}
@@ -65,7 +65,7 @@ public class SequenceCommandTest {
 	 */
 	@Test
 	public void testParseMultipleValid() throws Exception {
-		String cmdline = "grep test/apple/* ; cat abc.txt ; cat tk.test > a.out ";
+		String cmdline = "grep test/apple/test.txt ; cat abc.txt ; cat tk.test > a.out ";
 		SequenceCommand cmd = new SequenceCommand(cmdline);
 		cmd.parse();
 	}

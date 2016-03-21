@@ -73,7 +73,7 @@ public class ShellImplTest {
 	 */
 	@Test
 	public void testParseSingleSequenceCommand() throws Exception {
-		String cmdline = "echo /apple/ti/*.txt; cat martini/*";
+		String cmdline = "echo /apple/ti/cat.txt; cat martini/kitty.txt";
 		Command mockCommand = ShellImpl.parse(cmdline);
 		assertTrue(mockCommand instanceof SequenceCommand);
 	}
@@ -86,7 +86,7 @@ public class ShellImplTest {
 	 */
 	@Test
 	public void testParseMultiSequenceCommand() throws Exception {
-		String cmdline = "tail *.txt ; cat apple/* ;echo *";
+		String cmdline = "tail martini.txt ; cat apple/cat.txt ;echo *";
 		Command mockCommand = ShellImpl.parse(cmdline);
 		assertTrue(mockCommand instanceof SequenceCommand);
 	}
