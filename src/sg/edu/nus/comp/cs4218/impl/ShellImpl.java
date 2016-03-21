@@ -72,14 +72,11 @@ public class ShellImpl implements Shell {
 
 		for (int i = 0; i < argsArray.length; i++) {
 			Matcher matcherBQ = patternBQp.matcher(argsArray[i]);
-			int a = 0;
-			System.out.println(argsArray[i]);
 			if (matcherBQ.find()) {// found backquoted
 				String bqStr = matcherBQ.group(1);
-				//Vector<String> cmdVector = new Vector<String>();
 				//cmdVector.add(bqStr.trim());
 				// process back quote
-				System.out.println("backquote" + bqStr + i);
+				//System.out.println("backquote" + bqStr + i);
 				OutputStream bqOutputStream = new ByteArrayOutputStream();
 				ShellImpl shell = new ShellImpl();
 				shell.parseAndEvaluate(bqStr, bqOutputStream);
@@ -90,7 +87,7 @@ public class ShellImpl implements Shell {
 
 				// replace substring of back quote with result
 				String replacedStr = argsArray[i].replace("`" + bqStr + "`", bqResult);
-				resultArr[i] = replacedStr;
+				resultArr[i] = replacedStr.trim();
 			}
 		}
 		return resultArr;
@@ -345,6 +342,8 @@ public class ShellImpl implements Shell {
 					throw e;
 				}
 
+			}catch (StackOverflowError soe){
+				throw new ShellException( soe + "Invalid command for parsing");
 			}
 		}
 	}
