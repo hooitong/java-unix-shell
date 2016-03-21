@@ -48,7 +48,7 @@ public class PipeCommand implements Command {
 				stringBuilder.append(cmdLine.charAt(i));
 			}
 			if (i == cmdline.length() - 1 && !cmdLine.equals(stringBuilder.toString())) {
-				this.argsList.add(stringBuilder.toString().trim());
+				this.argsList.add(stringBuilder.toString());
 			}
 		}
 	}
@@ -96,8 +96,11 @@ public class PipeCommand implements Command {
 	}
 
 	public void parse() throws ShellException {
+		if(this.argsList.get(ZERO).equals(this.cmdline)){
+			throw new ShellException("Not a PipeCommand");
+		}
 		for (int i = 0; i < this.argsList.size(); i++) {
-			Command command = ShellImpl.parse(this.argsList.get(i));
+			Command command = ShellImpl.parse(this.argsList.get(i).trim());
 			cmdList.add((CallCommand) command);
 		}
 	}
