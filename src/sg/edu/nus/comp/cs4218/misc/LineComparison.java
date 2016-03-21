@@ -4,14 +4,12 @@ import java.util.ArrayList;
 
 public class LineComparison {
 	private static final int ZERO = 0;
-	private static final int ONE = 1;
-	private static final int TWO = 2;
 	private static final int COL_ZERO = 0;
 	private static final int COL_ONE = 1;
 	private static final int COL_TWO = 2;
-	private static final String NEW_LINE = System.lineSeparator();
 	private static final String TAB_LINE = "\t";
-	ArrayList<String> strList1, strList2;
+	private ArrayList<String> strList1;
+	private ArrayList<String> strList2;
 
 	public LineComparison(ArrayList<String> strList1, ArrayList<String> strList2) {
 		this.strList1 = strList1;

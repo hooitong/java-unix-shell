@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.app.Comm;
 import sg.edu.nus.comp.cs4218.exception.CommException;
-import sg.edu.nus.comp.cs4218.exception.SortException;
 import sg.edu.nus.comp.cs4218.misc.LineComparison;
 
 public class CommApplication implements Comm {
@@ -27,7 +26,6 @@ public class CommApplication implements Comm {
 	private static final int COL_TWO = 2;
 	private static final String CHARSET_UTF_8 = "UTF-8";
 	private static final String NEW_LINE = System.lineSeparator();
-	private static final String TAB_LINE = "\t";
 
 	/**
 	 * Returns string to print comparisons when there are no matches in both
@@ -63,7 +61,6 @@ public class CommApplication implements Comm {
 			mainList = getContentFromStdinOrFile(args);
 			ArrayList<String> strList1 = mainList.get(ZERO);
 			ArrayList<String> strList2 = mainList.get(ONE);
-			String[] temp = strList1.toArray(new String[strList1.size()]);
 			LineComparison lineCompare = new LineComparison(strList1, strList2);
 			ArrayList<String> firstColAl = lineCompare.compareLines().get(COL_ZERO);
 			for (int i = 0; i < firstColAl.size() - 1; i++) {
@@ -144,7 +141,6 @@ public class CommApplication implements Comm {
 			}
 			stringBuilder.append(lastColAl.get(lastColAl.size() - 1));
 		} catch (CommException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -257,7 +253,7 @@ public class CommApplication implements Comm {
 	 * @throws CommException
 	 *             Exceptions caught when reading and writing from input file.
 	 */
-	ArrayList<String> readFromFileAndWriteToStringList(Path filePath) throws CommException {
+	private ArrayList<String> readFromFileAndWriteToStringList(Path filePath) throws CommException {
 		ArrayList<String> resultList = new ArrayList<String>();
 		try {
 			FileInputStream fileInStream = new FileInputStream(filePath.toString());
@@ -284,7 +280,7 @@ public class CommApplication implements Comm {
 	 * @throws CommException
 	 *             If the file is not readable
 	 */
-	void catchIfFileIsReadableException(Path filePath) throws CommException {
+	private void catchIfFileIsReadableException(Path filePath) throws CommException {
 		if (!Files.exists(filePath) && !Files.isReadable(filePath)) {
 			throw new CommException("Could not read file");
 		}

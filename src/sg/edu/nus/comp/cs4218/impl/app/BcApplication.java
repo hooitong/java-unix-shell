@@ -11,31 +11,12 @@ import java.util.List;
 import java.util.Vector;
 
 import sg.edu.nus.comp.cs4218.app.Bc;
-import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.BcException;
-import sg.edu.nus.comp.cs4218.exception.CommException;
-import sg.edu.nus.comp.cs4218.exception.SortException;
 import sg.edu.nus.comp.cs4218.misc.ExpressionEvaluator;
 import sg.edu.nus.comp.cs4218.misc.SignChecker;
 
 public class BcApplication implements Bc {
-	public final static String NEGATESIGNSTR = "-";
-	public final static String EQUALSIGNSTR = "=";
-	public final static String GREATERSIGNSTR = ">";
-	public final static String LESSSIGNSTR = "<";
-	public final static char EQUAL = '=';
-	public final static char GREATER = '>';
-	public final static char LESS = '<';
-	public final static char PLUS = '+';
-	public final static char MINUS = '-';
-	public final static char DIVISION = '/';
-	public final static char TIMES = '*';
-	public final static char POWER = '^';
-	public final static char OPENBRAC = '(';
-	public final static char CLOSEBRAC = ')';
-	public final static int ZERO = 0;
-	public final static int ONE = 1;
-	public final static int TWO = 2;
+	private final static int ZERO = 0;
 	private static final String CHARSET_UTF_8 = "UTF-8";
 	/**
 	 * Returns resultant string with expression of the form <number>, where

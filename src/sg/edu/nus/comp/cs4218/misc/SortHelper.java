@@ -233,7 +233,6 @@ public final class SortHelper {
 				toSort = SortApplication.getFileContents(args, currentDir, filePosition);
 			}
 		} else if (args.length >= SortApplication.MAX_LENGTH) {
-			//catchMissingNumberCommandFormatException(args);
 			if (SortApplication.isNumberCommandFormat(args)) {
 				numFlag = true;
 				filePosition = ONE;

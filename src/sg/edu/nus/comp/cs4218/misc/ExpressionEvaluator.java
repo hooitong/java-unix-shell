@@ -9,37 +9,30 @@ import java.util.Vector;
 import sg.edu.nus.comp.cs4218.exception.BcException;
 
 public final class ExpressionEvaluator {
-	public final static String NEGATE = "-";
-	public final static String NOT_EQUAL = "!=";
-	public final static String AND_SIGN = "&&";
-	public final static String OR_SIGN = "||";
-	public final static String EQUAL = "=";
-	public final static String EQUAL_EQUAL_SIGN = "==";
-	public final static String GREATER = ">";
-	public final static String GREATER_EQUAL = ">=";
-	public final static String LESS = "<";
-	public final static String LESS_EQUAL = "<=";
-	public final static String PLUS = "+";
-	public final static String MINUS = "-";
-	public final static String DIVIDE = "/";
-	public final static String TIMES = "*";
-	public final static String NOT = "!";
-	public final static String POW = "^";
-	public final static String DOT = ".";
-	public final static String UNARY_MARKER = "$";
-	public final static String NEGATIVE_ONE = "-1";
-	public final static char WHITE_SPACE = ' ';
-	public final static char DOT_CHAR = '.';
-	public final static char NEGATE_CHAR = '-';
-	public final static char UNARY_CHAR_MARKER = '$';
-	public final static char OPENPAREN = '(';
-	public final static char CLOSEDPAREN = ')';
-	public final static int ZERO = 0;
-	public final static int ONE = 1;
-	public final static int TWO = 2;
-	public final static int FIVE = 5;
-	public final static String ZERO_STRING = "0";
-	public final static int MAX_VALUE = 1000000000;
+	private final static String NOT_EQUAL = "!=";
+	private final static String AND_SIGN = "&&";
+	private final static String OR_SIGN = "||";
+	private final static String EQUAL_EQUAL_SIGN = "==";
+	private final static String GREATER = ">";
+	private final static String GREATER_EQUAL = ">=";
+	private final static String LESS = "<";
+	private final static String LESS_EQUAL = "<=";
+	private final static String PLUS = "+";
+	private final static String MINUS = "-";
+	private final static String DIVIDE = "/";
+	private final static String TIMES = "*";
+	private final static String NOT = "!";
+	private final static String POW = "^";
+	private final static String UNARY_MARKER = "$";
+	private final static String NEGATIVE_ONE = "-1";
+	private final static char WHITE_SPACE = ' ';
+	private final static char DOT_CHAR = '.';
+	private final static char NEGATE_CHAR = '-';
+	private final static char OPENPAREN = '(';
+	private final static char CLOSEDPAREN = ')';
+	private final static int ZERO = 0;;
+	private final static int FIVE = 5;
+	private final static String ZERO_STRING = "0";
 
 	private ExpressionEvaluator() {
 	}
@@ -235,7 +228,7 @@ public final class ExpressionEvaluator {
 	 * @return string
 	 * @throws BcException
 	 */
-	public static String calculateArithmetic(String numStr2, String numStr1,
+	private static String calculateArithmetic(String numStr2, String numStr1,
 			String operator) throws BcException {
 		String result = "";
 		BigDecimal bdNum1 = new BigDecimal(numStr1);
@@ -289,7 +282,7 @@ public final class ExpressionEvaluator {
 	 *            "< > <= >= ! != || &&"
 	 * @return
 	 */
-	public static String calculateRelation(String numStr2, String numStr1,
+	private static String calculateRelation(String numStr2, String numStr1,
 			String operator) {
 		String result = "";
 		BigDecimal bdNum1 = new BigDecimal(numStr1);
@@ -339,7 +332,7 @@ public final class ExpressionEvaluator {
 	 * @return Vector<String>
 	 * @throws BcException
 	 */
-	public static Vector<String> splitSeparateStrings(String input)
+	private static Vector<String> splitSeparateStrings(String input)
 			throws BcException {
 		StringBuilder stringBuilder = new StringBuilder("");
 		StringBuilder stringBuilderR = new StringBuilder("");

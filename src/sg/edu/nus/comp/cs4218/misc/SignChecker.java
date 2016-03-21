@@ -1,30 +1,20 @@
 package sg.edu.nus.comp.cs4218.misc;
 
 public final class SignChecker {
-	public final static String NEGATE = "-";
-	public final static String EQUALSTR = "=";
-	public final static String NOTEQUALSTR = "!=";
-	public final static String GREATERSTR = ">";
-	public final static String LESSSTR = "<";
-	public final static String NOTSTR = "!";
-	public final static String ANDSTR = "&&";
-	public final static String ORSTR = "||";
-	public final static char EQUAL = '=';
-	public final static char GREATER = '>';
-	public final static char LESS = '<';
-	public final static char PLUS = '+';
-	public final static char MINUS = '-';
-	public final static char DIVIDE = '/';
-	public final static char TIMES = '*';
-	public final static char POW = '^';
-	public final static char OPENBRAC = '(';
-	public final static char NOT_SIGN = '!';
-	public final static char AND_SIGN = '&';
-	public final static char OR_SINGLE_SIGN = '|';
-	public final static String DOT = ".";
-	public final static int ZERO = 0;
-	public final static int ONE = 1;
-	public final static int TWO = 2;
+	private final static char EQUAL = '=';
+	private final static char GREATER = '>';
+	private final static char LESS = '<';
+	private final static char PLUS = '+';
+	private final static char MINUS = '-';
+	private final static char DIVIDE = '/';
+	private final static char TIMES = '*';
+	private final static char POW = '^';
+	private final static char NOT_SIGN = '!';
+	private final static char AND_SIGN = '&';
+	private final static char OR_SINGLE_SIGN = '|';
+	private final static String DOT = ".";
+
+
 
 	private SignChecker() {
 	}
@@ -53,24 +43,6 @@ public final class SignChecker {
 		}
 
 		return result;
-	}
-
-	/**
-	 * This method performs the negation of an expression.
-	 * 
-	 * @param input
-	 *            input string
-	 * @return string
-	 * 
-	 */
-	public static String negation(String input) {
-		StringBuilder stringBuilder = new StringBuilder("");
-		if (input.charAt(ZERO) == MINUS) {
-			stringBuilder.append(input.substring(ONE, input.length()));
-		} else {
-			stringBuilder.append('-').append(input);
-		}
-		return stringBuilder.toString();
 	}
 
 	/**

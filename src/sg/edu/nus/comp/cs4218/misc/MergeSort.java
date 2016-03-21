@@ -4,17 +4,12 @@ import sg.edu.nus.comp.cs4218.exception.SortException;
 
 public class MergeSort {
 	private static final int ZERO = 0;
-	private static final int ONE = 1;
-	private static final int TWO = 2;
-	private static final int THREE = 3;
-	private static final int FOUR = 4;
 	private static final int DIGIT_START = 48;
 	private static final int DIGIT_END = 57;
 	private static final int CAPITAL_START = 65;
 	private static final int CAPITAL_END = 90;
 	private static final int LOWER_START = 97;
 	private static final int LOWER_END = 122;
-	private static final int WHITESPACE = 32;
 	private final boolean numFlag;
 
 	public MergeSort(boolean numFlag) {
@@ -69,7 +64,7 @@ public class MergeSort {
 	 *            ending position of array
 	 * @return an sorted array
 	 */
-	public void merge(String[] toSort, int front, int mid, int back) {
+	private void merge(String[] toSort, int front, int mid, int back) {
 		int rightOfMid = mid + 1;
 		int left = front;
 		int iterate = 0;
@@ -111,7 +106,7 @@ public class MergeSort {
 	 *            input string
 	 * @return a string
 	 */
-	public String extractFirstNumberWordFromLine(String line) {
+	private String extractFirstNumberWordFromLine(String line) {
 		String result = "";
 		result = checkIfStringIsDigit(line);
 		result = checkIfWordIsDigitLastResort(line, result);
@@ -175,7 +170,7 @@ public class MergeSort {
 	 *            second input string
 	 * @return int
 	 */
-	public int compareIncludeNumOrder(String str1, String str2) {
+	private int compareIncludeNumOrder(String str1, String str2) {
 		if (str1.isEmpty() && !str2.isEmpty()) {
 			return -1;
 		} else if (!str1.isEmpty() && str2.isEmpty()) {
@@ -254,7 +249,7 @@ public class MergeSort {
 	 *            input character
 	 * @return int rank number
 	 */
-	public int getRank(char currChar) {
+	private int getRank(char currChar) {
 		int asciiNum = (int) currChar;
 		int result = -1;
 		if (asciiNum >= CAPITAL_START && asciiNum <= CAPITAL_END) {

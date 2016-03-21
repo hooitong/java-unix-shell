@@ -13,17 +13,11 @@ import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.ShellImpl;
 
 public class PipeCommand implements Command {
-
-	static final String WHITESPACE = "\\s+";
-	static final char PIPE = '|';
-	static final int ZERO = 0;
-	static final int ONE = 0;
-	String app;
-	String cmdline, inputStreamS, outputStreamS;
-	ArrayList<String> argsList;
-	ArrayList<CallCommand> cmdList = new ArrayList<CallCommand>();
-	Boolean error;
-	String errorMsg;
+	private static final char PIPE = '|';
+	private static final int ZERO = 0;
+	private String cmdline;
+	private ArrayList<String> argsList;
+	private ArrayList<CallCommand> cmdList = new ArrayList<CallCommand>();
 
 	public PipeCommand(String cmdLine) {
 		this.argsList = new ArrayList<String>();

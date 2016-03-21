@@ -8,15 +8,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import sg.edu.nus.comp.cs4218.Environment;
+
 import sg.edu.nus.comp.cs4218.app.Sort;
-import sg.edu.nus.comp.cs4218.exception.FmtException;
 import sg.edu.nus.comp.cs4218.exception.SortException;
-import sg.edu.nus.comp.cs4218.misc.MergeSort;
 import sg.edu.nus.comp.cs4218.misc.SortHelper;
 
 public class SortApplication implements Sort {
@@ -368,7 +365,7 @@ public class SortApplication implements Sort {
 	 * @throws SortException
 	 *             If the file is not readable
 	 */
-	static void catchIfFileIsReadableException(Path filePath) throws SortException {
+	private static void catchIfFileIsReadableException(Path filePath) throws SortException {
 		if (!Files.exists(filePath) && !Files.isReadable(filePath)) {
 			throw new SortException("Could not read file");
 		}
@@ -382,7 +379,7 @@ public class SortApplication implements Sort {
 	 * @throws SortException
 	 *             Exceptions caught when reading and writing from input file.
 	 */
-	static String[] readFromFileAndWriteToStringArray(ArrayList<Path> filePathList) throws SortException {
+	private static String[] readFromFileAndWriteToStringArray(ArrayList<Path> filePathList) throws SortException {
 		List<String> arrayList = new ArrayList<String>();
 		for (int i = 0; i < filePathList.size(); i++) {
 			try {
