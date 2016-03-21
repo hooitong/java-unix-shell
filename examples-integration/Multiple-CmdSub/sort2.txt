@@ -1,2 +1,3 @@
-yawn
-98
+kangaroo
+zebra
+animal
