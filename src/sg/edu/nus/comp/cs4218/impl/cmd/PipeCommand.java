@@ -42,7 +42,7 @@ public class PipeCommand implements Command {
 			} else {
 				stringBuilder.append(cmdLine.charAt(i));
 			}
-			if (i == cmdline.length() - 1 && !cmdLine.equals(stringBuilder.toString())) {
+			if (i == cmdline.length() - 1) {
 				this.argsList.add(stringBuilder.toString());
 			}
 		}
