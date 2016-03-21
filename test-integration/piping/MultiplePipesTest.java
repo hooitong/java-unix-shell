@@ -52,9 +52,9 @@ public class MultiplePipesTest {
 				+ NEW_LINE
 				+ "especially mental power,"
 				+ NEW_LINE
-				+ "hence a clever invention.\"[5]";
+				+ "hence a clever invention.\"[5]"
+				+ NEW_LINE;
 		assertEquals(expected, stdout.toString());
-
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class MultiplePipesTest {
 		String cmd = "sort " + FOLDER_LOCATION + "sort1.txt " + FOLDER_LOCATION
 				+ "sort2.txt " + FOLDER_LOCATION + "sort3.txt |tail -n 3|fmt";
 		shell.parseAndEvaluate(cmd, stdout);
-		String expected = "muse science yawn";
+		String expected = "muse science yawn" + NEW_LINE;
 		assertEquals(expected, stdout.toString());
 	}
 
@@ -137,11 +137,8 @@ public class MultiplePipesTest {
 				+ "sampleOriginal.txt  | fmt -w 40 |tail -n 2";
 		shell.parseAndEvaluate(cmd, stdout);
 		String expected = "\"innate quality, especially mental" + NEW_LINE
-				+ "power, hence a clever invention.\"[5]";
-
-		System.out.println(stdout.toString());
+				+ "power, hence a clever invention.\"[5]" + NEW_LINE;
 		assertEquals(expected, stdout.toString());
-
 	}
 
 	/**

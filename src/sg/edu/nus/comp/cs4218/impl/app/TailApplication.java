@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,7 +34,6 @@ import sg.edu.nus.comp.cs4218.exception.TailException;
  */
 public class TailApplication implements Application {
 
-	private static final String CHARSET_UTF_8 = "UTF-8";
 	private static final String NEW_LINE = System.lineSeparator();
 	private static final String NUMLINES_FLAG = "-n";
 
@@ -157,7 +157,6 @@ public class TailApplication implements Application {
 				++count;
 			}
 		}
-
 		return extractedText;
 	}
 
@@ -193,16 +192,12 @@ public class TailApplication implements Application {
 			throw new TailException("Null pointer exception - stdout is not defined");
 		}
 
-		try {
-			while (!linesToWrite.isEmpty()) {
-				stdout.write(linesToWrite.removeFirst().getBytes(CHARSET_UTF_8));
-				if (!linesToWrite.isEmpty()) {
-					stdout.write(NEW_LINE.getBytes(CHARSET_UTF_8));
-				}
-			}
-		} catch (IOException e) {
-			throw new TailException(e);
+		PrintWriter printWriter = new PrintWriter(stdout);
+		while (!linesToWrite.isEmpty()) {
+			printWriter.println(linesToWrite.removeFirst().replaceAll("(\\r|\\n)", ""));
 		}
+		printWriter.flush();
+		printWriter.close();
 	}
 
 	/**
@@ -224,7 +219,10 @@ public class TailApplication implements Application {
 			String input = "";
 
 			while ((input = buffReader.readLine()) != null) {
-				textToExtract.push(input);
+				if(!input.equals(NEW_LINE))
+				{
+					textToExtract.push(input);
+				}
 			}
 
 			buffReader.close();

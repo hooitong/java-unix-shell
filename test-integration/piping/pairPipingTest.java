@@ -81,7 +81,7 @@ public class PairPipingTest {
                 + "text. It has roots in a piece of" + System.lineSeparator()
                 + "classical Latin literature from" + System.lineSeparator()
                 + "45 BC, making it over 2000 years" + System.lineSeparator()
-                + "old. Richard McClintock";
+                + "old. Richard McClintock" + System.lineSeparator();
         assertEquals(expectedOutput, output);
     }
 
@@ -157,7 +157,7 @@ public class PairPipingTest {
                 + " Unpacking nodejs-dev (from .../nodejs-dev_0.6.12~dfsg1-1ubuntu1_amd64.deb) ..." + System.lineSeparator()
                 + System.lineSeparator()
                 + " Selecting previously unselected package npm." + System.lineSeparator()
-                + " Unpacking npm (from .../npm_1.1.4~dfsg-1_all.deb) ...";
+                + " Unpacking npm (from .../npm_1.1.4~dfsg-1_all.deb) ..." + System.lineSeparator();
         assertEquals(expectedOutput, output);
     }
 
@@ -188,7 +188,7 @@ public class PairPipingTest {
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
         String output = new String(mockOutputStream.toByteArray(), "UTF-8");
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
-        assertEquals(sdf.format(new Date()), output);
+        assertEquals(sdf.format(new Date()) + System.lineSeparator(), output);
     }
 
     /**
@@ -323,7 +323,7 @@ public class PairPipingTest {
         mockShell.parseAndEvaluate(testInput, mockOutputStream);
         String output = new String(mockOutputStream.toByteArray(), "UTF-8");
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
-        assertEquals(sdf.format(new Date()), output);
+        assertEquals(sdf.format(new Date()) + System.lineSeparator(), output);
     }
 
     /**
