@@ -196,6 +196,8 @@ public class CommandSubstitutionTest {
 	/*
 	 * Test if error is handled properly when improper backquotes are used.
 	 * 
+	 * As of current progress, when command has improper symbol, there will be no output.
+	 * 
 	 */
 	@Test
 	public void testMissingBackquote() throws Exception {
@@ -211,5 +213,69 @@ public class CommandSubstitutionTest {
 		assertEquals(mockOut.toString(), "");
 	
 	}
-
+	
+	/*
+	 * Test when multiple command substitutions are used.
+	 */
+	
+	/*
+	 * Bug report: 
+	 * 
+	 * Error: after cat example\\comsub1.txt, a file directory should be in inputstream whereby head will
+	 * read one line from that specific file.
+	 * However, head is outputting one line from the inputstream.
+	 * 
+	 * 
+	 */
+	@Test
+	public void testMultipleCommandsExpectedA() throws Exception {
+		String command = "cat examples\\comsub1.txt| head -n 1";
+		mockShell.parseAndEvaluate(command, mockOut);
+		//System.out.println(mockOut.toString());
+		assertEquals(mockOut.toString(), "apple");
+	
+	}
+	
+	@Test
+	public void testMultipleCommandsA1() throws Exception {
+		String command = "echo `cat examples\\comsub1.txt` testing | head -n 1";
+		mockShell.parseAndEvaluate(command, mockOut);
+		//System.out.println(mockOut.toString());
+		assertEquals(mockOut.toString(), "examples\\file1.txt examples\\file2.txt examples\\file3.txt testing" + System.lineSeparator());
+	
+	}
+	
+	@Test(expected = PipeCommandException.class)
+	public void testMultipleCommandsA2() throws Exception {
+		String command = "`cat examples\\comsub1.txt`| head -n 1";
+		mockShell.parseAndEvaluate(command, mockOut);
+		//System.out.println(mockOut.toString());
+		assertEquals(mockOut.toString(), "");
+	
+	}
+	
+	/*
+	 * Read two different number from the same file and check if their addition is the same as expected
+	 */
+	@Test
+	public void testMultipleCommandsB() throws Exception {
+		String command = "echo `cat examples\\numbersort.txt| head -n 1` plus `cat examples\\numbersort.txt|sort|head -n 1` is `echo 65+1000|bc` ";
+		mockShell.parseAndEvaluate(command, mockOut);
+		assertEquals(mockOut.toString(), "65 plus 1000 is 1065" + System.lineSeparator());
+	
+	}
+	
+	/*
+	 * Test case read two different file name from two different files and send the content to sort
+	 * Finally printing the first line of the content
+	 */
+	@Test
+	public void testMultipleCommandsC() throws Exception {
+		String command = "cat `head -n 1 examples\\comsub1.txt` `head -n 1 examples\\comsub2.txt` | sort | head -n 1";
+		mockShell.parseAndEvaluate(command, mockOut);
+		assertEquals(mockOut.toString(), "1000" + System.lineSeparator());
+	
+	}
+	
+	
 }
