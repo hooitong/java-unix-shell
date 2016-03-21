@@ -153,7 +153,7 @@ public class FmtApplicationTest {
 	
 	@Test
 	public void testTemp() throws FmtException {
-		String[] arguments = {"-w","40","examples-integration/Multiple-Pipe/sampleOriginal.txt" };
+		String[] arguments = {"-w","40","examples-integration/multiple-pipe/sampleOriginal.txt" };
 		fmtApplication.run(arguments, null, baos);
 		String resultString = new String(baos.toByteArray());
 		System.out.println(resultString);

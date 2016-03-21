@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import sg.edu.nus.comp.cs4218.Command;
+import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.PipeCommandException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
@@ -97,8 +98,9 @@ public class PipeCommand implements Command {
 
 	public void parse() throws ShellException {
 		if(this.argsList.get(ZERO).equals(this.cmdline)){
-			throw new ShellException("Not a PipeCommand");
+			throw new ShellException("Invalid syntax encountered");
 		}
+
 		for (int i = 0; i < this.argsList.size(); i++) {
 			Command command = ShellImpl.parse(this.argsList.get(i).trim());
 			cmdList.add((CallCommand) command);

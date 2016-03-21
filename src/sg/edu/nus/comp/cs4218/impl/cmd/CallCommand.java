@@ -217,7 +217,7 @@ public class CallCommand implements Command {
 						errorMsg = ShellImpl.EXP_SYNTAX;
 						throw new ShellException(errorMsg);
 					} // check if there's any invalid token not detected
-					if (smallestPattIdx == 2 || smallestPattIdx == 3 || !matchedStr.contains("*")) {
+					if (smallestPattIdx == 2 || smallestPattIdx == 3 || smallestPattIdx == 4 || smallestPattIdx == 5 || !matchedStr.contains("*")) {
 						cmdVector.add(matchedStr);
 					} else {
 						cmdVector.addAll(Arrays.asList(processSingleGlob(matchedStr)));

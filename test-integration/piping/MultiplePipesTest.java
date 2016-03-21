@@ -25,7 +25,7 @@ public class MultiplePipesTest {
 	private ByteArrayOutputStream stdout;
 	private final static String NEW_LINE = System.lineSeparator();
 	private final static String TAB = "\t";
-	private static final String FOLDER_LOCATION = "examples-integration/Multiple-Pipe/";
+	private static final String FOLDER_LOCATION = "examples-integration/multiple-pipe/";
 	private static final String UTF8 = "UTF-8";
 
 	@Before
