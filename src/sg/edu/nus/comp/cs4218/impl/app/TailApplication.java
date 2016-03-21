@@ -194,7 +194,7 @@ public class TailApplication implements Application {
 
 		PrintWriter printWriter = new PrintWriter(stdout);
 		while (!linesToWrite.isEmpty()) {
-			printWriter.println(linesToWrite.removeFirst().trim().replaceAll("(\\r|\\n)", ""));
+			printWriter.println(linesToWrite.removeFirst().replaceAll("(\\r|\\n)", ""));
 		}
 		printWriter.flush();
 		printWriter.close();
