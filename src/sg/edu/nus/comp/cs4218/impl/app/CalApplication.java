@@ -214,7 +214,9 @@ public class CalApplication implements Cal {
 			} else {
 				return printCalForYear(args);
 			}
-		} else if (args.length == 2) { /* either -m year, month year or invalid */
+		} else if (args.length == 2) { /*
+										 * either -m year, month year or invalid
+										 */
 			if (validateMonFlag(args) && parseYear(args[1].trim()) != INVALID_DATE) {
 				return printCalForYearMondayFirst(args);
 			} else if (parseMonth(args[0].trim()) == INVALID_DATE || parseYear(args[1].trim()) == INVALID_DATE) {

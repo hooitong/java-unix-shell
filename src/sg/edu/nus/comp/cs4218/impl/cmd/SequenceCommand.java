@@ -27,6 +27,7 @@ public class SequenceCommand implements Command {
 	 * Evaluates command using data provided through stdin stream. Write result
 	 * to stdout stream.
 	 */
+	@Override
 	public void evaluate(InputStream stdin, OutputStream stdout) throws AbstractApplicationException, ShellException {
 		firstCommand.evaluate(stdin, stdout);
 		secondCommand.evaluate(stdin, stdout);
@@ -37,6 +38,7 @@ public class SequenceCommand implements Command {
 	 *
 	 * @throws ShellException
 	 */
+	@Override
 	public void parse() throws ShellException {
 		String[] doubleCommands = cmdline.trim().split(SEQUENCE_DOUBLE, 2);
 		String[] singleCommands = cmdline.trim().split(SEQUENCE_SINGLE, 2);
@@ -45,8 +47,10 @@ public class SequenceCommand implements Command {
 		/* Setup boolean parameters and conditions for parsing */
 		boolean dblNotFound = doubleCommands.length < 2;
 		boolean sinNotFound = singleCommands.length < 2;
-		boolean dblArgMissing = doubleCommands.length == 2 && (doubleCommands[1].isEmpty() || doubleCommands[0].isEmpty());
-		boolean sinArgMissing = singleCommands.length == 2 && (singleCommands[1].isEmpty() || singleCommands[0].isEmpty());
+		boolean dblArgMissing = doubleCommands.length == 2
+				&& (doubleCommands[1].isEmpty() || doubleCommands[0].isEmpty());
+		boolean sinArgMissing = singleCommands.length == 2
+				&& (singleCommands[1].isEmpty() || singleCommands[0].isEmpty());
 
 		if (dblNotFound || sinNotFound) {
 			throw new ShellException(EXP_SYNTAX);

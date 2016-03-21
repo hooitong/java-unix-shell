@@ -48,7 +48,8 @@ public class TailApplicationTest {
 		tailApplication.run(arguments, bis, baos);
 		String result = new String(baos.toByteArray());
 		assertEquals(
-				"Apartments frequently or motionless on reasonable projecting expression. Way mrs end gave tall walk fact bed."+NEW_LINE,
+				"Apartments frequently or motionless on reasonable projecting expression. Way mrs end gave tall walk fact bed."
+						+ NEW_LINE,
 				result);
 	}
 
@@ -73,7 +74,7 @@ public class TailApplicationTest {
 		String[] arguments = { "-n", "ad3", fileToRead };
 		tailApplication.run(arguments, null, baos);
 	}
-	
+
 	@Test
 	public void testIncorrectFlagFileSpecified() throws TailException {
 		exception.expect(TailException.class);
@@ -82,7 +83,7 @@ public class TailApplicationTest {
 		String[] arguments = { "-a", "2", fileToRead };
 		tailApplication.run(arguments, null, baos);
 	}
-	
+
 	@Test
 	public void testIncorrectFlagFileUnspecified() throws TailException {
 		exception.expect(TailException.class);
@@ -91,48 +92,47 @@ public class TailApplicationTest {
 		String[] arguments = { "-a", "2" };
 		tailApplication.run(arguments, bis, baos);
 	}
-	
+
 	@Test
 	public void testReadFromStdIn() throws TailException {
 		String[] arguments = { "-n", "1" };
 		tailApplication.run(arguments, bis, baos);
 		String result = new String(baos.toByteArray());
 		String[] resultLines = result.split(NEW_LINE);
-		assertEquals("This is a test string",resultLines[resultLines.length - 1]);
+		assertEquals("This is a test string", resultLines[resultLines.length - 1]);
 	}
-	
+
 	@Test
 	public void testToReadZeroLines() throws TailException {
 		String[] arguments = { "-n", "0" };
 		tailApplication.run(arguments, bis, baos);
 		String result = new String(baos.toByteArray());
-		assertEquals("",result);
+		assertEquals("", result);
 	}
-	
+
 	@Test
 	public void testEmptyText() throws TailException {
 		String[] arguments = { "-n", "0", fileToReadEmpty };
 		tailApplication.run(arguments, null, baos);
 		String result = new String(baos.toByteArray());
-		assertEquals("",result);
+		assertEquals("", result);
 	}
-	
-	
+
 	@Test
 	public void testNullStdOutput() throws TailException {
 		exception.expect(TailException.class);
 		exception.expectMessage("Null pointer exception - stdout is not defined");
-		
+
 		String[] arguments = { "-n", "0" };
 		tailApplication.run(arguments, bis, null);
 	}
-	
+
 	@Test
 	public void testIncorrectNumArguments() throws TailException {
 		exception.expect(TailException.class);
 		exception.expectMessage("Incorrect number of arguments");
 
-		String[] arguments = { "-a", "2", fileToRead, "fourth arg"};
+		String[] arguments = { "-a", "2", fileToRead, "fourth arg" };
 		tailApplication.run(arguments, null, baos);
 	}
 
@@ -142,7 +142,7 @@ public class TailApplicationTest {
 		tailApplication.run(arguments, null, baos);
 		String resultString = new String(baos.toByteArray());
 
-		assertEquals("",resultString);
+		assertEquals("", resultString);
 	}
 
 	@Test

@@ -55,13 +55,11 @@ public final class ExpressionEvaluator {
 			if (cString.charAt(ZERO) == OPENPAREN) {
 				tStack.push(String.valueOf(cString));
 			} else if (cString.charAt(ZERO) == CLOSEDPAREN) {
-				while (!tStack.empty()
-						&& tStack.peek().charAt(ZERO) != OPENPAREN) {
+				while (!tStack.empty() && tStack.peek().charAt(ZERO) != OPENPAREN) {
 					resultVector.add(tStack.pop());
 				}
 				if (tStack.isEmpty()) {
-					throw new BcException(
-							"Close parenthesis appeared before Open parenthesis");
+					throw new BcException("Close parenthesis appeared before Open parenthesis");
 				}
 				tStack.pop();
 			} else if (SignChecker.isNumeric(cString)) {
@@ -71,9 +69,7 @@ public final class ExpressionEvaluator {
 				if (cString.charAt(ZERO) == NEGATE_CHAR) {
 					cString = checkForUnaryMinus(splittedString, i, cString);
 				}
-				while (!tStack.empty()
-						&& (getPrecedence(cString) <= getPrecedence(tStack
-								.peek()))) {
+				while (!tStack.empty() && (getPrecedence(cString) <= getPrecedence(tStack.peek()))) {
 					resultVector.add(tStack.pop());
 				}
 				tStack.push(String.valueOf(cString));
@@ -94,14 +90,12 @@ public final class ExpressionEvaluator {
 	 * @param cString
 	 * @return
 	 */
-	private static String checkForUnaryMinus(Vector<String> splittedString,
-			int index, String cString) {
+	private static String checkForUnaryMinus(Vector<String> splittedString, int index, String cString) {
 		if (index == ZERO) {
 			return UNARY_MARKER;
 		} else if (index < splittedString.size() - 1) {
 			char prevChar = splittedString.get(index - 1).charAt(ZERO);
-			if (SignChecker.isOperator(prevChar)
-					|| SignChecker.isRelationCondtional(prevChar)
+			if (SignChecker.isOperator(prevChar) || SignChecker.isRelationCondtional(prevChar)
 					|| prevChar == OPENPAREN) {
 				return UNARY_MARKER;
 			}
@@ -123,17 +117,14 @@ public final class ExpressionEvaluator {
 			result = 10;
 		} else if (tempStr.compareTo(POW) == 0) {
 			result = 9;
-		} else if (tempStr.compareTo(DIVIDE) == 0
-				|| tempStr.compareTo(TIMES) == 0) {
+		} else if (tempStr.compareTo(DIVIDE) == 0 || tempStr.compareTo(TIMES) == 0) {
 			result = 8;
-		} else if (tempStr.compareTo(PLUS) == 0
-				|| tempStr.compareTo(MINUS) == 0) {
+		} else if (tempStr.compareTo(PLUS) == 0 || tempStr.compareTo(MINUS) == 0) {
 			result = 7;
-		} else if (tempStr.compareTo(NOT_EQUAL) == 0
-				|| tempStr.contains(EQUAL_EQUAL_SIGN)) {
+		} else if (tempStr.compareTo(NOT_EQUAL) == 0 || tempStr.contains(EQUAL_EQUAL_SIGN)) {
 			result = 6;
-		} else if (tempStr.compareTo(LESS) == 0 || tempStr.contains(LESS_EQUAL)
-				|| tempStr.contains(GREATER) || tempStr.contains(GREATER_EQUAL)) {
+		} else if (tempStr.compareTo(LESS) == 0 || tempStr.contains(LESS_EQUAL) || tempStr.contains(GREATER)
+				|| tempStr.contains(GREATER_EQUAL)) {
 			result = 5;
 		} else if (tempStr.compareTo(NOT) == 0) {
 			result = 4;
@@ -178,8 +169,7 @@ public final class ExpressionEvaluator {
 	 * @return string
 	 * @throws BcException
 	 */
-	public static String computeResult(Vector<String> postfixVector)
-			throws BcException {
+	public static String computeResult(Vector<String> postfixVector) throws BcException {
 		Stack<String> tStack = new Stack<String>();
 		for (int i = 0; i < postfixVector.size(); i++) {
 			String cString = postfixVector.get(i);
@@ -190,8 +180,7 @@ public final class ExpressionEvaluator {
 			} else {
 				if (cString.compareTo(UNARY_MARKER) == 0) {
 					num1Str = EspressionEvaluationAdditional.getTopStack(tStack);
-					tStack.push(calculateArithmetic(NEGATIVE_ONE, num1Str,
-							TIMES));
+					tStack.push(calculateArithmetic(NEGATIVE_ONE, num1Str, TIMES));
 				} else if (cString.compareTo(NOT) == 0) {
 					num1Str = EspressionEvaluationAdditional.getTopStack(tStack);
 					tStack.push(calculateRelation(num1Str, ZERO_STRING, cString));
@@ -202,8 +191,7 @@ public final class ExpressionEvaluator {
 				} else {
 					num2Str = EspressionEvaluationAdditional.getTopStack(tStack);
 					num1Str = EspressionEvaluationAdditional.getTopStack(tStack);
-					String solution = calculateRelation(num2Str, num1Str,
-							cString);
+					String solution = calculateRelation(num2Str, num1Str, cString);
 					tStack.push(solution);
 				}
 
@@ -211,8 +199,6 @@ public final class ExpressionEvaluator {
 		}
 		return tStack.pop();
 	}
-
-	
 
 	/**
 	 * This method performs arithmetic operations for the following without
@@ -223,13 +209,12 @@ public final class ExpressionEvaluator {
 	 * @param numStr1
 	 *            input string2
 	 * @param operator
-	 *            operation supported are of the following quote
-	 *            quotes"* + / - ^"
+	 *            operation supported are of the following quote quotes"* + / -
+	 *            ^"
 	 * @return string
 	 * @throws BcException
 	 */
-	private static String calculateArithmetic(String numStr2, String numStr1,
-			String operator) throws BcException {
+	private static String calculateArithmetic(String numStr2, String numStr1, String operator) throws BcException {
 		String result = "";
 		BigDecimal bdNum1 = new BigDecimal(numStr1);
 		BigDecimal bdNum2 = new BigDecimal(numStr2);
@@ -248,8 +233,7 @@ public final class ExpressionEvaluator {
 			result = bdNum1.multiply(bdNum2).toString();
 			break;
 		case POW:
-			result = bdNum1.pow(bdNum2.intValueExact(), new MathContext(FIVE))
-					.toString();
+			result = bdNum1.pow(bdNum2.intValueExact(), new MathContext(FIVE)).toString();
 			break;
 		default:
 			break;
@@ -263,8 +247,7 @@ public final class ExpressionEvaluator {
 	 * @param bdNum2
 	 * @throws BcException
 	 */
-	private static void catchDivideByZeroException(BigDecimal bdNum2)
-			throws BcException {
+	private static void catchDivideByZeroException(BigDecimal bdNum2) throws BcException {
 		if (bdNum2.compareTo(BigDecimal.ZERO) == 0) {
 			throw new BcException("Divide by zero error");
 		}
@@ -278,12 +261,11 @@ public final class ExpressionEvaluator {
 	 * @param numStr1
 	 *            input string2
 	 * @param operator
-	 *            supported operators are of the following
-	 *            "< > <= >= ! != || &&"
+	 *            supported operators are of the following "< > <= >= ! != ||
+	 *            &&"
 	 * @return
 	 */
-	private static String calculateRelation(String numStr2, String numStr1,
-			String operator) {
+	private static String calculateRelation(String numStr2, String numStr1, String operator) {
 		String result = "";
 		BigDecimal bdNum1 = new BigDecimal(numStr1);
 		BigDecimal bdNum2 = new BigDecimal(numStr2);
@@ -310,12 +292,10 @@ public final class ExpressionEvaluator {
 			result = bdNum2.compareTo(BigDecimal.ZERO) == ZERO ? "1" : "0";
 			break;
 		case AND_SIGN:
-			result = bdNum1.compareTo(BigDecimal.ZERO) == ZERO
-					|| bdNum2.compareTo(BigDecimal.ZERO) == ZERO ? "0" : "1";
+			result = bdNum1.compareTo(BigDecimal.ZERO) == ZERO || bdNum2.compareTo(BigDecimal.ZERO) == ZERO ? "0" : "1";
 			break;
 		case OR_SIGN:
-			result = bdNum1.compareTo(BigDecimal.ZERO) > ZERO
-					|| bdNum2.compareTo(BigDecimal.ZERO) > ZERO ? "1" : "0";
+			result = bdNum1.compareTo(BigDecimal.ZERO) > ZERO || bdNum2.compareTo(BigDecimal.ZERO) > ZERO ? "1" : "0";
 			break;
 		default:
 			break;
@@ -332,8 +312,7 @@ public final class ExpressionEvaluator {
 	 * @return Vector<String>
 	 * @throws BcException
 	 */
-	private static Vector<String> splitSeparateStrings(String input)
-			throws BcException {
+	private static Vector<String> splitSeparateStrings(String input) throws BcException {
 		StringBuilder stringBuilder = new StringBuilder("");
 		StringBuilder stringBuilderR = new StringBuilder("");
 		Vector<String> resultVector = new Vector<String>();
@@ -349,10 +328,8 @@ public final class ExpressionEvaluator {
 					resultVector.add(stringBuilderR.toString());
 					stringBuilderR.setLength(ZERO);
 				}
-			} else if (SignChecker.isOperator(currChar)
-					|| currChar == OPENPAREN || currChar == CLOSEDPAREN) {
-				if ((currChar == CLOSEDPAREN || currChar == OPENPAREN)
-						&& stringBuilderR.length() != ZERO) {
+			} else if (SignChecker.isOperator(currChar) || currChar == OPENPAREN || currChar == CLOSEDPAREN) {
+				if ((currChar == CLOSEDPAREN || currChar == OPENPAREN) && stringBuilderR.length() != ZERO) {
 					resultVector.add(stringBuilderR.toString());
 					stringBuilderR.setLength(ZERO);
 				}
@@ -390,8 +367,7 @@ public final class ExpressionEvaluator {
 	 * @param stringBuilderR
 	 * @throws BcException
 	 */
-	private static void catchRelationalOperatorException(
-			StringBuilder stringBuilderR) throws BcException {
+	private static void catchRelationalOperatorException(StringBuilder stringBuilderR) throws BcException {
 		if (stringBuilderR.length() != 0) {
 			throw new BcException("Incomplete Relational Operator");
 		}

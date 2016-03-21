@@ -4,7 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.apache.commons.io.output.ByteArrayOutputStream;
+import java.io.ByteArrayOutputStream;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +16,7 @@ import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.SequenceCommand;
 
 public class ShellImplTest {
+	public static final String DEFAULT_ENCODING = "UTF-8";
 	ShellImpl mockShell;
 	ByteArrayOutputStream mockOutput;
 
@@ -106,14 +108,13 @@ public class ShellImplTest {
 	 * Test whether single quotes can successfully disable asterisk operators.
 	 *
 	 * @throws Exception
-     */
+	 */
 	@Test
 	public void testGlobSingleQuote() throws Exception {
 		String cmdline = "bc '5 * 5'";
 		mockShell.parseAndEvaluate(cmdline, mockOutput);
-		assertEquals("25" + System.lineSeparator(), new String(mockOutput.toByteArray(), "UTF-8"));
+		assertEquals("25" + System.lineSeparator(), new String(mockOutput.toByteArray(), DEFAULT_ENCODING));
 	}
-
 
 	/**
 	 * Test whether single quotes can successfully disable asterisk operators.
@@ -124,21 +125,20 @@ public class ShellImplTest {
 	public void testGlobDoubleQuote() throws Exception {
 		String cmdline = "bc \"5 * 5\"";
 		mockShell.parseAndEvaluate(cmdline, mockOutput);
-		assertEquals("25" + System.lineSeparator(), new String(mockOutput.toByteArray(), "UTF-8"));
+		assertEquals("25" + System.lineSeparator(), new String(mockOutput.toByteArray(), DEFAULT_ENCODING));
 	}
 
 	/**
 	 * Test whether double quotes can successfully disable piping operators.
 	 *
 	 * @throws Exception
-     */
+	 */
 	@Test
 	public void testPipeSingleQuote() throws Exception {
 		String cmdline = "echo ' | '";
 		mockShell.parseAndEvaluate(cmdline, mockOutput);
-		assertEquals(" | " + System.lineSeparator(), new String(mockOutput.toByteArray(), "UTF-8"));
+		assertEquals(" | " + System.lineSeparator(), new String(mockOutput.toByteArray(), DEFAULT_ENCODING));
 	}
-
 
 	/**
 	 * Test whether double quotes can successfully disable piping operators.
@@ -149,6 +149,6 @@ public class ShellImplTest {
 	public void testPipeDoubleQuote() throws Exception {
 		String cmdline = "echo \" | \"";
 		mockShell.parseAndEvaluate(cmdline, mockOutput);
-		assertEquals(" | " + System.lineSeparator(), new String(mockOutput.toByteArray(), "UTF-8"));
+		assertEquals(" | " + System.lineSeparator(), new String(mockOutput.toByteArray(), DEFAULT_ENCODING));
 	}
 }

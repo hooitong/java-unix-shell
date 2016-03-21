@@ -1,6 +1,6 @@
 package sg.edu.nus.comp.cs4218.impl.app;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -15,8 +15,8 @@ import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.ShellImpl;
 
 /**
- * These are the tests given from other users meant for TDD purposes. More tests are also added
- * below to further improve the test for Bc.
+ * These are the tests given from other users meant for TDD purposes. More tests
+ * are also added below to further improve the test for Bc.
  */
 public class BcApplicationTest {
 	private BcApplication bcApp;
@@ -118,8 +118,7 @@ public class BcApplicationTest {
 	 * @throws BcException
 	 */
 	@Test(expected = BcException.class)
-	public void testRunInvalidExpressionsMissingClosedBrackets()
-			throws BcException {
+	public void testRunInvalidExpressionsMissingClosedBrackets() throws BcException {
 		String[] args = { "4*(5/(3+2)" };
 		bcApp.run(args, null, outStream);
 
@@ -144,8 +143,7 @@ public class BcApplicationTest {
 	 * @throws BcException
 	 */
 	@Test(expected = BcException.class)
-	public void testRunInvalidExpressionsMissingOpenBrackets()
-			throws BcException {
+	public void testRunInvalidExpressionsMissingOpenBrackets() throws BcException {
 		String[] args = { "4 * 1+8)" };
 		bcApp.run(args, null, outStream);
 
@@ -715,13 +713,14 @@ public class BcApplicationTest {
 		bcApp.run(args, null, outStream);
 	}
 
-	/**throws an expression if an expression is invalid
+	/**
+	 * throws an expression if an expression is invalid
 	 * 
 	 * @throws BcException
 	 */
 	@Test(expected = BcException.class)
 	public void testRunInvalidExpressionPlusPlus() throws BcException {
-		String[] args = {"2 ++ -6 "};
+		String[] args = { "2 ++ -6 " };
 		bcApp.run(args, null, outStream);
 	}
 
@@ -732,8 +731,7 @@ public class BcApplicationTest {
 	 * @throws ShellException
 	 */
 	@Test
-	public void testFromShell() throws AbstractApplicationException,
-			ShellException {
+	public void testFromShell() throws AbstractApplicationException, ShellException {
 		String temp = "bc \"5==5\" ";
 		String expected = "1" + NEW_LINE;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
@@ -749,8 +747,7 @@ public class BcApplicationTest {
 	 * @throws ShellException
 	 */
 	@Test
-	public void testFromShell2() throws AbstractApplicationException,
-			ShellException {
+	public void testFromShell2() throws AbstractApplicationException, ShellException {
 		String temp = "echo \"5 < 2\" | bc";
 		String expected = "0" + NEW_LINE;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
@@ -767,8 +764,7 @@ public class BcApplicationTest {
 	 * @throws ShellException
 	 */
 	@Test
-	public void testFromShell3() throws AbstractApplicationException,
-			ShellException {
+	public void testFromShell3() throws AbstractApplicationException, ShellException {
 		String temp = "echo \"5/-1*-2\" | bc";
 		String expected = "10" + NEW_LINE;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
@@ -786,8 +782,7 @@ public class BcApplicationTest {
 	 * @throws ShellException
 	 */
 	@Test
-	public void testFromShell4() throws AbstractApplicationException,
-			ShellException {
+	public void testFromShell4() throws AbstractApplicationException, ShellException {
 		String temp = "echo \"-2 ^5\" | bc";
 		String expected = "-32" + NEW_LINE;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
@@ -805,8 +800,7 @@ public class BcApplicationTest {
 	 * @throws ShellException
 	 */
 	@Test
-	public void testFromShell5() throws AbstractApplicationException,
-			ShellException {
+	public void testFromShell5() throws AbstractApplicationException, ShellException {
 		String temp = "echo \"2 ^ -5\" | bc";
 		String expected = "0.03125" + NEW_LINE;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();

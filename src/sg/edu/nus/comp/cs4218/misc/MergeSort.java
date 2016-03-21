@@ -27,13 +27,13 @@ public class MergeSort {
 	 * @param pos2
 	 *            ending position of the string
 	 * @return an sorted array
-	 * @throws SortException 
+	 * @throws SortException
 	 */
 	public String[] mergeSort(String[] toSort, int pos1, int pos2) throws SortException {
-		if(toSort == null){
+		if (toSort == null) {
 			throw new SortException("Array not found");
 		}
-		if(pos1 < ZERO || pos2 > toSort.length - 1){
+		if (pos1 < ZERO || pos2 > toSort.length - 1) {
 			throw new SortException("Postion cannot be negative or beyond array's size");
 		}
 		int front = pos1;
@@ -200,8 +200,7 @@ public class MergeSort {
 			if (assumedNumStr1.compareTo(assumedNumStr2) == 0) {
 				return customCompare(str1, str2);
 			} else {
-				return Integer.parseInt(assumedNumStr1)
-						- Integer.parseInt(assumedNumStr2);
+				return Integer.parseInt(assumedNumStr1) - Integer.parseInt(assumedNumStr2);
 			}
 		} else {
 			return customCompare(str1, str2);
@@ -219,8 +218,7 @@ public class MergeSort {
 	 * 
 	 */
 	public int customCompare(String str1, String str2) {
-		int shortLength = str1.length() >= str2.length() ? str2.length() : str1
-				.length();
+		int shortLength = str1.length() >= str2.length() ? str2.length() : str1.length();
 		int result = str1.length() < str2.length() ? -1 : 1;
 		if (str1.equals(str2)) {
 			return 0;
@@ -231,10 +229,10 @@ public class MergeSort {
 			} else if (getRank(str1.charAt(i)) > getRank(str2.charAt(i))) {
 				return -1;
 			} else {
-				if ((int) str1.charAt(i) - (int) str2.charAt(i) == 0) {
+				if (str1.charAt(i) - str2.charAt(i) == 0) {
 					continue;
 				} else {
-					return (int) str1.charAt(i) - (int) str2.charAt(i);
+					return str1.charAt(i) - str2.charAt(i);
 				}
 			}
 		}
@@ -250,7 +248,7 @@ public class MergeSort {
 	 * @return int rank number
 	 */
 	private int getRank(char currChar) {
-		int asciiNum = (int) currChar;
+		int asciiNum = currChar;
 		int result = -1;
 		if (asciiNum >= CAPITAL_START && asciiNum <= CAPITAL_END) {
 			result = 2;

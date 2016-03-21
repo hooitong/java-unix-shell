@@ -18,6 +18,7 @@ import sg.edu.nus.comp.cs4218.misc.SignChecker;
 public class BcApplication implements Bc {
 	private final static int ZERO = 0;
 	private static final String CHARSET_UTF_8 = "UTF-8";
+
 	/**
 	 * Returns resultant string with expression of the form <number>, where
 	 * number can by any natural number or floating point number, evaluated
@@ -26,6 +27,7 @@ public class BcApplication implements Bc {
 	public String number(String... args) {
 		return SignChecker.isNumeric(args[ZERO]) ? "1" : "0";
 	}
+
 	/**
 	 * Returns resultant string with expression of the form -<expression>
 	 * evaluated
@@ -34,6 +36,7 @@ public class BcApplication implements Bc {
 	public String negate(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form <expression> +
 	 * <expression> evaluated
@@ -42,6 +45,7 @@ public class BcApplication implements Bc {
 	public String add(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form <expression> -
 	 * <expression> evaluated
@@ -50,6 +54,7 @@ public class BcApplication implements Bc {
 	public String subtract(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form <expression> *
 	 * <expression> evaluated
@@ -58,6 +63,7 @@ public class BcApplication implements Bc {
 	public String multiply(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form <expression> /
 	 * <expression> evaluated
@@ -66,6 +72,7 @@ public class BcApplication implements Bc {
 	public String divide(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form (<expression>)
 	 * evaluated
@@ -74,6 +81,7 @@ public class BcApplication implements Bc {
 	public String pow(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form <expression> >
 	 * <expression> evaluated
@@ -82,6 +90,7 @@ public class BcApplication implements Bc {
 	public String bracket(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form <expression> >=
 	 * <expression> evaluated
@@ -90,6 +99,7 @@ public class BcApplication implements Bc {
 	public String greaterThan(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form <expression> >=
 	 * <expression> evaluated
@@ -98,6 +108,7 @@ public class BcApplication implements Bc {
 	public String greaterThanOrEqual(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form <expression> <
 	 * <expression> evaluated
@@ -106,6 +117,7 @@ public class BcApplication implements Bc {
 	public String lessThan(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form <expression> <=
 	 * <expression> evaluated
@@ -114,6 +126,7 @@ public class BcApplication implements Bc {
 	public String lessThanOrEqual(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form <expression> ==
 	 * <expression> evaluated
@@ -122,6 +135,7 @@ public class BcApplication implements Bc {
 	public String equalEqual(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form <expression> !=
 	 * <expression> evaluated
@@ -130,6 +144,7 @@ public class BcApplication implements Bc {
 	public String notEqual(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form <expression> &&
 	 * <expression> evaluated
@@ -138,6 +153,7 @@ public class BcApplication implements Bc {
 	public String and(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form <expression> ||
 	 * <expression> evaluated
@@ -146,6 +162,7 @@ public class BcApplication implements Bc {
 	public String orMethod(String... args) {
 		return evaluateHelper(args);
 	}
+
 	/**
 	 * Returns resultant string with expression of the form !<expression>
 	 * evaluated
@@ -156,30 +173,25 @@ public class BcApplication implements Bc {
 	}
 
 	@Override
-	public void run(String[] args, InputStream stdin, OutputStream stdout)
-			throws BcException {
+	public void run(String[] args, InputStream stdin, OutputStream stdout) throws BcException {
 		String[] stdinArr = null;
 		if (args == null || args.length == ZERO) {
 			stdinArr = readFromStdinAndWriteToStringArray(stdin);
 		} else if (args.length > 1) {
-			throw new BcException(
-					"Too many arguments, BC arguments must be wrapped with quotes");
+			throw new BcException("Too many arguments, BC arguments must be wrapped with quotes");
 		} else {
 			stdinArr = Arrays.copyOf(args, args.length);
 		}
-		boolean isBracketBalanced = ExpressionEvaluator
-				.isParenthesesCountSame(stdinArr[ZERO]);
+		boolean isBracketBalanced = ExpressionEvaluator.isParenthesesCountSame(stdinArr[ZERO]);
 		catchUnequalBracketsException(isBracketBalanced);
 		String expresssion = stdinArr[ZERO];
 		String finalResult = "";
-		Vector<String> vVector1 = ExpressionEvaluator
-				.infixToPostfix(expresssion);
+		Vector<String> vVector1 = ExpressionEvaluator.infixToPostfix(expresssion);
 		finalResult = ExpressionEvaluator.computeResult(vVector1);
 		stdoutSortedArray(stdout, finalResult);
 	}
 
-	private void catchUnequalBracketsException(boolean isBracketBalanced)
-			throws BcException {
+	private void catchUnequalBracketsException(boolean isBracketBalanced) throws BcException {
 		if (!isBracketBalanced) {
 			throw new BcException("unequal amount of brackets");
 		}
@@ -194,8 +206,7 @@ public class BcApplication implements Bc {
 	 *            array sorted array
 	 * @throws BcException
 	 */
-	private void stdoutSortedArray(OutputStream stdout, String finalResult)
-			throws BcException {
+	private void stdoutSortedArray(OutputStream stdout, String finalResult) throws BcException {
 		if (stdout == null) {
 			throw new BcException("stdout is not present");
 		}
@@ -216,14 +227,12 @@ public class BcApplication implements Bc {
 	 *            An input Stream. Reading from stdin and not a file
 	 * @throws BcException
 	 */
-	private String[] readFromStdinAndWriteToStringArray(InputStream stdin)
-			throws BcException {
+	private String[] readFromStdinAndWriteToStringArray(InputStream stdin) throws BcException {
 		List<String> resultList = new ArrayList<String>();
 		if (stdin == null) {
 			throw new BcException("Null Pointer Exception");
 		}
-		BufferedReader buffReader = new BufferedReader(new InputStreamReader(
-				stdin));
+		BufferedReader buffReader = new BufferedReader(new InputStreamReader(stdin));
 		String input = "";
 		try {
 			while ((input = buffReader.readLine()) != null) {
@@ -239,8 +248,7 @@ public class BcApplication implements Bc {
 		String expresssion = args[ZERO];
 		String finalResult = "";
 		try {
-			Vector<String> vVector1 = ExpressionEvaluator
-					.infixToPostfix(expresssion);
+			Vector<String> vVector1 = ExpressionEvaluator.infixToPostfix(expresssion);
 			finalResult = ExpressionEvaluator.computeResult(vVector1);
 		} catch (BcException bcException) {
 			finalResult = bcException.getMessage();

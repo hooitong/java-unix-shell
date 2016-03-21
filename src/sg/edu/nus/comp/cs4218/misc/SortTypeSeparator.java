@@ -33,7 +33,7 @@ public final class SortTypeSeparator {
 	static int getCapitalCharInLineCount(String currentLine) {
 		int count = 0;
 		for (int j = 0; j < currentLine.length(); j++) {
-			char currentChar = (char) currentLine.charAt(j);
+			char currentChar = currentLine.charAt(j);
 			if (Character.isLetter(currentChar) && Character.isUpperCase(currentChar)) {
 				count++;
 			}
@@ -71,7 +71,7 @@ public final class SortTypeSeparator {
 	static int getSpecialCharInLineCount(String currentLine) {
 		int count = 0;
 		for (int j = 0; j < currentLine.length(); j++) {
-			char currentChar = (char) currentLine.charAt(j);
+			char currentChar = currentLine.charAt(j);
 			if (!Character.isDigit(currentChar) && !Character.isLetter(currentChar)) {
 				count++;
 			}

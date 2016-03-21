@@ -184,7 +184,7 @@ public final class SortHelper {
 	 * @param resultList
 	 *            rhe input list
 	 * @return List<String> sorted list of string
-	 * @throws SortException 
+	 * @throws SortException
 	 */
 	public static List<String> sortHelper(List<String> resultList) throws SortException {
 		MergeSort mergeSort = new MergeSort(false);
@@ -200,7 +200,7 @@ public final class SortHelper {
 	 * @param resultList
 	 *            rhe input list
 	 * @return List<String> sorted list of string
-	 * @throws SortException 
+	 * @throws SortException
 	 */
 	public static List<String> sortHelperWithNumFlag(List<String> resultList) throws SortException {
 		MergeSort mergeSort = new MergeSort(true);
@@ -208,15 +208,17 @@ public final class SortHelper {
 				mergeSort.mergeSort(resultList.toArray(new String[resultList.size()]), ZERO, resultList.size() - 1)));
 		return ansList;
 	}
-	
-	/**This method initiates the sort process by calling helper methods to read and sort the input.
+
+	/**
+	 * This method initiates the sort process by calling helper methods to read
+	 * and sort the input.
+	 * 
 	 * @param args
 	 * @param stdin
 	 * @return
 	 * @throws SortException
 	 */
-	public static String[] sortProcess(String[] args, InputStream stdin)
-			throws SortException {
+	public static String[] sortProcess(String[] args, InputStream stdin) throws SortException {
 		Path currentDir = Paths.get(Environment.currentDirectory);
 		int filePosition = ZERO;
 		String[] toSort = null;
@@ -239,9 +241,9 @@ public final class SortHelper {
 			}
 			toSort = SortApplication.getFileContents(args, currentDir, filePosition);
 
-		} 
+		}
 		MergeSort mergeSort = new MergeSort(numFlag);
-		if(toSort != null) {
+		if (toSort != null) {
 			mergeSort.mergeSort(toSort, ZERO, toSort.length - 1);
 		}
 		return toSort;

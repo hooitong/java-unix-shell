@@ -1,7 +1,5 @@
 package sg.edu.nus.comp.cs4218.impl.cmd;
 
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
 
 import sg.edu.nus.comp.cs4218.exception.ShellException;
@@ -45,7 +43,6 @@ public class SequenceCommandTest {
 		SequenceCommand cmd = new SequenceCommand(cmdline);
 		cmd.parse();
 	}
-
 
 	/**
 	 * Test if method <i>parse</i> properly splits arguments of the sequence

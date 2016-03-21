@@ -20,7 +20,7 @@ import sg.edu.nus.comp.cs4218.exception.DateException;
  */
 public class DateApplication implements Application {
 	private static final String DATE_FORMAT = "EEE MMM dd HH:mm:ss zzz yyyy";
-	
+
 	/**
 	 * Runs the date application with the specified arguments.
 	 * 
@@ -41,12 +41,12 @@ public class DateApplication implements Application {
 		}
 
 		String dateGenerated = generateDate(DATE_FORMAT);
-		
+
 		PrintWriter printWriter = new PrintWriter(stdout);
 		printWriter.println(dateGenerated);
 		printWriter.flush();
 		printWriter.close();
-		
+
 	}
 
 	/**

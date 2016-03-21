@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.exception.FmtException;
@@ -130,19 +131,20 @@ public class FmtApplication implements Application {
 					++count;
 				}
 			} else {
-				if ((tempLine.length() + strArray[count].replace(String.valueOf((char) 160), " ").trim().length() + 1) < wrapWidth) {
+				if ((tempLine.length() + strArray[count].replace(String.valueOf((char) 160), " ").trim().length()
+						+ 1) < wrapWidth) {
 					tempLine = tempLine.concat(" " + strArray[count].replace(String.valueOf((char) 160), " ").trim());
 					++count;
 				} else {
-					wrappedString = wrappedString.concat(tempLine + NEW_LINE);	
+					wrappedString = wrappedString.concat(tempLine + NEW_LINE);
 					tempLine = "";
 				}
 			}
 		}
-		
+
 		wrappedString = wrappedString.concat(tempLine);
-		
-		return wrappedString+NEW_LINE;
+
+		return wrappedString + NEW_LINE;
 	}
 
 	/**
@@ -210,7 +212,7 @@ public class FmtApplication implements Application {
 			String input = "";
 
 			while ((input = buffReader.readLine()) != null) {
-				concatString = concatString.concat(input+" ");
+				concatString = concatString.concat(input + " ");
 			}
 
 			buffReader.close();
@@ -243,7 +245,7 @@ public class FmtApplication implements Application {
 			String input = "";
 
 			while ((input = buffReader.readLine()) != null) {
-				concatString = concatString.concat(input+" ");
+				concatString = concatString.concat(input + " ");
 			}
 
 			buffReader.close();

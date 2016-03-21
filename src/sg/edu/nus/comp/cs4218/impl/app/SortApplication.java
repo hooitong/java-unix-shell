@@ -11,7 +11,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import sg.edu.nus.comp.cs4218.app.Sort;
 import sg.edu.nus.comp.cs4218.exception.SortException;
 import sg.edu.nus.comp.cs4218.misc.SortHelper;
@@ -28,7 +27,8 @@ public class SortApplication implements Sort {
 
 	/**
 	 * Returns an ordered list of lines containing only simple letters
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
 	@Override
 	public List<String> sortStringsSimple(String... toSort) throws SortException {
@@ -38,7 +38,8 @@ public class SortApplication implements Sort {
 
 	/**
 	 * Returns an ordered list of lines containing only capital letters
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
 	@Override
 	public List<String> sortStringsCapital(String... toSort) throws SortException {
@@ -48,7 +49,8 @@ public class SortApplication implements Sort {
 
 	/**
 	 * Returns an ordered list of lines containing only numbers in natural order
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
 	@Override
 	public List<String> sortNumbers(String... toSort) throws SortException {
@@ -58,7 +60,8 @@ public class SortApplication implements Sort {
 
 	/**
 	 * Returns an ordered list of lines containing only numbers in asc order
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
 	@Override
 	public List<String> sortNumbersWithNumFlagOn(String... toSort) throws SortException {
@@ -68,7 +71,8 @@ public class SortApplication implements Sort {
 
 	/**
 	 * Returns an ordered list of lines containing only special characters
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
 	@Override
 	public List<String> sortSpecialChars(String... toSort) throws SortException {
@@ -78,8 +82,10 @@ public class SortApplication implements Sort {
 
 	/**
 	 * Returns an ordered list of lines containing simple and capital letters
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
+	@Override
 	public List<String> sortSimpleCapital(String... toSort) throws SortException {
 		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(TWO, toSort));
 		return SortHelper.sortHelper(extractedList);
@@ -87,7 +93,8 @@ public class SortApplication implements Sort {
 
 	/**
 	 * Returns an ordered list of lines containing simple letters and numbers
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
 	@Override
 	public List<String> sortSimpleNumbers(String... toSort) throws SortException {
@@ -98,7 +105,8 @@ public class SortApplication implements Sort {
 	/**
 	 * Returns an ordered list of lines containing simple letters and numbers
 	 * with numbers in asc order
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
 	@Override
 	public List<String> sortSimpleNumbersWithNumFlagOn(String... toSort) throws SortException {
@@ -109,7 +117,8 @@ public class SortApplication implements Sort {
 	/**
 	 * Returns an ordered list of lines containing simple letters and special
 	 * characters
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
 	@Override
 	public List<String> sortSimpleSpecialChars(String... toSort) throws SortException {
@@ -119,7 +128,8 @@ public class SortApplication implements Sort {
 
 	/**
 	 * Returns an ordered list of lines containing capital letters and numbers
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
 	@Override
 	public List<String> sortCapitalNumbers(String... toSort) throws SortException {
@@ -130,7 +140,8 @@ public class SortApplication implements Sort {
 	/**
 	 * Returns an ordered list of lines containing capital letters and numbers
 	 * in ascending order
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
 	@Override
 	public List<String> sortCapitalNumberswithNumFlagOn(String... toSort) throws SortException {
@@ -141,7 +152,8 @@ public class SortApplication implements Sort {
 	/**
 	 * Returns an ordered list of lines containing capital letters and special
 	 * character
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
 	@Override
 	public List<String> sortCapitalSpecialChars(String... toSort) throws SortException {
@@ -152,7 +164,8 @@ public class SortApplication implements Sort {
 	/**
 	 * Returns an ordered list of lines containing numbers and special
 	 * characters
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
 	@Override
 	public List<String> sortNumbersSpecialChars(String... toSort) throws SortException {
@@ -163,7 +176,8 @@ public class SortApplication implements Sort {
 	/**
 	 * Returns an ordered list of lines containing numbers and special
 	 * characters
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
 	@Override
 	public List<String> sortNumbersSpecialCharsWithNumFlagOn(String... toSort) throws SortException {
@@ -174,7 +188,8 @@ public class SortApplication implements Sort {
 	/**
 	 * Returns an ordered list of lines containing simple and capital letters
 	 * and numbers
-	 * @throws SortException 
+	 * 
+	 * @throws SortException
 	 */
 	@Override
 	public List<String> sortSimpleCapitalNumber(String... toSort) throws SortException {
@@ -187,7 +202,7 @@ public class SortApplication implements Sort {
 	 * and numbers
 	 */
 	@Override
-	public List<String> sortSimpleCapitalNumberWithNumFlagOn(String... toSort)throws SortException {
+	public List<String> sortSimpleCapitalNumberWithNumFlagOn(String... toSort) throws SortException {
 		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(THREE, toSort));
 		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
@@ -197,7 +212,7 @@ public class SortApplication implements Sort {
 	 * and special characters
 	 */
 	@Override
-	public List<String> sortSimpleCapitalSpecialChars(String... toSort)throws SortException {
+	public List<String> sortSimpleCapitalSpecialChars(String... toSort) throws SortException {
 		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(THREE, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
@@ -207,7 +222,7 @@ public class SortApplication implements Sort {
 	 * special characters
 	 */
 	@Override
-	public List<String> sortSimpleNumbersSpecialChars(String... toSort)throws SortException {
+	public List<String> sortSimpleNumbersSpecialChars(String... toSort) throws SortException {
 		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(THREE, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
@@ -217,7 +232,7 @@ public class SortApplication implements Sort {
 	 * special characters in asc order
 	 */
 	@Override
-	public List<String> sortSimpleNumbersSpecialCharsWithNumFlagOn(String... toSort) throws SortException{
+	public List<String> sortSimpleNumbersSpecialCharsWithNumFlagOn(String... toSort) throws SortException {
 		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(THREE, toSort));
 		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
@@ -227,7 +242,7 @@ public class SortApplication implements Sort {
 	 * special characters
 	 */
 	@Override
-	public List<String> sortCapitalNumbersSpecialChars(String... toSort)throws SortException {
+	public List<String> sortCapitalNumbersSpecialChars(String... toSort) throws SortException {
 		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(THREE, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
@@ -237,7 +252,7 @@ public class SortApplication implements Sort {
 	 * special characters
 	 */
 	@Override
-	public List<String> sortCapitalNumbersSpecialCharsWithNumFlagOn(String... toSort)throws SortException {
+	public List<String> sortCapitalNumbersSpecialCharsWithNumFlagOn(String... toSort) throws SortException {
 		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(THREE, toSort));
 		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
@@ -247,7 +262,7 @@ public class SortApplication implements Sort {
 	 * numbers and special characters
 	 */
 	@Override
-	public List<String> sortAll(String... toSort)throws SortException {
+	public List<String> sortAll(String... toSort) throws SortException {
 		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(FOUR, toSort));
 		return SortHelper.sortHelper(extractedList);
 	}
@@ -257,7 +272,7 @@ public class SortApplication implements Sort {
 	 * numbers and special characters in asc order
 	 */
 	@Override
-	public List<String> sortAllWithNumFlagOn(String... toSort) throws SortException{
+	public List<String> sortAllWithNumFlagOn(String... toSort) throws SortException {
 		List<String> extractedList = new ArrayList<String>(SortHelper.separateBasedOnType(FOUR, toSort));
 		return SortHelper.sortHelperWithNumFlag(extractedList);
 	}
@@ -267,8 +282,6 @@ public class SortApplication implements Sort {
 		String[] toSort = SortHelper.sortProcess(args, stdin);
 		stdoutSortedArray(stdout, toSort);
 	}
-
-	
 
 	/**
 	 * write the sorted array to the outstream
@@ -396,7 +409,7 @@ public class SortApplication implements Sort {
 				throw new SortException("IOException", e);
 			}
 		}
-		
+
 		return arrayList.toArray(new String[arrayList.size()]);
 	}
 }
