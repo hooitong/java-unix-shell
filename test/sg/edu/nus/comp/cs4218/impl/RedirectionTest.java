@@ -20,7 +20,7 @@ public class RedirectionTest
 	private CallCommand stubCommand;
 	private ShellImpl shell;
 	private ByteArrayOutputStream baos;
-	private static final String FOLDER_LOCATION = "examples-integration/Multiple-Pipe/";
+	private static final String FOLDER_LOCATION = "examples-integration/multiple-pipe/";
 	
 	private static final String NEW_LINE = System.lineSeparator();
 	

@@ -14,6 +14,10 @@ import sg.edu.nus.comp.cs4218.exception.BcException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.ShellImpl;
 
+/**
+ * These are the tests given from other users meant for TDD purposes. More tests are also added
+ * below to further improve the test for Bc.
+ */
 public class BcApplicationTest {
 	private BcApplication bcApp;
 	private OutputStream outStream;
@@ -717,7 +721,7 @@ public class BcApplicationTest {
 	 */
 	@Test(expected = BcException.class)
 	public void testRunInvalidExpressionPlusPlus() throws BcException {
-		String[] args = { "2 ++ -6 " };
+		String[] args = {"2 ++ -6 "};
 		bcApp.run(args, null, outStream);
 	}
 
