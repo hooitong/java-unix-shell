@@ -14,8 +14,6 @@ public final class SignChecker {
 	private final static char OR_SINGLE_SIGN = '|';
 	private final static String DOT = ".";
 
-
-
 	private SignChecker() {
 	}
 
@@ -55,8 +53,7 @@ public final class SignChecker {
 	 */
 	public static boolean isOperator(char currChar) {
 		boolean result = false;
-		if (currChar == PLUS || currChar == MINUS || currChar == DIVIDE
-				|| currChar == TIMES || currChar == POW) {
+		if (currChar == PLUS || currChar == MINUS || currChar == DIVIDE || currChar == TIMES || currChar == POW) {
 			result = true;
 		}
 		return result;
@@ -72,8 +69,7 @@ public final class SignChecker {
 	 */
 	public static boolean isRelationCondtional(char currChar) {
 		boolean result = false;
-		if (currChar == LESS || currChar == GREATER || currChar == EQUAL
-				|| currChar == NOT_SIGN || currChar == AND_SIGN
+		if (currChar == LESS || currChar == GREATER || currChar == EQUAL || currChar == NOT_SIGN || currChar == AND_SIGN
 				|| currChar == OR_SINGLE_SIGN) {
 			result = true;
 		}

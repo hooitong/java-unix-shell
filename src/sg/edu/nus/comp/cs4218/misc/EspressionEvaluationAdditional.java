@@ -31,11 +31,9 @@ public final class EspressionEvaluationAdditional {
 	 * @param tStack
 	 * @throws BcException
 	 */
-	public static void catchEmptyStackException(Stack<String> tStack)
-			throws BcException {
+	public static void catchEmptyStackException(Stack<String> tStack) throws BcException {
 		if (tStack.isEmpty()) {
-			throw new BcException(
-					"Stack is empty, unable to retrieve numeric strings");
+			throw new BcException("Stack is empty, unable to retrieve numeric strings");
 		}
 	}
 
@@ -45,12 +43,9 @@ public final class EspressionEvaluationAdditional {
 	 * @param num1Str
 	 * @throws BcException
 	 */
-	public static void catchNotNumStringException(String num1Str)
-			throws BcException {
+	public static void catchNotNumStringException(String num1Str) throws BcException {
 		if (!SignChecker.isNumeric(num1Str)) {
-			throw new BcException(
-					"Unable to perform operations as string is not numeric: "
-							+ num1Str);
+			throw new BcException("Unable to perform operations as string is not numeric: " + num1Str);
 		}
 	}
 }

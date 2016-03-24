@@ -1,2 +1,0 @@
-sort1.txt
-bc1.txt

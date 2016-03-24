@@ -106,5 +106,4 @@ public interface Bc extends Application {
 	 */
 	public String not(String... args);
 
-
 }

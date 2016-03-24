@@ -8,8 +8,8 @@ public class LineComparison {
 	private static final int COL_ONE = 1;
 	private static final int COL_TWO = 2;
 	private static final String TAB_LINE = "\t";
-	private ArrayList<String> strList1;
-	private ArrayList<String> strList2;
+	private final ArrayList<String> strList1;
+	private final ArrayList<String> strList2;
 
 	public LineComparison(ArrayList<String> strList1, ArrayList<String> strList2) {
 		this.strList1 = strList1;

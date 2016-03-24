@@ -2,7 +2,6 @@ package sg.edu.nus.comp.cs4218.impl.cmd;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.file.Paths;
@@ -167,8 +166,8 @@ public class CallCommandTest {
 	}
 
 	/**
-	 * Test whether the input redirection can be parsed from the given command (function wise)
-	 * line.
+	 * Test whether the input redirection can be parsed from the given command
+	 * (function wise) line.
 	 *
 	 * @throws Exception
 	 */
@@ -181,7 +180,7 @@ public class CallCommandTest {
 		stubCommand.extractInputRedir(stringToTest, cmdVector, 8);
 		assertEquals(cmdVector.get(0), "file1.txt");
 	}
-	
+
 	/**
 	 * Test whether the input redirection can be parsed from the given command
 	 * line.
@@ -192,12 +191,12 @@ public class CallCommandTest {
 	public void testExtractInputRedir() throws Exception {
 		stubCommand.cmdline = " sort -n < file1.txt ";
 		stubCommand.parse();
-		assertEquals(stubCommand.inputStreamS,"file1.txt");
+		assertEquals(stubCommand.inputStreamS, "file1.txt");
 	}
 
 	/**
-	 * Test whether the output redirection can be parsed from the given command (function wise)
-	 * line.
+	 * Test whether the output redirection can be parsed from the given command
+	 * (function wise) line.
 	 *
 	 * @throws Exception
 	 */
@@ -221,9 +220,9 @@ public class CallCommandTest {
 	public void testExtractOutputRedir() throws Exception {
 		stubCommand.cmdline = " sort -n > file1.txt ";
 		stubCommand.parse();
-		assertEquals(stubCommand.outputStreamS,"file1.txt");
+		assertEquals(stubCommand.outputStreamS, "file1.txt");
 	}
-	
+
 	/**
 	 * Test whether the method can process an array of valid arguments, evaluate
 	 * globbing and return the newly replaced arguments.

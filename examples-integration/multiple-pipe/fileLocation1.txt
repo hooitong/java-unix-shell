@@ -1,0 +1,1 @@
+examples-integration/Multiple-Pipe/sampleOriginalPart1.txt examples-integration/Multiple-Pipe/sampleOriginalPart2.txt

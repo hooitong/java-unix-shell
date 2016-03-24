@@ -99,7 +99,7 @@ public class TailApplication implements Application {
 			isFileReadable = checkIfFileIsReadable(filePath);
 			if (isFileReadable) {
 				inputString = readFromFile(filePath);
-			} 
+			}
 		} else {
 			inputString = readFromStdin(stdin);
 		}
@@ -219,8 +219,7 @@ public class TailApplication implements Application {
 			String input = "";
 
 			while ((input = buffReader.readLine()) != null) {
-				if(!input.equals(NEW_LINE))
-				{
+				if (!input.equals(NEW_LINE)) {
 					textToExtract.push(input);
 				}
 			}

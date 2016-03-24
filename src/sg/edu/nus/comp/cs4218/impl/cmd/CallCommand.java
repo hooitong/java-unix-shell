@@ -37,6 +37,8 @@ public class CallCommand implements Command {
 	public static final String EXP_SAME_REDIR = "Input redirection file same as " + "output redirection file.";
 	public static final String EXP_STDOUT = "Error writing to stdout.";
 	public static final String EXP_NOT_SUPPORTED = " not supported yet";
+	public static final String EXP_GLOB_MULTI = "Ambigious globbing for IO Redirection.";
+	public static final String EXP_GLOB_NONE = "File not found.";
 
 	String app;
 	String cmdline, inputStreamS, outputStreamS;
@@ -55,17 +57,17 @@ public class CallCommand implements Command {
 	public CallCommand() {
 		this("");
 	}
+
 	/**
 	 * Getter function for inputStreamS
 	 * 
 	 * @return inputStreamS
-	 *            
+	 * 
 	 */
-	public String getInputStreamS()
-	{
+	public String getInputStreamS() {
 		return inputStreamS;
 	}
-	
+
 	/**
 	 * Evaluates sub-command using data provided through stdin stream. Writes
 	 * result to stdout stream.
@@ -117,6 +119,7 @@ public class CallCommand implements Command {
 	 *             the input redirection file path is same as that of the output
 	 *             redirection file path.
 	 */
+	@Override
 	public void parse() throws ShellException {
 		Vector<String> cmdVector = new Vector<String>();
 		Boolean result = true;
@@ -217,7 +220,8 @@ public class CallCommand implements Command {
 						errorMsg = ShellImpl.EXP_SYNTAX;
 						throw new ShellException(errorMsg);
 					} // check if there's any invalid token not detected
-					if (smallestPattIdx == 2 || smallestPattIdx == 3 || smallestPattIdx == 4 || smallestPattIdx == 5 || !matchedStr.contains("*")) {
+					if (smallestPattIdx == 2 || smallestPattIdx == 3 || smallestPattIdx == 4 || smallestPattIdx == 5
+							|| !matchedStr.contains("*")) {
 						cmdVector.add(matchedStr);
 					} else {
 						cmdVector.addAll(Arrays.asList(processSingleGlob(matchedStr)));
@@ -233,8 +237,10 @@ public class CallCommand implements Command {
 	 * Extraction of input redirection from cmdLine with two slots at end of
 	 * cmdVector reserved for <inputredir and >outredir. For valid inputs,
 	 * assumption that input redir and output redir are always at the end of the
-	 * command and input stream first the output stream if both are in the args
-	 * 
+	 * command and input stream first the output stream if both are in the args.
+	 *
+	 * Extraction does not support any types of quotes or command substitution.
+	 *
 	 * @param str
 	 *            String of command to split.
 	 * @param cmdVector
@@ -264,7 +270,7 @@ public class CallCommand implements Command {
 		Matcher inputRedirM;
 		String inputRedirS = "";
 		int cmdVectorIndex = cmdVector.size() - 2;
-		
+
 		boolean singleFlag = true;
 		while (!substring.trim().isEmpty()) {
 			inputRedirM = inputRedirP.matcher(substring);
@@ -275,13 +281,21 @@ public class CallCommand implements Command {
 				}
 				inputRedirS = inputRedirM.group(1);
 				String extractedInput = inputRedirS.replace(String.valueOf((char) 160), " ").trim();
-				cmdVector.set(cmdVectorIndex, extractedInput);
-				if(singleFlag)
-				{
-					singleFlag = false;
+				if (extractedInput.contains("*")) {
+					String[] globResult = processSingleGlob(extractedInput);
+					if (globResult.length == 0) {
+						throw new ShellException(EXP_GLOB_NONE);
+					} else if (globResult.length > 1) {
+						throw new ShellException(EXP_GLOB_MULTI);
+					} else {
+						extractedInput = globResult[0];
+					}
 				}
-				else
-				{
+
+				cmdVector.set(cmdVectorIndex, extractedInput);
+				if (singleFlag) {
+					singleFlag = false;
+				} else {
 					throw new ShellException(EXP_SYNTAX);
 				}
 				newEndIdx = newEndIdx + inputRedirM.end() - 1;
@@ -298,7 +312,9 @@ public class CallCommand implements Command {
 	 * cmdVector reserved for <inputredir and >outredir. For valid inputs,
 	 * assumption that input redir and output redir are always at the end of the
 	 * command and input stream first the output stream if both are in the args.
-	 * 
+	 *
+	 * Extraction does not support any types of quotes or command substitution.
+	 *
 	 * @param str
 	 *            String of command to split.
 	 * @param cmdVector
@@ -337,7 +353,19 @@ public class CallCommand implements Command {
 					throw new ShellException(EXP_SYNTAX);
 				}
 				inputRedirS = inputRedirM.group(1);
-				cmdVector.set(cmdVectorIdx, inputRedirS.replace(String.valueOf((char) 160), " ").trim());
+				String extractedOutput = inputRedirS.replace(String.valueOf((char) 160), " ").trim();
+				if (extractedOutput.contains("*")) {
+					String[] globResult = processSingleGlob(extractedOutput);
+					if (globResult.length == 0) {
+						throw new ShellException(EXP_GLOB_NONE);
+					} else if (globResult.length > 1) {
+						throw new ShellException(EXP_GLOB_MULTI);
+					} else {
+						extractedOutput = globResult[0];
+					}
+				}
+
+				cmdVector.set(cmdVectorIdx, extractedOutput);
 				newEndIdx = newEndIdx + inputRedirM.end() - 1;
 			} else {
 				break;
@@ -360,7 +388,7 @@ public class CallCommand implements Command {
 		for (String arg : args) {
 			Matcher singleMatcher = singleQuote.matcher(arg);
 			Matcher doubleMatcher = doubleQuote.matcher(arg);
-			if(arg.contains("*") && !singleMatcher.find() && !doubleMatcher.find()) {
+			if (arg.contains("*") && !singleMatcher.find() && !doubleMatcher.find()) {
 				tempList.addAll(Arrays.asList(processSingleGlob(arg)));
 			} else {
 				tempList.add(arg);
@@ -370,13 +398,15 @@ public class CallCommand implements Command {
 	}
 
 	/**
-	 * This method strictly does not check for quotes and treats all asterisks as special characters. Evaluates globbing
-	 * for a single argumen and replaces wildcards symbol with matched files.
+	 * This method strictly does not check for quotes and treats all asterisks
+	 * as special characters. Evaluates globbing for a single argumen and
+	 * replaces wildcards symbol with matched files.
 	 *
-	 * @param arg the argument to glob
+	 * @param arg
+	 *            the argument to glob
 	 * @return a String array contains matched paths
 	 * @throws ShellException
-     */
+	 */
 	private String[] processSingleGlob(String arg) throws ShellException {
 		List<String> tempList = new ArrayList<>();
 

@@ -40,6 +40,11 @@ public class FmtApplicationTest {
 		bis = new ByteArrayInputStream("This is a test string".getBytes());
 	}
 
+	/**
+	 * Test if exception is raised when reading non existant file 
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public void testFileReadWithNonExistantFile() throws FmtException {
 		exception.expect(FmtException.class);
@@ -47,6 +52,11 @@ public class FmtApplicationTest {
 		fmtApplication.checkIfFileIsReadable(Paths.get("examples/sampleNonExistent.txt"));
 	}
 
+	/**
+	 * Test if exception is raised when reading directory insteaed of file
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public void testFileReadWithDirectory() throws FmtException {
 		exception.expect(FmtException.class);
@@ -54,11 +64,21 @@ public class FmtApplicationTest {
 		fmtApplication.checkIfFileIsReadable(Paths.get("examples/"));
 	}
 
+	/**
+	 * Test reading in from stdin
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public void testReadFromStdin() throws FmtException {
 		assertEquals(fmtApplication.readFromStdin(bis), "This is a test string");
 	}
 
+	/**
+	 * Test if exception is raised when stdin is null and no file specified
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public void testReadFromStdinNull() throws FmtException {
 		exception.expect(FmtException.class);
@@ -66,28 +86,49 @@ public class FmtApplicationTest {
 		assertEquals(fmtApplication.readFromStdin(null), "This is a test string");
 	}
 
+	/**
+	 * Test if file checking for readablity is accurate 
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public void testFileRead() throws FmtException {
 		assertTrue(fmtApplication.checkIfFileIsReadable(Paths.get("examples/sample.txt")));
 	}
 
+	/**
+	 * Test basic functionality and accuracy of text wrapping
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public final void testWrapText() throws FmtException {
-		String[] arguments = {"examples/smallSampleLine.txt" };
+		String[] arguments = { "examples/smallSampleLine.txt" };
 		fmtApplication.run(arguments, null, baos);
 		String resultString = new String(baos.toByteArray());
 		String expectedString = "muse science yawn" + NEW_LINE;
 		assertEquals(expectedString, resultString);
 	}
-	
+
+	/**
+	 * Test if wrapping is done without breaking of words in the event of a small wrap width
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public void testTooShortWrapWidth() throws FmtException {
 		int wrapValue = 4;
 		String wrappedText = fmtApplication.wrapText("The random string is a cat", wrapValue);
-		String expectedString = "The" + NEW_LINE + "random" + NEW_LINE + "string" + NEW_LINE + "is" + NEW_LINE + "a" + NEW_LINE + "cat" + NEW_LINE;
+		String expectedString = "The" + NEW_LINE + "random" + NEW_LINE + "string" + NEW_LINE + "is" + NEW_LINE + "a"
+				+ NEW_LINE + "cat" + NEW_LINE;
 		assertEquals(expectedString, wrappedText);
 	}
 
+	/**
+	 * Test if exception is raised when specified wrap width is negative
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public void testNegativeWrapWidth() throws FmtException {
 		exception.expect(FmtException.class);
@@ -97,6 +138,11 @@ public class FmtApplicationTest {
 		fmtApplication.run(arguments, null, baos);
 	}
 
+	/**
+	 * Test if exception is raised if wrap width equals 0 
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public void testZeroWrapWidth() throws FmtException {
 		exception.expect(FmtException.class);
@@ -106,6 +152,11 @@ public class FmtApplicationTest {
 		fmtApplication.run(arguments, null, baos);
 	}
 
+	/**
+	 * Test if exception is raised when specified wrap width is not a number
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public void testNonNumericWrapWidth() throws FmtException {
 		exception.expect(FmtException.class);
@@ -115,6 +166,11 @@ public class FmtApplicationTest {
 		fmtApplication.run(arguments, null, baos);
 	}
 
+	/**
+	 * Test if exception is raised when flag to specify width is not -w
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public void testInvalidWrapWidthFlag() throws FmtException {
 		exception.expect(FmtException.class);
@@ -124,6 +180,11 @@ public class FmtApplicationTest {
 		fmtApplication.run(arguments, null, baos);
 	}
 
+	/**
+	 * Test if empty text can be wrapped without inaccuracies
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public void testEmptyText() throws FmtException {
 		int wrapValue = 11;
@@ -132,33 +193,39 @@ public class FmtApplicationTest {
 		assertEquals(expectedString, wrappedText);
 	}
 
-
+	/**
+	 * Test default wrap width
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public void testDefaultWrapWidth() throws FmtException {
-		String[] arguments = {"examples/smallSample.txt" };
+		String[] arguments = { "examples/smallSample.txt" };
 		fmtApplication.run(arguments, null, baos);
 		String resultString = new String(baos.toByteArray());
-		assertEquals("Indulgence announcing uncommonly met she Continuing two unpleasing terminated" + NEW_LINE + "Now nusy busy apir" + NEW_LINE,resultString);
+		assertEquals("Indulgence announcing uncommonly met she Continuing two unpleasing terminated" + NEW_LINE
+				+ "Now nusy busy apir" + NEW_LINE, resultString);
 	}
-	
-	
+
+	/**
+	 * Test if existing new lines are removed before wrapping 
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public void testRemovalOfNewLine() throws FmtException {
 		int wrapValue = 100;
 		String wrappedText = fmtApplication.wrapText(
 				"The" + NEW_LINE + "random" + NEW_LINE + "String" + NEW_LINE + "is" + NEW_LINE + "tall", wrapValue);
 		String expectedString = "The random String is tall" + NEW_LINE;
-		assertEquals(expectedString,wrappedText);
+		assertEquals(expectedString, wrappedText);
 	}
-	
-	@Test
-	public void testTemp() throws FmtException {
-		String[] arguments = {"-w","40","examples-integration/multiple-pipe/sampleOriginal.txt" };
-		fmtApplication.run(arguments, null, baos);
-		String resultString = new String(baos.toByteArray());
-		System.out.println(resultString);
-	}
-	
+
+	/**
+	 * Test if text can be read in from a text file
+	 *
+	 * @throws FmtException
+	 */
 	@Test
 	public void testReadFromFile() throws FmtException {
 		Path currentDir = Paths.get(Environment.currentDirectory);
@@ -167,7 +234,7 @@ public class FmtApplicationTest {
 		String expectedString = "Selon la prefecture, des engins explosifs avaient ete";
 		assertEquals(expectedString, readString);
 	}
-	
+
 	@After
 	public void tearDown() throws Exception {
 		baos = null;

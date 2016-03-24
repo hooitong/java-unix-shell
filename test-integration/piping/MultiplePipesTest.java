@@ -1,24 +1,16 @@
 package piping;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.PipeCommandException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.exception.SortException;
 import sg.edu.nus.comp.cs4218.impl.ShellImpl;
-
-
 
 public class MultiplePipesTest {
 	private ShellImpl shell;
@@ -41,19 +33,13 @@ public class MultiplePipesTest {
 	 * @throws ShellException
 	 */
 	@Test
-	public void testPipeCatTailHead() throws AbstractApplicationException,
-			ShellException {
-		String cmd = "cat " + FOLDER_LOCATION + "sampleOriginalPart1.txt "
-				+ FOLDER_LOCATION + "sampleOriginalPart2.txt | tail -n 4";
+	public void testPipeCatTailHead() throws AbstractApplicationException, ShellException {
+		String cmd = "cat " + FOLDER_LOCATION + "sampleOriginalPart1.txt " + FOLDER_LOCATION
+				+ "sampleOriginalPart2.txt | tail -n 4";
 		shell.parseAndEvaluate(cmd, stdout);
-		String expected = "ultimately deriving from the Latin ingenium (c. 1250), "
-				+ NEW_LINE
-				+ "meaning \"innate quality, "
-				+ NEW_LINE
-				+ "especially mental power,"
-				+ NEW_LINE
-				+ "hence a clever invention.\"[5]"
-				+ NEW_LINE;
+		String expected = "ultimately deriving from the Latin ingenium (c. 1250), " + NEW_LINE
+				+ "meaning \"innate quality, " + NEW_LINE + "especially mental power," + NEW_LINE
+				+ "hence a clever invention.\"[5]" + NEW_LINE;
 		assertEquals(expected, stdout.toString());
 	}
 
@@ -64,13 +50,10 @@ public class MultiplePipesTest {
 	 * @throws ShellException
 	 */
 	@Test
-	public void testPipeTailSortHead() throws AbstractApplicationException,
-			ShellException {
-		String cmd = "tail -n 7 " + FOLDER_LOCATION
-				+ "items.txt  | sort | head -n 3";
+	public void testPipeTailSortHead() throws AbstractApplicationException, ShellException {
+		String cmd = "tail -n 7 " + FOLDER_LOCATION + "items.txt  | sort | head -n 3";
 		shell.parseAndEvaluate(cmd, stdout);
-		String expected = "desktop" + NEW_LINE + "headset" + NEW_LINE + "key"
-				+ NEW_LINE;
+		String expected = "desktop" + NEW_LINE + "headset" + NEW_LINE + "key" + NEW_LINE;
 		assertEquals(expected, stdout.toString());
 	}
 
@@ -81,12 +64,10 @@ public class MultiplePipesTest {
 	 * @throws ShellException
 	 */
 	@Test
-	public void testPipeEchoFmtHead() throws AbstractApplicationException,
-			ShellException {
+	public void testPipeEchoFmtHead() throws AbstractApplicationException, ShellException {
 		String cmd = "echo \"Engineering has existed since ancient times as humans devised fundamental inventions such as the wedge, lever, wheel, and pulley.\" | fmt -w 20 | head -n 2";
 		shell.parseAndEvaluate(cmd, stdout);
-		String expected = "Engineering has" + NEW_LINE + "existed since"
-				+ NEW_LINE;
+		String expected = "Engineering has" + NEW_LINE + "existed since" + NEW_LINE;
 		assertEquals(expected, stdout.toString());
 	}
 
@@ -97,14 +78,12 @@ public class MultiplePipesTest {
 	 * @throws ShellException
 	 */
 	@Test
-	public void testPipeCatSortComm() throws AbstractApplicationException,
-			ShellException {
-		String cmd = "cat " + FOLDER_LOCATION + "comm1.txt " + FOLDER_LOCATION
-				+ "comm2.txt | sort | comm " + FOLDER_LOCATION + "comm3.txt";
+	public void testPipeCatSortComm() throws AbstractApplicationException, ShellException {
+		String cmd = "cat " + FOLDER_LOCATION + "comm1.txt " + FOLDER_LOCATION + "comm2.txt | sort | comm "
+				+ FOLDER_LOCATION + "comm3.txt";
 		shell.parseAndEvaluate(cmd, stdout);
-		String expected = TAB + TAB + "apple" + NEW_LINE + TAB + TAB + "banana"
-				+ NEW_LINE + TAB + "banana" + TAB + NEW_LINE + "eggplant" + TAB
-				+ TAB + NEW_LINE + TAB + "zucchini" + TAB;
+		String expected = TAB + TAB + "apple" + NEW_LINE + TAB + TAB + "banana" + NEW_LINE + TAB + "banana" + TAB
+				+ NEW_LINE + "eggplant" + TAB + TAB + NEW_LINE + TAB + "zucchini" + TAB;
 		assertEquals(expected, stdout.toString());
 	}
 
@@ -115,10 +94,9 @@ public class MultiplePipesTest {
 	 * @throws ShellException
 	 */
 	@Test
-	public void testPipeSortTailFmt() throws AbstractApplicationException,
-			ShellException {
-		String cmd = "sort " + FOLDER_LOCATION + "sort1.txt " + FOLDER_LOCATION
-				+ "sort2.txt " + FOLDER_LOCATION + "sort3.txt |tail -n 3|fmt";
+	public void testPipeSortTailFmt() throws AbstractApplicationException, ShellException {
+		String cmd = "sort " + FOLDER_LOCATION + "sort1.txt " + FOLDER_LOCATION + "sort2.txt " + FOLDER_LOCATION
+				+ "sort3.txt |tail -n 3|fmt";
 		shell.parseAndEvaluate(cmd, stdout);
 		String expected = "muse science yawn" + NEW_LINE;
 		assertEquals(expected, stdout.toString());
@@ -131,13 +109,11 @@ public class MultiplePipesTest {
 	 * @throws ShellException
 	 */
 	@Test
-	public void testPipeHeadFmtTail() throws AbstractApplicationException,
-			ShellException {
-		String cmd = "head " + FOLDER_LOCATION
-				+ "sampleOriginal.txt  | fmt -w 40 |tail -n 2";
+	public void testPipeHeadFmtTail() throws AbstractApplicationException, ShellException {
+		String cmd = "head " + FOLDER_LOCATION + "sampleOriginal.txt  | fmt -w 40 |tail -n 2";
 		shell.parseAndEvaluate(cmd, stdout);
-		String expected = "\"innate quality, especially mental" + NEW_LINE
-				+ "power, hence a clever invention.\"[5]" + NEW_LINE;
+		String expected = "\"innate quality, especially mental" + NEW_LINE + "power, hence a clever invention.\"[5]"
+				+ NEW_LINE;
 		assertEquals(expected, stdout.toString());
 	}
 
@@ -149,10 +125,8 @@ public class MultiplePipesTest {
 	 * @throws ShellException
 	 */
 	@Test(expected = PipeCommandException.class)
-	public void testPipeHeadUnknownTail() throws AbstractApplicationException,
-			ShellException {
-		String cmd = "head " + FOLDER_LOCATION
-				+ "sampleOriginal.txt  | dmt -w 40 |tail -n 2";
+	public void testPipeHeadUnknownTail() throws AbstractApplicationException, ShellException {
+		String cmd = "head " + FOLDER_LOCATION + "sampleOriginal.txt  | dmt -w 40 |tail -n 2";
 		shell.parseAndEvaluate(cmd, stdout);
 
 	}
@@ -166,8 +140,7 @@ public class MultiplePipesTest {
 	 * @throws ShellException
 	 */
 	@Test(expected = PipeCommandException.class)
-	public void testPipeMissingSortArgsTailFmt()
-			throws AbstractApplicationException, ShellException {
+	public void testPipeMissingSortArgsTailFmt() throws AbstractApplicationException, ShellException {
 		String cmd = "sort -n |tail -n 2|fmt";
 		shell.parseAndEvaluate(cmd, stdout);
 	}
@@ -181,10 +154,8 @@ public class MultiplePipesTest {
 	 * @throws ShellException
 	 */
 	@Test(expected = PipeCommandException.class)
-	public void testPipeTailSortBadHeadArgs()
-			throws AbstractApplicationException, ShellException {
-		String cmd = "tail -n 7 " + FOLDER_LOCATION
-				+ "items.txt  | sort | head -k 3";
+	public void testPipeTailSortBadHeadArgs() throws AbstractApplicationException, ShellException {
+		String cmd = "tail -n 7 " + FOLDER_LOCATION + "items.txt  | sort | head -k 3";
 		shell.parseAndEvaluate(cmd, stdout);
 	}
 

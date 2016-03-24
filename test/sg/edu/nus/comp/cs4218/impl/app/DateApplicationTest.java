@@ -24,10 +24,10 @@ public class DateApplicationTest {
 	private static ByteArrayInputStream bis;
 
 	private static final String NEW_LINE = System.lineSeparator();
-	
+
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
-	
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		dateApplication = new DateApplication();
@@ -49,24 +49,24 @@ public class DateApplicationTest {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
 		dateApplication.run(null, bis, baos);
 		String output = new String(baos.toByteArray());
-		assertEquals(simpleDateFormat.format(new Date())+NEW_LINE, output);
+		assertEquals(simpleDateFormat.format(new Date()) + NEW_LINE, output);
 	}
-	
+
 	@Test
 	public final void testUnrequiredArg() throws DateException {
 		exception.expect(DateException.class);
 		exception.expectMessage("No arguments expected");
-		String[] arguments = {"-d 10"};
+		String[] arguments = { "-d 10" };
 		dateApplication.run(arguments, bis, baos);
 	}
-	
+
 	@Test
 	public final void testNullStdOut() throws DateException {
 		exception.expect(DateException.class);
 		exception.expectMessage("Cannot write to stdout as it is null");
 		dateApplication.run(null, bis, null);
 	}
-	
+
 	@After
 	public void tearDown() throws Exception {
 		baos = null;

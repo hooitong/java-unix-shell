@@ -1,0 +1,3 @@
+kangaroo
+zebra
+animal

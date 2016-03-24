@@ -1,7 +1,5 @@
 package sg.edu.nus.comp.cs4218.impl.cmd;
 
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
 
 import sg.edu.nus.comp.cs4218.exception.ShellException;
@@ -46,7 +44,6 @@ public class SequenceCommandTest {
 		cmd.parse();
 	}
 
-
 	/**
 	 * Test if method <i>parse</i> properly splits arguments of the sequence
 	 * command into two sub-commands.
@@ -55,7 +52,7 @@ public class SequenceCommandTest {
 	 */
 	@Test
 	public void testParseSingleValid() throws Exception {
-		String cmdline = "cat abc.txt ; grep abc/*.txt";
+		String cmdline = "cat abc.txt ; grep abc/apple.txt";
 		SequenceCommand cmd = new SequenceCommand(cmdline);
 		cmd.parse();
 	}
@@ -68,7 +65,7 @@ public class SequenceCommandTest {
 	 */
 	@Test
 	public void testParseMultipleValid() throws Exception {
-		String cmdline = "grep test/apple/* ; cat abc.txt ; cat tk.test > a.out ";
+		String cmdline = "grep test/apple/test.txt ; cat abc.txt ; cat tk.test > a.out ";
 		SequenceCommand cmd = new SequenceCommand(cmdline);
 		cmd.parse();
 	}

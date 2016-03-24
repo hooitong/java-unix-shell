@@ -1,3 +1,0 @@
-sort -n < sort1.txt > sort1Output.txt
-
-tail -n 1 sort1.txt

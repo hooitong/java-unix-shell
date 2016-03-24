@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import sg.edu.nus.comp.cs4218.Command;
-import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.PipeCommandException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
@@ -16,9 +15,9 @@ import sg.edu.nus.comp.cs4218.impl.ShellImpl;
 public class PipeCommand implements Command {
 	private static final char PIPE = '|';
 	private static final int ZERO = 0;
-	private String cmdline;
-	private ArrayList<String> argsList;
-	private ArrayList<CallCommand> cmdList = new ArrayList<CallCommand>();
+	private final String cmdline;
+	private final ArrayList<String> argsList;
+	private final ArrayList<CallCommand> cmdList = new ArrayList<CallCommand>();
 
 	public PipeCommand(String cmdLine) {
 		this.argsList = new ArrayList<String>();
@@ -52,6 +51,7 @@ public class PipeCommand implements Command {
 	 * Evaluates command using data provided through stdin stream. Write result
 	 * to stdout stream.
 	 */
+	@Override
 	public void evaluate(InputStream stdin, OutputStream stdout) throws AbstractApplicationException, ShellException {
 		ByteArrayOutputStream outgoingPipe = new ByteArrayOutputStream();
 		for (int i = 0; i < this.cmdList.size(); i++) {
@@ -90,8 +90,9 @@ public class PipeCommand implements Command {
 		// unused
 	}
 
+	@Override
 	public void parse() throws ShellException {
-		if(this.argsList.get(ZERO).equals(this.cmdline)){
+		if (this.argsList.isEmpty() || this.argsList.get(ZERO).equals(this.cmdline)) {
 			throw new ShellException("Invalid syntax encountered");
 		}
 

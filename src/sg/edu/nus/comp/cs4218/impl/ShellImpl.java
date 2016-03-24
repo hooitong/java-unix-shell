@@ -1,20 +1,40 @@
 package sg.edu.nus.comp.cs4218.impl;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.app.*;
+import sg.edu.nus.comp.cs4218.impl.app.BcApplication;
+import sg.edu.nus.comp.cs4218.impl.app.CalApplication;
+import sg.edu.nus.comp.cs4218.impl.app.CatApplication;
+import sg.edu.nus.comp.cs4218.impl.app.CommApplication;
+import sg.edu.nus.comp.cs4218.impl.app.DateApplication;
+import sg.edu.nus.comp.cs4218.impl.app.EchoApplication;
+import sg.edu.nus.comp.cs4218.impl.app.FmtApplication;
+import sg.edu.nus.comp.cs4218.impl.app.HeadApplication;
+import sg.edu.nus.comp.cs4218.impl.app.SortApplication;
+import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
 import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.PipeCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.SequenceCommand;
-
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A Shell is a command interpreter and forms the backbone of the entire
@@ -74,9 +94,7 @@ public class ShellImpl implements Shell {
 			Matcher matcherBQ = patternBQp.matcher(argsArray[i]);
 			if (matcherBQ.find()) {// found backquoted
 				String bqStr = matcherBQ.group(1);
-				//cmdVector.add(bqStr.trim());
-				// process back quote
-				//System.out.println("backquote" + bqStr + i);
+
 				OutputStream bqOutputStream = new ByteArrayOutputStream();
 				ShellImpl shell = new ShellImpl();
 				shell.parseAndEvaluate(bqStr, bqOutputStream);
@@ -342,8 +360,8 @@ public class ShellImpl implements Shell {
 					throw e;
 				}
 
-			}catch (StackOverflowError soe){
-				throw new ShellException( soe + "Invalid command for parsing");
+			} catch (StackOverflowError soe) {
+				throw new ShellException(soe + "Invalid command for parsing");
 			}
 		}
 	}
@@ -486,8 +504,7 @@ public class ShellImpl implements Shell {
  * 
  * For reference
  * 
- * https://stackoverflow.com/questions/16517689/confused-about-matcher-group-in-java-regex/27328750#27328750
- * on regular expression
+ * https://stackoverflow.com/questions/16517689/confused-about-matcher-group-in-
+ * java-regex/27328750#27328750 on regular expression
  * 
  *************************************************************************************************************/
- 
