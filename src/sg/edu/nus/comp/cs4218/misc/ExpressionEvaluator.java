@@ -299,12 +299,8 @@ public final class ExpressionEvaluator {
 			result = bdNum1.compareTo(BigDecimal.ZERO) == ZERO || bdNum2.compareTo(BigDecimal.ZERO) == ZERO ? "0" : "1";
 			break;
 		case OR_SIGN:
-<<<<<<< HEAD
 			result = bdNum1.compareTo(BigDecimal.ZERO) == ZERO
 					&& bdNum2.compareTo(BigDecimal.ZERO) == ZERO ? "0" : "1";
-=======
-			result = bdNum1.compareTo(BigDecimal.ZERO) > ZERO || bdNum2.compareTo(BigDecimal.ZERO) > ZERO ? "1" : "0";
->>>>>>> e9c66cc170a5a6b0cbefde3334f9b36e526d24c4
 			break;
 		default:
 			break;
