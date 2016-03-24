@@ -37,7 +37,8 @@ public class LineComparison {
 			String lineB = "";
 			lineA = getLineFromList(this.strList1, indexLineFile1);
 			lineB = getLineFromList(this.strList2, indexLineFile2);
-			if (lineA.length() == 0 && lineB.length() == 0) {
+			if (indexLineFile1 > this.strList1.size() - 1
+					&& indexLineFile2 > this.strList2.size() - 1) {
 				break;
 			} else if (lineA.length() == 0 && lineB.length() != 0) {
 				mainAl.get(COL_ZERO).add(TAB_LINE);

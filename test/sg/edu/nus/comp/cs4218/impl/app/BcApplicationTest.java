@@ -193,7 +193,7 @@ public class BcApplicationTest {
 	 */
 	@Test
 	public void testNegatePositive() {
-		String[] args = { "-(1234)" };
+		String[] args = { "-(-(-1234))" };
 		String result = bcApp.negate(args);
 		String expected = "-1234";
 
@@ -620,9 +620,9 @@ public class BcApplicationTest {
 	 */
 	@Test
 	public void testOrFF() {
-		String[] args = { "0 || 0" };
+		String[] args = { "-1 || 0" };
 		String result = bcApp.orMethod(args);
-		String expected = "0";
+		String expected = "1";
 
 		assertEquals(expected, result);
 	}
@@ -814,5 +814,27 @@ public class BcApplicationTest {
 		shell.parseAndEvaluate(temp, stdout);
 		assertEquals(expected, stdout.toString());
 
+	}
+	
+	/**
+	 * Test the integers with parenthesis but without any operators
+	 * 
+	 * @throws BcException
+	 */
+	@Test(expected = BcException.class)
+	public void testRunIntegerWithParenthesisWithoutOperators() throws BcException {
+		String[] args = { "((5)0)" };
+		bcApp.run(args, null, outStream);
+	}
+	
+	/**
+	 * Test the negative integers with parenthesis but without any operators
+	 * 
+	 * @throws BcException
+	 */
+	@Test(expected = BcException.class)
+	public void testRunNegativeIntegerWithParenthesisWithoutOperators() throws BcException {
+		String[] args = { "-(-(-5)0) " };
+		bcApp.run(args, null, outStream);
 	}
 }

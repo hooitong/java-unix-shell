@@ -30,7 +30,8 @@ public final class ExpressionEvaluator {
 	private final static char NEGATE_CHAR = '-';
 	private final static char OPENPAREN = '(';
 	private final static char CLOSEDPAREN = ')';
-	private final static int ZERO = 0;;
+	private final static int ZERO = 0;
+	private final static int ONE = 1;
 	private final static int FIVE = 5;
 	private final static String ZERO_STRING = "0";
 
@@ -209,6 +210,9 @@ public final class ExpressionEvaluator {
 
 			}
 		}
+		if(tStack.size() != ONE){
+			throw new BcException("Invalid Expression");
+		}
 		return tStack.pop();
 	}
 
@@ -314,8 +318,8 @@ public final class ExpressionEvaluator {
 					|| bdNum2.compareTo(BigDecimal.ZERO) == ZERO ? "0" : "1";
 			break;
 		case OR_SIGN:
-			result = bdNum1.compareTo(BigDecimal.ZERO) > ZERO
-					|| bdNum2.compareTo(BigDecimal.ZERO) > ZERO ? "1" : "0";
+			result = bdNum1.compareTo(BigDecimal.ZERO) == ZERO
+					&& bdNum2.compareTo(BigDecimal.ZERO) == ZERO ? "0" : "1";
 			break;
 		default:
 			break;
