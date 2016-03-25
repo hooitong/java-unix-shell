@@ -88,25 +88,6 @@ public class CommApplicationTestBug {
 	}
 
 	/**
-	 * This bug shows comm does not compare new line and misses the first char
-	 * of hi and bye during the comparision comm1 contents = \n\n\n\n\nhi comm2
-	 * contents = \n\n\n\n\nbye
-	 * 
-	 * @throws CommException
-	 */
-	@Test
-	public void test() throws CommException {
-		String[] args = { "comm1.txt", "comm2.txt" };
-		commApplication.run(args, null, stdout);
-		String expected = TAB_LINE + TAB_LINE + "" + NEW_LINE + TAB_LINE + TAB_LINE + "" + NEW_LINE + TAB_LINE
-				+ TAB_LINE + "" + NEW_LINE + TAB_LINE + TAB_LINE + "" + NEW_LINE + TAB_LINE + TAB_LINE + "" + NEW_LINE
-				+ TAB_LINE + "bye" + TAB_LINE + NEW_LINE + "hi" + TAB_LINE + TAB_LINE;
-
-		assertEquals(expected, stdout.toString());
-
-	}
-
-	/**
 	 * This bug is due to exception thrown which requires sorted input to be
 	 * fed. Note an input has to be sorted before it can be used in comm is not
 	 * written anywhere in the project description for Comm Application. It only
@@ -115,7 +96,7 @@ public class CommApplicationTestBug {
 	 * @throws CommException
 	 */
 	@Test
-	public void test2() throws CommException {
+	public void test1() throws CommException {
 		String[] args = { "comm3.txt", "comm4.txt" };
 		commApplication.run(args, null, stdout);
 		String expected = TAB_LINE + "\"" + TAB_LINE + NEW_LINE + TAB_LINE + ">" + TAB_LINE + NEW_LINE + TAB_LINE + "M"
@@ -127,30 +108,15 @@ public class CommApplicationTestBug {
 	}
 
 	/**
-	 * This bug is due to cow not appearing before zebra during the comm
-	 * a[plication file1 = bear\ncow file2 = apple\nzebra
+	 * There is a bug with the getLines method in CommApplication despite
+	 * getting the correct contents in the files. It chops off the first char of
+	 * the word which results in an improper comparing order file1 = bear\nzebra
+	 * file2 = apple\nbear\nzebra
 	 * 
 	 * @throws CommException
 	 */
 	@Test
-	public void test3() throws CommException {
-		String[] args = { "comm3Sorted.txt", "comm4Sorted.txt" };
-		commApplication.run(args, null, stdout);
-		String expected = TAB_LINE + "apple" + TAB_LINE + NEW_LINE + "bear" + TAB_LINE + TAB_LINE + NEW_LINE + "cow"
-				+ TAB_LINE + TAB_LINE + NEW_LINE + TAB_LINE + "zebra" + TAB_LINE + NEW_LINE;
-		System.out.println(stdout.toString());
-		assertEquals(expected, stdout.toString());
-
-	}
-
-	/**
-	 * This bug is due to bear not matched in the 3rd column 
-	 *file1 = bear\nzebra file2 = apple\nbear\nzebra
-	 * 
-	 * @throws CommException
-	 */
-	@Test
-	public void test4() throws CommException {
+	public void test2() throws CommException {
 		String[] args = { "comm5Sorted.txt", "comm6Sorted.txt" };
 		commApplication.run(args, null, stdout);
 		String expected = TAB_LINE + "apple" + TAB_LINE + NEW_LINE + TAB_LINE + TAB_LINE + "bear" + NEW_LINE + TAB_LINE
