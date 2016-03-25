@@ -33,11 +33,9 @@ public class CommApplicationTestBug {
 	private static final Path PATH_FILE2 = Paths.get(FILE2);
 	private static final String FILE1_CONTENT = "line1\nline2\nline3\nline8";
 	private static final String FILE2_CONTENT = "line1\nline3\nline4\nline8";
-	private static final String COMM_FILE1_FILE2 = "\t\tline1"
-			+ System.lineSeparator() + "line2" + System.lineSeparator()
-			+ CommApplication.DOUBLE_TAB + "line3" + System.lineSeparator()
-			+ CommApplication.SINGLE_TAB + "line4" + System.lineSeparator()
-			+ "\t\tline8" + System.lineSeparator();
+	private static final String COMM_FILE1_FILE2 = "\t\tline1" + System.lineSeparator() + "line2"
+			+ System.lineSeparator() + CommApplication.DOUBLE_TAB + "line3" + System.lineSeparator()
+			+ CommApplication.SINGLE_TAB + "line4" + System.lineSeparator() + "\t\tline8" + System.lineSeparator();
 
 	private static final String EMPTY_FILE1 = "comm_emptyfile1.txt";
 	private static final String EMPTY_FILE2 = "comm_emptyfile2.txt";
@@ -100,11 +98,9 @@ public class CommApplicationTestBug {
 	public void test() throws CommException {
 		String[] args = { "comm1.txt", "comm2.txt" };
 		commApplication.run(args, null, stdout);
-		String expected = TAB_LINE + TAB_LINE + "" + NEW_LINE + TAB_LINE
-				+ TAB_LINE + "" + NEW_LINE + TAB_LINE + TAB_LINE + ""
-				+ NEW_LINE + TAB_LINE + TAB_LINE + "" + NEW_LINE + TAB_LINE
-				+ TAB_LINE + "" + NEW_LINE + TAB_LINE + "bye" + TAB_LINE
-				+ NEW_LINE + "hi" + TAB_LINE + TAB_LINE;
+		String expected = TAB_LINE + TAB_LINE + "" + NEW_LINE + TAB_LINE + TAB_LINE + "" + NEW_LINE + TAB_LINE
+				+ TAB_LINE + "" + NEW_LINE + TAB_LINE + TAB_LINE + "" + NEW_LINE + TAB_LINE + TAB_LINE + "" + NEW_LINE
+				+ TAB_LINE + "bye" + TAB_LINE + NEW_LINE + "hi" + TAB_LINE + TAB_LINE;
 
 		assertEquals(expected, stdout.toString());
 
@@ -122,21 +118,17 @@ public class CommApplicationTestBug {
 	public void test2() throws CommException {
 		String[] args = { "comm3.txt", "comm4.txt" };
 		commApplication.run(args, null, stdout);
-		String expected = TAB_LINE + "\"" + TAB_LINE + NEW_LINE + TAB_LINE
-				+ ">" + TAB_LINE + NEW_LINE + TAB_LINE + "M" + TAB_LINE
-				+ NEW_LINE + TAB_LINE + "9" + TAB_LINE + NEW_LINE + "o"
-				+ TAB_LINE + TAB_LINE + NEW_LINE + "3" + TAB_LINE + TAB_LINE
-				+ NEW_LINE + "{" + TAB_LINE + TAB_LINE;
+		String expected = TAB_LINE + "\"" + TAB_LINE + NEW_LINE + TAB_LINE + ">" + TAB_LINE + NEW_LINE + TAB_LINE + "M"
+				+ TAB_LINE + NEW_LINE + TAB_LINE + "9" + TAB_LINE + NEW_LINE + "o" + TAB_LINE + TAB_LINE + NEW_LINE
+				+ "3" + TAB_LINE + TAB_LINE + NEW_LINE + "{" + TAB_LINE + TAB_LINE;
 		System.out.println(stdout.toString());
 		assertEquals(expected, stdout.toString());
 
 	}
 
 	/**
-	 * This bug is due to exception thrown which requires sorted input to be
-	 * fed. Note sorted input is not written anywhere in the project description
-	 * for Comm Application. It states to compare each line in order of
-	 * occurrence.
+	 * This bug is due to cow not appearing before zebra during the comm
+	 * a[plication file1 = bear\ncow file2 = apple\nzebra
 	 * 
 	 * @throws CommException
 	 */
@@ -144,12 +136,25 @@ public class CommApplicationTestBug {
 	public void test3() throws CommException {
 		String[] args = { "comm3Sorted.txt", "comm4Sorted.txt" };
 		commApplication.run(args, null, stdout);
-		String expected = TAB_LINE + "\"" + TAB_LINE + NEW_LINE + TAB_LINE
-				+ ">" + TAB_LINE + NEW_LINE + TAB_LINE + "M" + TAB_LINE
-				+ NEW_LINE + TAB_LINE + "9" + TAB_LINE + NEW_LINE + "o"
-				+ TAB_LINE + TAB_LINE + NEW_LINE + "3" + TAB_LINE + TAB_LINE
-				+ NEW_LINE + "{" + TAB_LINE + TAB_LINE;
+		String expected = TAB_LINE + "apple" + TAB_LINE + NEW_LINE + "bear" + TAB_LINE + TAB_LINE + NEW_LINE + "cow"
+				+ TAB_LINE + TAB_LINE + NEW_LINE + TAB_LINE + "zebra" + TAB_LINE + NEW_LINE;
 		System.out.println(stdout.toString());
+		assertEquals(expected, stdout.toString());
+
+	}
+
+	/**
+	 * This bug is due to bear not matched in the 3rd column 
+	 *file1 = bear\nzebra file2 = apple\nbear\nzebra
+	 * 
+	 * @throws CommException
+	 */
+	@Test
+	public void test4() throws CommException {
+		String[] args = { "comm5Sorted.txt", "comm6Sorted.txt" };
+		commApplication.run(args, null, stdout);
+		String expected = TAB_LINE + "apple" + TAB_LINE + NEW_LINE + TAB_LINE + TAB_LINE + "bear" + NEW_LINE + TAB_LINE
+				+ TAB_LINE + "zebra" + NEW_LINE;
 		assertEquals(expected, stdout.toString());
 
 	}
