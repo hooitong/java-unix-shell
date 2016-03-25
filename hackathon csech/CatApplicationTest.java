@@ -1,10 +1,8 @@
 package ComSubHeadEchoCat;
+
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
@@ -15,13 +13,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.CatException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.ShellImpl;
 import sg.edu.nus.comp.cs4218.impl.app.CatApplication;
 
-public class Cat {
+public class CatApplicationTest {
 
 	private static final String ONELINETXT = "newFile2.txt";
 	private static final String TEXT_INPUT2_TXT = "textInput2.txt";
@@ -34,7 +31,7 @@ public class Cat {
 	static InputStream input;
 	static String[] args;
 	private static ShellImpl shell;
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -57,11 +54,10 @@ public class Cat {
 
 	/**
 	 *
-	 *	Bug report: 
+	 * Bug report:
 	 *
-	 *	Nullpointer exception not caught by Cat application
-	 *	When outputstream is null
-	 *	Error is between line 85-93
+	 * Nullpointer exception not caught by Cat application When outputstream is
+	 * null Error is between line 85-93
 	 *
 	 */
 
@@ -74,11 +70,10 @@ public class Cat {
 
 	/**
 	 *
-	 *	Bug report: 
+	 * Bug report:
 	 *
-	 *	Nullpointer exception not caught by Cat application
-	 *	Error is not caught when args is null
-	 *	Error is between line 75-83
+	 * Nullpointer exception not caught by Cat application Error is not caught
+	 * when args is null Error is between line 75-83
 	 */
 	@Test
 	public void nullPointerExceptionNotCaught2() throws CatException {
@@ -88,21 +83,18 @@ public class Cat {
 		cApp.run(args, null, output);
 
 	}
-	
 
 	/**
 	 * 
-	 * Bug report:
-	 * Does not throw exception/stop application when path to file stored in
-	 * When arg contain only spaces or symbols.
+	 * Bug report: Does not throw exception/stop application when path to file
+	 * stored in When arg contain only spaces or symbols.
 	 * 
 	 * Error is at line 77
 	 * 
-	 * Excepted: cat exception
-	 * Received: java.nio.file.InvalidPathException
+	 * Excepted: cat exception Received: java.nio.file.InvalidPathException
 	 *
 	 */
-	//@Test
+	// @Test
 	public void invalidPathExceptionNotCaughtA() throws CatException {
 
 		args = new String[1];
@@ -111,20 +103,21 @@ public class Cat {
 		cApp.run(args, null, output);
 
 	}
-	
-	//@Test
+
+	// @Test
 	public void invalidPathExceptionNotCaughtB() throws Exception {
 		String command = "cat    ";
-		try{
-		shell.parseAndEvaluate(command, output);
-		System.out.println(output.toString());
-		}catch(ShellException shell ){
+		try {
+			shell.parseAndEvaluate(command, output);
+			System.out.println(output.toString());
+		} catch (ShellException shell) {
 			System.out.println(shell);
-		}catch(CatException cat){
+		} catch (CatException cat) {
 			System.out.println(cat);
 		}
 
 	}
+
 	@Test
 	public void invalidPathExceptionNotCaughtC() throws CatException {
 
@@ -134,14 +127,13 @@ public class Cat {
 		cApp.run(args, null, output);
 
 	}
-	
+
 	/**
-	 * Bug report:
-	 * There are two files that are in the output stream, however,
-	 * there is no new line that separate the first file from the second
-	 * Even though when printing a single file, this application is capable of printing one new line
-	 * after each file.
-	 * A new line is expected here. After output of the first file.
+	 * Bug report: There are two files that are in the output stream, however,
+	 * there is no new line that separate the first file from the second Even
+	 * though when printing a single file, this application is capable of
+	 * printing one new line after each file. A new line is expected here. After
+	 * output of the first file.
 	 * 
 	 * Developer team can add a new line in the bytearray at line 94
 	 */
@@ -157,7 +149,7 @@ public class Cat {
 		assertEquals(output.toString(), expectedOutput3() + System.lineSeparator() + expectedOutput2());
 
 	}
-	
+
 	String expectedOutput1() {
 		return "Roses are red," + System.lineSeparator() + "Violets are blue," + System.lineSeparator()
 				+ "All of my base," + System.lineSeparator() + "Are belong to you." + System.lineSeparator()
@@ -183,6 +175,8 @@ public class Cat {
 	public void tearDown() throws Exception {
 		filePath = null;
 		args = null;
+		shell = null;
+		output = null;
 	}
 
 	@AfterClass
