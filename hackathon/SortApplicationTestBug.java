@@ -102,10 +102,11 @@ public class SortApplicationTestBug {
 	}
 
 	/**
-	 * This bugs shows that a wrong order of sorting has been applied. order
-	 * should be Special->Digit->Capital->Lower as stated in the project
-	 * description. Only when both belongs to the same class then ascii value is
-	 * compared.
+	 * Bug report:
+	 *
+	 * A wrong order of sorting has been applied. order should be
+	 * Special->Digit->Capital->Lower as stated in the project description. Only
+	 * when both belongs to the same class then ascii value is compared.
 	 * 
 	 * @throws SortException
 	 */
@@ -118,8 +119,10 @@ public class SortApplicationTestBug {
 	}
 
 	/**
-	 * This bugs shows that if a 'k' instead is used instead of 'n', no
-	 * exception is thrown for invalid flag
+	 * Bug report:
+	 *
+	 * if a invalid flag 'k' is used instead of 'n', no exception is thrown at
+	 * all
 	 * 
 	 * @throws SortException
 	 */
@@ -132,9 +135,10 @@ public class SortApplicationTestBug {
 	}
 
 	/**
-	 * This bug shows that sort application is not able to sort multiple files
-	 * in an args as stated in the specification File - the name of the file(s),
-	 * if not specified, use stdin
+	 * Bug report:
+	 *
+	 * Not able to sort multiple files present in an args Note it is stated in the
+	 * specification File - the name of the file(s), if not specified, use stdin
 	 * 
 	 * @throws BcException
 	 * @throws IOException
@@ -144,7 +148,7 @@ public class SortApplicationTestBug {
 	public void testSort3() throws BcException, IOException, SortException {
 		String[] params = { "sort.txt", "sort.txt" };
 		sortApplication.run(params, stdin, stdout);
-		//System.out.println(stdout.toString());
+		// System.out.println(stdout.toString());
 		fail("did not sort multiple files in args");
 
 	}

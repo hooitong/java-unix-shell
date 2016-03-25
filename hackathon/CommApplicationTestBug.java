@@ -88,10 +88,12 @@ public class CommApplicationTestBug {
 	}
 
 	/**
-	 * This bug is due to exception thrown which requires sorted input to be
-	 * fed. Note an input has to be sorted before it can be used in comm is not
-	 * written anywhere in the project description for Comm Application. It only
-	 * states to compare each line in order of occurrence.
+	 * Bug report:
+	 *
+	 * Exception thrown which requires sorted input to be fed. Note an input has
+	 * to be sorted before it can be used in comm is not written anywhere in the
+	 * project description for Comm Application. It only states to compare each
+	 * line in order of occurrence.
 	 * 
 	 * @throws CommException
 	 */
@@ -108,6 +110,8 @@ public class CommApplicationTestBug {
 	}
 
 	/**
+	 * Bug report:
+	 *
 	 * There is a bug with the getLines method in CommApplication despite
 	 * getting the correct contents in the files. It chops off the first char of
 	 * the word which results in an improper comparing order file1 = bear\nzebra

@@ -25,8 +25,13 @@ public class BcApplicationTestBug {
 		inStream = new ByteArrayInputStream(new byte[1]);
 		outStream = new ByteArrayOutputStream();
 	}
-	
-	/**This bug fails to return 1. Note only 0 statnds for false. Any another value except 0 represents true. this error can also be found in Or operation
+
+	/**
+	 * Bug report:
+	 *
+	 * fails to return 1. Note only 0 stands for false. Any another value except
+	 * 0 represents true. this error can also be found in Or operation
+	 * 
 	 * @throws BcException
 	 * @throws IOException
 	 */
@@ -36,8 +41,12 @@ public class BcApplicationTestBug {
 		bcApp.run(params, inStream, outStream);
 		assertEquals("1", outStream.toString());
 	}
-	
-	/**This bug fails to throw an error but instead returned 50
+
+	/**
+	 * Bug report:
+	 *
+	 * fails to throw an exception but returned 50 instead
+	 * 
 	 * @throws BcException
 	 * @throws IOException
 	 */
@@ -48,8 +57,13 @@ public class BcApplicationTestBug {
 		fail("Should have thrown exception but did not!");
 
 	}
-	
-	/**This bug fails to account for a operator precedence with unary minus, multiply, division
+
+	/**
+	 * Bug report:
+	 *
+	 * fails to account for a operator precedence with unary minus, multiply,
+	 * division
+	 * 
 	 * @throws BcException
 	 * @throws IOException
 	 */
