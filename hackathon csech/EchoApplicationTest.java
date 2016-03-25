@@ -1,3 +1,7 @@
+/*
+ * No error in echo - unless you include the /n is not detected as System.lineSeparator
+ */
+
 package ComSubHeadEchoCat;
 import static org.junit.Assert.*;
 
@@ -10,14 +14,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import sg.edu.nus.comp.cs4218.Shell;
-import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.EchoException;
-import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.ShellImpl;
 import sg.edu.nus.comp.cs4218.impl.app.EchoApplication;
 
-public class Echo {
+public class EchoApplicationTest {
 	static EchoApplication eApp;
 	static String[] args;
 	OutputStream output;
@@ -54,6 +54,7 @@ public class Echo {
 	@After
 	public void tearDown() throws Exception {
 		args = null;
+		output = null;
 	}
 
 	/**
