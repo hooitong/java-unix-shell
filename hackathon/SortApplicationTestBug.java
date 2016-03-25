@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -20,6 +21,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import sg.edu.nus.comp.cs4218.exception.BcException;
 import sg.edu.nus.comp.cs4218.exception.SortException;
 
 public class SortApplicationTestBug {
@@ -108,15 +110,16 @@ public class SortApplicationTestBug {
 	 * @throws SortException
 	 */
 	@Test
-	public void testSort() throws SortException {
+	public void testSort1() throws SortException {
 		String[] args = { "sort.txt" };
 		sortApplication.run(args, stdin, stdout);
 		String expected = "\"\n>\n{\n3\n9\nM\no";
 		assertEquals(expected, stdout.toString());
 	}
-	
+
 	/**
-	 * This bugs shows that if a 'k' instead is used instead of 'n', no exception is thrown for invalid flag
+	 * This bugs shows that if a 'k' instead is used instead of 'n', no
+	 * exception is thrown for invalid flag
 	 * 
 	 * @throws SortException
 	 */
@@ -124,6 +127,25 @@ public class SortApplicationTestBug {
 	public void testSort2() throws SortException {
 		String[] args = { "-k", "sort.txt" };
 		sortApplication.run(args, stdin, stdout);
+		// System.out.println(stdout.toString());
 		fail("should throw exception for wrong flag used ie -k instead of -n");
+	}
+
+	/**
+	 * This bug shows that sort application is not able to sort multiple files
+	 * in an args as stated in the specification File - the name of the file(s),
+	 * if not specified, use stdin
+	 * 
+	 * @throws BcException
+	 * @throws IOException
+	 * @throws SortException
+	 */
+	@Test
+	public void testSort3() throws BcException, IOException, SortException {
+		String[] params = { "sort.txt", "sort.txt" };
+		sortApplication.run(params, stdin, stdout);
+		//System.out.println(stdout.toString());
+		fail("did not sort multiple files in args");
+
 	}
 }
