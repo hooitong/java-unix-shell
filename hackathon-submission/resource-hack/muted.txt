@@ -1,0 +1,1 @@
+resource-hack/test2.txt ; `echo abc`

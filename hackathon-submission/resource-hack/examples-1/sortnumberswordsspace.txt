@@ -1,0 +1,5 @@
+100    front
+15    alm
+9    pea
+3    rock
+1    toad
