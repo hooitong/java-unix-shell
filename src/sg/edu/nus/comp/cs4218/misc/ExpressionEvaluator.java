@@ -231,7 +231,7 @@ public final class ExpressionEvaluator {
 			break;
 		case DIVIDE:
 			catchDivideByZeroException(bdNum2);
-			result = bdNum1.divide(bdNum2, 0, RoundingMode.HALF_UP).toString();
+			result = bdNum1.divide(bdNum2, MathContext.DECIMAL32).toString();
 			break;
 		case TIMES:
 			result = bdNum1.multiply(bdNum2).toString();

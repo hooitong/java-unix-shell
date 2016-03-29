@@ -1,5 +1,7 @@
 package sg.edu.nus.comp.cs4218.misc;
 
+import java.math.BigInteger;
+
 import sg.edu.nus.comp.cs4218.exception.SortException;
 
 public class MergeSort {
@@ -200,7 +202,7 @@ public class MergeSort {
 			if (assumedNumStr1.compareTo(assumedNumStr2) == 0) {
 				return customCompare(str1, str2);
 			} else {
-				return Integer.parseInt(assumedNumStr1) - Integer.parseInt(assumedNumStr2);
+				return new BigInteger(assumedNumStr1).subtract(new BigInteger(assumedNumStr2)).compareTo(BigInteger.ONE) == 1 ? 1 : ZERO;
 			}
 		} else {
 			return customCompare(str1, str2);
@@ -217,7 +219,7 @@ public class MergeSort {
 	 *         or after the other
 	 * 
 	 */
-	public int customCompare(String str1, String str2) {
+	public static int customCompare(String str1, String str2) {
 		int shortLength = str1.length() >= str2.length() ? str2.length() : str1.length();
 		int result = str1.length() < str2.length() ? -1 : 1;
 		if (str1.equals(str2)) {
@@ -247,7 +249,7 @@ public class MergeSort {
 	 *            input character
 	 * @return int rank number
 	 */
-	private int getRank(char currChar) {
+	private static int getRank(char currChar) {
 		int asciiNum = currChar;
 		int result = -1;
 		if (asciiNum >= CAPITAL_START && asciiNum <= CAPITAL_END) {

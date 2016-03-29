@@ -288,7 +288,7 @@ public class BcApplicationTest {
 	public void testDivideIntegers() {
 		String[] args = { "53/52" };
 		String result = bcApp.divide(args);
-		String expected = "1";
+		String expected = "1.019231";
 
 		assertEquals(expected, result);
 	}
@@ -300,7 +300,7 @@ public class BcApplicationTest {
 	public void testDivideIntegerFloat() {
 		String[] args = { "83/5.5" };
 		String result = bcApp.divide(args);
-		String expected = "15";
+		String expected = "15.09091";
 
 		assertEquals(expected, result);
 	}
@@ -312,7 +312,7 @@ public class BcApplicationTest {
 	public void testDivideFloats() {
 		String[] args = { "1322.5/40.8" };
 		String result = bcApp.divide(args);
-		String expected = "32";
+		String expected = "32.41422";
 
 		assertEquals(expected, result);
 	}
