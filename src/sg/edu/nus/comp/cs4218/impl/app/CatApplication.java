@@ -111,7 +111,7 @@ public class CatApplication implements Application {
 					stdout.write(byteFileArray);
 					stdout.flush();
 				} catch (IOException e1) {
-					throw new CatException(e1);
+					throw new CatException("IOException: " + e1);
 				}
 			}
 		}
@@ -145,8 +145,9 @@ public class CatApplication implements Application {
 	 */
 	boolean checkIfFileIsReadable(Path filePath) throws CatException {
 		/*
-		 * if (Files.isDirectory(filePath)) { throw new CatException(
-		 * "This is a directory"); }
+		  if (Files.isDirectory(filePath)) { 
+			  throw new CatException( "This is a directory"); 
+		  }
 		 */
 		if (Files.exists(filePath) && Files.isReadable(filePath)) {
 			return true;
