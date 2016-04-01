@@ -142,7 +142,7 @@ public class PairCmdSubTest {
 	 */
 	@Test
 	public void testSubEchoCal() throws Exception {
-		String command = "echo testing calendar: `cal`";
+		String command = "echo testing calendar: `cal march 2016`";
 		mockShell.parseAndEvaluate(command, mockOut);
 		assertEquals(
 				"testing calendar: March 2016      Su Mo Tu We Th Fr Sa        1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31"
@@ -172,6 +172,7 @@ public class PairCmdSubTest {
 	@Test
 	public void testSubPipeCatHeadTwo() throws Exception {
 		String cmd = "sort `cat " + FOLDER_LOCATION + "files.txt | head -n 1`";
+		System.out.println(cmd);
 		mockShell.parseAndEvaluate(cmd, mockOut);
 		String expected = "sort1.txt" + System.lineSeparator();
 		assertEquals(expected, mockOut.toString());

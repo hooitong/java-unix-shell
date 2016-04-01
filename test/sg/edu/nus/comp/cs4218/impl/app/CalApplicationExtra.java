@@ -136,7 +136,7 @@ public class CalApplicationExtra {
 		GregorianCalendar gregCal = new GregorianCalendar();
 		String expected = formatCalendarMonthly(
 				getCalendarMonthlyTable(gregCal.get(Calendar.MONTH), gregCal.get(Calendar.YEAR), false));
-		assertEquals(expected, result);
+		assertEquals(expected, result + System.lineSeparator());
 	}
 
 	@Test

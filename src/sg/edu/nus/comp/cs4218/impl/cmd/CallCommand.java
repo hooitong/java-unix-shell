@@ -436,7 +436,9 @@ public class CallCommand implements Command {
 
 			if (!results.isEmpty()) {
 				tempList.addAll(results);
-			}
+			} else {
+                tempList.add(arg);
+            }
 
 		} else {
 			/* Nothing to glob, no change to the arg */

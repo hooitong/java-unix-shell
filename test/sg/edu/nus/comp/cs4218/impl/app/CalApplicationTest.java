@@ -110,8 +110,8 @@ public class CalApplicationTest {
 		String mockYear = "2016";
 		String[] arguments = { "-m", mockMonth, mockYear };
 		String[] lineOutputs = testCal.printCalForMonthYearMondayFirst(arguments).split(System.lineSeparator());
-		assertTrue(lineOutputs[0].trim().equals(MONTHS[currentMonth] + " " + currentYear));
-		assertTrue(lineOutputs[1].trim().equals(START_MON));
+		assertTrue(lineOutputs[0].trim().contains(MONTHS[2] + " " + 2016));
+		assertTrue(lineOutputs[1].trim().contains(START_MON));
 		assertTrue(lineOutputs[2].trim().startsWith("1"));
 		assertTrue(lineOutputs[lineOutputs.length - 1].trim().endsWith("31"));
 	}

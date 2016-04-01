@@ -1,0 +1,2 @@
+examples-integration/multiple-cmdsub/sort1.txt
+examples-integration/multiple-cmdsub/bc1.txt

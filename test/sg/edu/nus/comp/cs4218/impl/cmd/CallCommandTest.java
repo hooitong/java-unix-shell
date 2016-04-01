@@ -279,7 +279,8 @@ public class CallCommandTest {
 		String noGlobArg = "mock-glob-fs/quantum.txt";
 		String[] mockArgs = { invalidFile, noGlobArg };
 		String[] results = stubCommand.evaluateGlob(mockArgs);
-		assertTrue(results.length == 1);
-		assertTrue(noGlobArg.equals(results[0]));
+		assertTrue(results.length == 2);
+		assertTrue(invalidFile.equals(results[0]));
+		assertTrue(noGlobArg.equals(results[1]));
 	}
 }
