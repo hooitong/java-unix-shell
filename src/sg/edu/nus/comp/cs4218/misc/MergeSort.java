@@ -202,7 +202,7 @@ public class MergeSort {
 			if (assumedNumStr1.compareTo(assumedNumStr2) == 0) {
 				return customCompare(str1, str2);
 			} else {
-				return new BigInteger(assumedNumStr1).subtract(new BigInteger(assumedNumStr2)).compareTo(BigInteger.ONE) == 1 ? 1 : ZERO;
+				return new BigInteger(assumedNumStr1).compareTo(new BigInteger(assumedNumStr2));
 			}
 		} else {
 			return customCompare(str1, str2);
