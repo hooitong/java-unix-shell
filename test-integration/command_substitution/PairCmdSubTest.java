@@ -172,7 +172,6 @@ public class PairCmdSubTest {
 	@Test
 	public void testSubPipeCatHeadTwo() throws Exception {
 		String cmd = "sort `cat " + FOLDER_LOCATION + "files.txt | head -n 1`";
-		System.out.println(cmd);
 		mockShell.parseAndEvaluate(cmd, mockOut);
 		String expected = "sort1.txt" + System.lineSeparator();
 		assertEquals(expected, mockOut.toString());
