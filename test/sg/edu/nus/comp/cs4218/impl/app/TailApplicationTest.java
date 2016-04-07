@@ -59,8 +59,8 @@ public class TailApplicationTest {
 	}
 
 	/**
-	 * Test if tail extraction is done accurately if specified number of lines is 
-	 * more than that in the file
+	 * Test if tail extraction is done accurately if specified number of lines
+	 * is more than that in the file
 	 *
 	 * @throws TailException
 	 */
@@ -92,7 +92,8 @@ public class TailApplicationTest {
 	}
 
 	/**
-	 * Test if exception is thrown for wrong flag used to denote number of lines i.e. not equal to -n
+	 * Test if exception is thrown for wrong flag used to denote number of lines
+	 * i.e. not equal to -n
 	 *
 	 * @throws TailException
 	 */

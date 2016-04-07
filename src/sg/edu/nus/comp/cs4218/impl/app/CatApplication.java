@@ -145,7 +145,7 @@ public class CatApplication implements Application {
 	 */
 	boolean checkIfFileIsReadable(Path filePath) throws CatException {
 		if (Files.isDirectory(filePath)) {
-			throw new CatException( "This is a directory");
+			throw new CatException("This is a directory");
 		}
 		if (Files.exists(filePath) && Files.isReadable(filePath)) {
 			return true;

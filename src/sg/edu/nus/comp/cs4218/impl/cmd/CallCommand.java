@@ -167,10 +167,10 @@ public class CallCommand implements Command {
 	 * Parses the sub-command's arguments to the call command and splits it into
 	 * its different components, namely the application name and the arguments
 	 * (if any), based on rules: Unquoted: any char except for whitespace
-	 * characters, quotes, newlines, semicolons �;�, �|�, �<� and
-	 * �>�. Double quoted: any char except \n, ", ` Single quoted: any char
-	 * except \n, ' Back quotes in Double Quote for command substitution: DQ
-	 * rules for outside BQ + `anything but \n` in BQ.
+	 * characters, quotes, newlines, semicolons �;�, �|�, �<� and �>�. Double
+	 * quoted: any char except \n, ", ` Single quoted: any char except \n, '
+	 * Back quotes in Double Quote for command substitution: DQ rules for
+	 * outside BQ + `anything but \n` in BQ.
 	 * 
 	 * @param str
 	 *            String of command to split.
@@ -434,11 +434,11 @@ public class CallCommand implements Command {
 
 			List<String> results = finder.getResults();
 
-			if (!results.isEmpty()) {
-				tempList.addAll(results);
+			if (results.isEmpty()) {
+				tempList.add(arg);
 			} else {
-                tempList.add(arg);
-            }
+				tempList.addAll(results);
+			}
 
 		} else {
 			/* Nothing to glob, no change to the arg */

@@ -278,28 +278,28 @@ public class CatApplicationTest {
 		cApp.run(args, null, output);
 
 	}
-	
+
 	/**
-	 * This bug occurs as there is no check for whether the argument passed is a file or not.
+	 * This bug occurs as there is no check for whether the argument passed is a
+	 * file or not.
 	 */
 	@Test
-    public void testFileIsDirException() {
-        File fileDir = new File("tempCatDir");
-        fileDir.mkdir();
-        CatApplication catApp = new CatApplication();
-        String[] args = new String[] { "tempCatDir" };
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        
-        try {
-            catApp.run(args, null, outStream);
-        } catch (CatException e) {
-            String exceptionMsg = "cat: " + "This is a directory";
-            assertEquals(exceptionMsg, e.getMessage());
-        }
+	public void testFileIsDirException() {
+		File fileDir = new File("tempCatDir");
+		fileDir.mkdir();
+		CatApplication catApp = new CatApplication();
+		String[] args = new String[] { "tempCatDir" };
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 
-        fileDir.delete();
-    }
+		try {
+			catApp.run(args, null, outStream);
+		} catch (CatException e) {
+			String exceptionMsg = "cat: " + "This is a directory";
+			assertEquals(exceptionMsg, e.getMessage());
+		}
 
+		fileDir.delete();
+	}
 
 	String expectedOutput1() {
 		return "Roses are red," + System.lineSeparator() + "Violets are blue," + System.lineSeparator()

@@ -17,7 +17,7 @@ public class RedirectionTest {
 	private CallCommand stubCommand;
 	private ShellImpl shell;
 	private ByteArrayOutputStream baos;
-	
+
 	private static final String NEW_LINE = System.lineSeparator();
 
 	@Rule
@@ -102,7 +102,7 @@ public class RedirectionTest {
 	 *
 	 * @throws Exception
 	 */
-	@Test (expected = ShellException.class)
+	@Test(expected = ShellException.class)
 	public void testNonExistantInputRedir() throws Exception {
 		shell.parseAndEvaluate("tail -n 1 < examples/redirectOutputNE.txt", baos);
 	}

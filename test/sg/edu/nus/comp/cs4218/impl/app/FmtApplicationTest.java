@@ -41,7 +41,7 @@ public class FmtApplicationTest {
 	}
 
 	/**
-	 * Test if exception is raised when reading non existant file 
+	 * Test if exception is raised when reading non existant file
 	 *
 	 * @throws FmtException
 	 */
@@ -87,7 +87,7 @@ public class FmtApplicationTest {
 	}
 
 	/**
-	 * Test if file checking for readablity is accurate 
+	 * Test if file checking for readablity is accurate
 	 *
 	 * @throws FmtException
 	 */
@@ -111,7 +111,8 @@ public class FmtApplicationTest {
 	}
 
 	/**
-	 * Test if wrapping is done without breaking of words in the event of a small wrap width
+	 * Test if wrapping is done without breaking of words in the event of a
+	 * small wrap width
 	 *
 	 * @throws FmtException
 	 */
@@ -139,7 +140,7 @@ public class FmtApplicationTest {
 	}
 
 	/**
-	 * Test if exception is raised if wrap width equals 0 
+	 * Test if exception is raised if wrap width equals 0
 	 *
 	 * @throws FmtException
 	 */
@@ -208,7 +209,7 @@ public class FmtApplicationTest {
 	}
 
 	/**
-	 * Test if existing new lines are removed before wrapping 
+	 * Test if existing new lines are removed before wrapping
 	 *
 	 * @throws FmtException
 	 */

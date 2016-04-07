@@ -14,29 +14,23 @@ import sg.edu.nus.comp.cs4218.exception.SortException;
 public class SortApplicationTest {
 	private static final String NEW_LINE = System.lineSeparator();
 	private static SortApplication sortApplication;
-	private static String[] args, inputArr1, inputArr2, inputArr3, inputArr4,
-			inputArr5, inputArr6, inputArr7, inputArr8, inputArr9, inputArr10;
+	private static String[] args, inputArr1, inputArr2, inputArr3, inputArr4, inputArr5, inputArr6, inputArr7,
+			inputArr8, inputArr9, inputArr10;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		sortApplication = new SortApplication();
 		args = new String[] { "examples/sort.txt" };
-		inputArr1 = new String[] { "100 B*anana", "20 B*anana", "#B@n@n0",
-				"P3@r", "p3@R" };
-		inputArr2 = new String[] { "AP1#E", "APP1E#", "6P3@R", "6PE@R",
-				"&P3AL", "100 AP1#E", "30 AP1#E" };
-		inputArr3 = new String[] { "&23jan", "100 pea*s", "jer100 *", "20 m!n",
-				"chief) 24" };
+		inputArr1 = new String[] { "100 B*anana", "20 B*anana", "#B@n@n0", "P3@r", "p3@R" };
+		inputArr2 = new String[] { "AP1#E", "APP1E#", "6P3@R", "6PE@R", "&P3AL", "100 AP1#E", "30 AP1#E" };
+		inputArr3 = new String[] { "&23jan", "100 pea*s", "jer100 *", "20 m!n", "chief) 24" };
 		inputArr4 = new String[] { "Appl^", "APpl^", "!peAR", "!Pear", "!peAr" };
-		inputArr5 = new String[] { "100 @", "50 @", "1 &(*", "22#%!", "33 *&@",
-				"#%356", "68!" };
-		inputArr6 = new String[] { "1oranges", "100apples", "22pears",
-				"january2016", "feb16" };
+		inputArr5 = new String[] { "100 @", "50 @", "1 &(*", "22#%!", "33 *&@", "#%356", "68!" };
+		inputArr6 = new String[] { "1oranges", "100apples", "22pears", "january2016", "feb16" };
 		inputArr7 = new String[] { "5", "100", "1", "10", "33" };
 		inputArr8 = new String[] { "FE8", "APP1E", "APP13", "25DA", "F3B" };
 		inputArr9 = new String[] { "ap1E", "aPp1e", "6p3aR", "6Pear", "p3Ar" };
-		inputArr10 = new String[] { "8FE", "1APP1E", "100APP13", "25DAA",
-				"30F3B" };
+		inputArr10 = new String[] { "8FE", "1APP1E", "100APP13", "25DAA", "30F3B" };
 	}
 
 	/**
@@ -145,8 +139,7 @@ public class SortApplicationTest {
 	 */
 	@Test
 	public void testSortSimpleNumbersWithNumFlagOn() throws SortException {
-		List<String> arrayList = sortApplication
-				.sortSimpleNumbersWithNumFlagOn(inputArr6);
+		List<String> arrayList = sortApplication.sortSimpleNumbersWithNumFlagOn(inputArr6);
 		assertEquals("1oranges", arrayList.get(0));
 		assertEquals("22pears", arrayList.get(1));
 		assertEquals("100apples", arrayList.get(2));
@@ -384,9 +377,8 @@ public class SortApplicationTest {
 		String[] argsArr = new String[] { "-n", "examples/sort.txt" };
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		sortApplication.run(argsArr, null, stdout);
-		String expectedResult = "arthur" + NEW_LINE + "benny" + NEW_LINE
-				+ "jerry" + NEW_LINE + "nicholas" + NEW_LINE + "zackary"
-				+ NEW_LINE;
+		String expectedResult = "arthur" + NEW_LINE + "benny" + NEW_LINE + "jerry" + NEW_LINE + "nicholas" + NEW_LINE
+				+ "zackary" + NEW_LINE;
 		assertEquals(expectedResult, stdout.toString());
 	}
 
@@ -400,8 +392,8 @@ public class SortApplicationTest {
 		String[] argsArr = new String[] { "-n", "examples/numbersort.txt" };
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		sortApplication.run(argsArr, null, stdout);
-		String expectedResult = "9" + NEW_LINE + "11" + NEW_LINE + "23"
-				+ NEW_LINE + "65" + NEW_LINE + "1000" + NEW_LINE;
+		String expectedResult = "9" + NEW_LINE + "11" + NEW_LINE + "23" + NEW_LINE + "65" + NEW_LINE + "1000"
+				+ NEW_LINE;
 		assertEquals(expectedResult, stdout.toString());
 	}
 
@@ -415,8 +407,7 @@ public class SortApplicationTest {
 		String[] argsArr = new String[] {};
 		String contentStr = "8" + NEW_LINE + "68" + NEW_LINE + "105";
 		String expected = "105" + NEW_LINE + "68" + NEW_LINE + "8" + NEW_LINE;
-		InputStream inputStream = new java.io.ByteArrayInputStream(
-				contentStr.getBytes());
+		InputStream inputStream = new java.io.ByteArrayInputStream(contentStr.getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		sortApplication.run(argsArr, inputStream, stdout);
 		assertEquals(expected, stdout.toString());
@@ -432,8 +423,7 @@ public class SortApplicationTest {
 		String[] argsArr = new String[] { "-n" };
 		String contentStr = "112" + NEW_LINE + "68" + NEW_LINE + "681";
 		String expected = "68" + NEW_LINE + "112" + NEW_LINE + "681" + NEW_LINE;
-		InputStream inputStream = new java.io.ByteArrayInputStream(
-				contentStr.getBytes());
+		InputStream inputStream = new java.io.ByteArrayInputStream(contentStr.getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		sortApplication.run(argsArr, inputStream, stdout);
 		assertEquals(expected, stdout.toString());
@@ -486,9 +476,8 @@ public class SortApplicationTest {
 		String[] argsArr = new String[] { "examples/sort2.txt" };
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		sortApplication.run(argsArr, null, stdout);
-		String expectedResult = "\"" + NEW_LINE + ">" + NEW_LINE + "{"
-				+ NEW_LINE + "3" + NEW_LINE + "9" + NEW_LINE + "M" + NEW_LINE
-				+ "o" + NEW_LINE;
+		String expectedResult = "\"" + NEW_LINE + ">" + NEW_LINE + "{" + NEW_LINE + "3" + NEW_LINE + "9" + NEW_LINE
+				+ "M" + NEW_LINE + "o" + NEW_LINE;
 		assertEquals(expectedResult, stdout.toString());
 	}
 

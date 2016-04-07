@@ -809,7 +809,7 @@ public class BcApplicationTest {
 		assertEquals(expected, stdout.toString());
 
 	}
-	
+
 	/**
 	 * Test the integers with parenthesis but without any operators
 	 * 
@@ -820,7 +820,7 @@ public class BcApplicationTest {
 		String[] args = { "((5)0)" };
 		bcApp.run(args, null, outStream);
 	}
-	
+
 	/**
 	 * Test the negative integers with parenthesis but without any operators
 	 * 

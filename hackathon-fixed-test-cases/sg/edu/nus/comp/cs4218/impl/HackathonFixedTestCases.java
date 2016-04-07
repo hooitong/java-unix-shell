@@ -1,4 +1,4 @@
-package HackathonTestCasesAndBugReports;
+package sg.edu.nus.comp.cs4218.impl;
 
 import static org.junit.Assert.*;
 
@@ -29,7 +29,7 @@ import sg.edu.nus.comp.cs4218.impl.app.CommApplication;
 import sg.edu.nus.comp.cs4218.impl.app.EchoApplication;
 import sg.edu.nus.comp.cs4218.impl.app.SortApplication;
 
-public class BugReports {
+public class HackathonFixedTestCases {
 
 	private static SortApplication sortApplication;
 	private static BcApplication bcApp;	
@@ -167,7 +167,6 @@ public class BugReports {
 			assertEquals("1", arrayList.get(0));
 			assertEquals("23", arrayList.get(1));
 			assertEquals("100000000000000000000000000000000000000000000000000000000000000000", arrayList.get(2));
-			
 	}
 	
 

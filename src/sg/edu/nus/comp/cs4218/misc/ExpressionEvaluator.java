@@ -2,7 +2,6 @@ package sg.edu.nus.comp.cs4218.misc;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.Stack;
 import java.util.Vector;
 
@@ -198,7 +197,7 @@ public final class ExpressionEvaluator {
 
 			}
 		}
-		if(tStack.size() != ONE){
+		if (tStack.size() != ONE) {
 			throw new BcException("Invalid Expression");
 		}
 		return tStack.pop();
@@ -299,8 +298,7 @@ public final class ExpressionEvaluator {
 			result = bdNum1.compareTo(BigDecimal.ZERO) == ZERO || bdNum2.compareTo(BigDecimal.ZERO) == ZERO ? "0" : "1";
 			break;
 		case OR_SIGN:
-			result = bdNum1.compareTo(BigDecimal.ZERO) == ZERO
-					&& bdNum2.compareTo(BigDecimal.ZERO) == ZERO ? "0" : "1";
+			result = bdNum1.compareTo(BigDecimal.ZERO) == ZERO && bdNum2.compareTo(BigDecimal.ZERO) == ZERO ? "0" : "1";
 			break;
 		default:
 			break;
