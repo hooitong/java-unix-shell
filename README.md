@@ -1,6 +1,6 @@
 # Java Shell #
 
-Java Shell is a command interpreter that provides a set of tools (applications): *cd*, *pwd*, *ls*, *cat*, *echo*, *head*, *tail*, *grep*, *sed*, *find* and *wc*. Apart from that, CS4218 Shell is a language for calling and combining these application. The language supports *quoting* of input data, *semicolon operator* for calling sequences of applications, *command substitution* and *piping* for connecting applications' inputs and outputs, *IO-redirection* to load and save data processed by applications from/to files. More details can be found in "Project Description.pdf" in IVLE.
+Java Shell is a command interpreter that provides a set of tools (applications): *cd*, *pwd*, *ls*, *cat*, *echo*, *head*, *tail*, *grep*, *sed*, *find* and *wc*. Apart from that, Java Shell is a language for calling and combining these application. The language supports *quoting* of input data, *semicolon operator* for calling sequences of applications, *command substitution* and *piping* for connecting applications' inputs and outputs, *IO-redirection* to load and save data processed by applications from/to files. More details can be found in "Project Description.pdf" in IVLE.
 
 ## Prerequisites ##
 
